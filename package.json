@@ -1,22 +1,27 @@
 {
-	"name": "astro-starter-template",
+	"name": "astro-deno-deploy",
 	"version": "0.0.1",
-	"description": "📄 Starter template for AstroJS.",
+	"description": "📄 Starter template for AstroJS on Deno Deploy.",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/Lightrix/astro-starter-template.git"
+		"url": "https://github.com/Lightrix/astro-deno-deploy.git"
 	},
-	"homepage": "https://github.com/Lightrix/astro-starter-template#readme",
+	"homepage": "https://github.com/Lightrix/astro-deno-deploy#readme",
 	"bugs": {
-		"url": "https://github.com/Lightrix/astro-starter-template/issues"
+		"url": "https://github.com/Lightrix/astro-deno-deploy/issues"
 	},
 	"keywords": [
 		"astro",
+		"deno",
 		"starter"
 	],
 	"scripts": {
 		"build": "astro check && astro build",
+		"preview": "deno run --allow-net --allow-read --allow-env ./dist/server/entry.mjs",
 		"start": "astro dev"
+	},
+	"dependencies": {
+		"@astrojs/deno": "1.2.0"
 	},
 	"devDependencies": {
 		"@astrojs/sitemap": "1.0.0",

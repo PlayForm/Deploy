@@ -1,5 +1,5 @@
-# [astro-starter-template] 📄
+# [astro-deno-deploy] 📄
 
-Starter template for AstroJS.
+Starter template for AstroJS on Deno Deploy.
 
-[astro-starter-template]: https://npmjs.org/astro-starter-template
+[astro-deno-deploy]: https://npmjs.org/astro-deno-deploy
