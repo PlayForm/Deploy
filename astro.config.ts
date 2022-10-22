@@ -1,8 +1,8 @@
+import deno from "@astrojs/deno";
+import sitemap from "@astrojs/sitemap";
 import compress from "astro-compress";
 import critters from "astro-critters";
-import sitemap from "@astrojs/sitemap";
 import { defineConfig } from "astro/config";
-import deno from "@astrojs/deno";
 
 // https://astro.build/config
 export default defineConfig({
