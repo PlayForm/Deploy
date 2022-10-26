@@ -1,0 +1,54 @@
+name: Deno
+
+on:
+    workflow_dispatch:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+
+        permissions:
+            id-token: write
+            contents: read
+
+        steps:
+            - name: Clone repository
+              uses: actions/checkout@v3
+
+            - uses: pnpm/action-setup@v2.2.4
+              with:
+                  version: 7.13.4
+                  run_install: |
+                      - recursive: true
+                        args: [
+                          --child-concurrency=9999,
+                          --link-workspace-packages=true,
+                          --lockfile-only,
+                          --network-concurrency=9999,
+                          --prefer-frozen-lockfile=false,
+                          --shamefully-hoist=false,
+                          --shared-workspace-lockfile=true,
+                          --strict-peer-dependencies=false,
+                          --unsafe-perm=true
+                        ]
+
+            - uses: actions/setup-node@v3.5.1
+              with:
+                  node-version: 18
+                  cache: "pnpm"
+                  cache-dependency-path: ./pnpm-lock.yaml
+            - run: pnpm install
+              working-directory: .
+
+            - run: pnpm run build
+              working-directory: .
+
+            - name: Deploy to Deno Deploy
+              uses: denoland/deployctl@v1
+              with:
+                  project: astro-deno-deploy
+                  entrypoint: ./dist/server/entry.mjs
