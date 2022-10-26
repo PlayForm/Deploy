@@ -441,21 +441,6 @@ function filteredConsoleError$1(e, ...t) {
   }
   originalConsoleError$1(e, ...t);
 }
-function appendForwardSlash(e) {
-  return e.endsWith("/") ? e : e + "/";
-}
-function prependForwardSlash(e) {
-  return "/" === e[0] ? e : "/" + e;
-}
-function trimSlashes(e) {
-  return e.replace(/^\/|\/$/g, "");
-}
-function isString(e) {
-  return "string" == typeof e || e instanceof String;
-}
-function joinPaths(...e) {
-  return e.filter(isString).map(trimSlashes).join("/");
-}
 var PROP_TYPE$1 = { Value: 0, JSON: 1, RegExp: 2, Date: 3, Map: 4, Set: 5, BigInt: 6, URL: 7, Uint8Array: 8, Uint16Array: 9, Uint32Array: 10 };
 function serializeArray$1(e, t = {}, n = /* @__PURE__ */ new WeakSet()) {
   if (n.has(e))
@@ -1290,7 +1275,7 @@ async function renderPage(e, t, n) {
 }
 var clientAddressSymbol = Symbol.for("astro.clientAddress");
 function createAPIContext({ request: e, params: t, site: n, props: a, adapterName: i }) {
-  return { cookies: new AstroCookies(e), request: e, params: t, site: n ? new URL(n) : void 0, generator: "Astro v1.5.2", props: a, redirect: (e2, t2) => new Response(null, { status: t2 || 302, headers: { Location: e2 } }), url: new URL(e.url), get clientAddress() {
+  return { cookies: new AstroCookies(e), request: e, params: t, site: n ? new URL(n) : void 0, generator: "Astro v1.5.3", props: a, redirect: (e2, t2) => new Response(null, { status: t2 || 302, headers: { Location: e2 } }), url: new URL(e.url), get clientAddress() {
     if (!(clientAddressSymbol in e))
       throw i ? new Error(`clientAddress is not available in the ${i} adapter. File an issue with the adapter to add support.`) : new Error("clientAddress is not available in your environment. Ensure that you are using an SSR adapter that supports this feature.");
     return Reflect.get(e, clientAddressSymbol);
@@ -1315,6 +1300,21 @@ var consoleLogDestination = { write(e) {
     return n2 && (t2 += dim(dateTimeFormat.format(new Date()) + " "), "info" === e.level ? n2 = bold(cyan(`[${n2}]`)) : "warn" === e.level ? n2 = bold(yellow(`[${n2}]`)) : "error" === e.level && (n2 = bold(red(`[${n2}]`))), t2 += `${n2} `), reset(t2);
   }() + n), true;
 } };
+function appendForwardSlash(e) {
+  return e.endsWith("/") ? e : e + "/";
+}
+function prependForwardSlash(e) {
+  return "/" === e[0] ? e : "/" + e;
+}
+function trimSlashes(e) {
+  return e.replace(/^\/|\/$/g, "");
+}
+function isString(e) {
+  return "string" == typeof e || e instanceof String;
+}
+function joinPaths(...e) {
+  return e.filter(isString).map(trimSlashes).join("/");
+}
 function createRenderContext(e) {
   const t = e.request, n = new URL(t.url), a = e.origin ?? n.origin, i = e.pathname ?? n.pathname;
   return { ...e, origin: a, pathname: i, url: n };
@@ -1808,7 +1808,7 @@ function createAstroGlobFn() {
 }
 function createAstro(e, t, n) {
   const a = t ? new URL(t) : void 0, i = new URL(e, "http://localhost"), r = new URL(n);
-  return { site: a, generator: "Astro v1.5.2", fetchContent: createDeprecatedFetchContentFn(), glob: createAstroGlobFn(), resolve(...e2) {
+  return { site: a, generator: "Astro v1.5.3", fetchContent: createDeprecatedFetchContentFn(), glob: createAstroGlobFn(), resolve(...e2) {
     let t2 = e2.reduce((e3, t3) => new URL(t3, e3), i).pathname;
     return t2.startsWith(r.pathname) && (t2 = "/" + t2.slice(r.pathname.length)), t2;
   } };
@@ -1978,51 +1978,6 @@ function filteredConsoleError(e, ...t) {
       return;
   }
   originalConsoleError(e, ...t);
-}
-function removeLeadingForwardSlashWindows(e) {
-  return e.startsWith("/") && ":" === e[2] ? e.substring(1) : e;
-}
-var Metadata = class {
-  constructor(e, t) {
-    this.modules = t.modules, this.hoisted = t.hoisted, this.hydratedComponents = t.hydratedComponents, this.clientOnlyComponents = t.clientOnlyComponents, this.hydrationDirectives = t.hydrationDirectives, this.filePath = removeLeadingForwardSlashWindows(e), this.mockURL = new URL(e, "http://example.com"), this.metadataCache = /* @__PURE__ */ new Map();
-  }
-  resolvePath(e) {
-    if (e.startsWith(".")) {
-      const t = new URL(e, this.mockURL);
-      return removeLeadingForwardSlashWindows(decodeURI(t.pathname));
-    }
-    return e;
-  }
-  getPath(e) {
-    const t = this.getComponentMetadata(e);
-    return (null == t ? void 0 : t.componentUrl) || null;
-  }
-  getExport(e) {
-    const t = this.getComponentMetadata(e);
-    return (null == t ? void 0 : t.componentExport) || null;
-  }
-  getComponentMetadata(e) {
-    if (this.metadataCache.has(e))
-      return this.metadataCache.get(e);
-    const t = this.findComponentMetadata(e);
-    return this.metadataCache.set(e, t), t;
-  }
-  findComponentMetadata(e) {
-    const t = "string" == typeof e;
-    for (const { module: n, specifier: a } of this.modules) {
-      const i = this.resolvePath(a);
-      for (const [a2, r] of Object.entries(n))
-        if (t) {
-          if ("tagName" === a2 && e === r)
-            return { componentExport: a2, componentUrl: i };
-        } else if (e === r)
-          return { componentExport: a2, componentUrl: i };
-    }
-    return null;
-  }
-};
-function createMetadata(e, t) {
-  return new Metadata(e, t);
 }
 var PROP_TYPE = { Value: 0, JSON: 1, RegExp: 2, Date: 3, Map: 4, Set: 5, BigInt: 6, URL: 7, Uint8Array: 8, Uint16Array: 9, Uint32Array: 10 };
 function serializeArray(e, t = {}, n = /* @__PURE__ */ new WeakSet()) {
@@ -2524,8 +2479,7 @@ async function renderToStaticMarkup(e, t = {}, { default: n = null, ...a } = {})
   return { html: await renderJSX(r, createVNode(e, { ...t, ...i, children: n })) };
 }
 var server_default = { check, renderToStaticMarkup };
-var $$metadata$1 = createMetadata("/D:/Developer/app/lightrix/astro-deno-deploy/src/layouts/Base.astro", { modules: [], hydratedComponents: [], clientOnlyComponents: [], hydrationDirectives: /* @__PURE__ */ new Set([]), hoisted: [{ type: "inline", value: '\n			document.documentElement.classList.remove("no-js");\n			document.documentElement.classList.add("js");\n		' }] });
-var $$Astro$1 = createAstro("/D:/Developer/app/lightrix/astro-deno-deploy/src/layouts/Base.astro", "", "file:///D:/Developer/app/lightrix/astro-deno-deploy/");
+var $$Astro$1 = createAstro("D:/Developer/app/lightrix/astro-deno-deploy/src/layouts/Base.astro", "", "file:///D:/Developer/app/lightrix/astro-deno-deploy/");
 var $$Base = createComponent(async (e, t, n) => {
   const a = e.createAstro($$Astro$1, t, n);
   a.self = $$Base;
@@ -2565,13 +2519,10 @@ var $$Base = createComponent(async (e, t, n) => {
 		</div>
 	</body></html>`;
 });
-var $$file$1 = "D:/Developer/app/lightrix/astro-deno-deploy/src/layouts/Base.astro";
-var $$module1 = Object.freeze(Object.defineProperty({ __proto__: null, $$metadata: $$metadata$1, default: $$Base, file: $$file$1, url: void 0 }, Symbol.toStringTag, { value: "Module" }));
-var $$metadata = createMetadata("/D:/Developer/app/lightrix/astro-deno-deploy/src/pages/index.astro", { modules: [{ module: $$module1, specifier: "./../layouts/Base.astro", assert: {} }], hydratedComponents: [], clientOnlyComponents: [], hydrationDirectives: /* @__PURE__ */ new Set([]), hoisted: [] });
-var $$Astro = createAstro("/D:/Developer/app/lightrix/astro-deno-deploy/src/pages/index.astro", "", "file:///D:/Developer/app/lightrix/astro-deno-deploy/");
+var $$Astro = createAstro("D:/Developer/app/lightrix/astro-deno-deploy/src/pages/index.astro", "", "file:///D:/Developer/app/lightrix/astro-deno-deploy/");
 var $$Index = createComponent(async (e, t, n) => (e.createAstro($$Astro, t, n).self = $$Index, renderTemplate`${renderComponent(e, "Base", $$Base, {})}`));
 var $$file = "D:/Developer/app/lightrix/astro-deno-deploy/src/pages/index.astro";
-var _page0 = Object.freeze(Object.defineProperty({ __proto__: null, $$metadata, default: $$Index, file: $$file, url: "" }, Symbol.toStringTag, { value: "Module" }));
+var _page0 = Object.freeze(Object.defineProperty({ __proto__: null, default: $$Index, file: $$file, url: "" }, Symbol.toStringTag, { value: "Module" }));
 var pageMap = /* @__PURE__ */ new Map([["src/pages/index.astro", _page0]]);
 var renderers = [Object.assign({ name: "astro:jsx", serverEntrypoint: "astro/jsx/server.js", jsxImportSource: "astro" }, { ssr: server_default })];
 "undefined" != typeof process && (process.argv.includes("--verbose") || process.argv.includes("--silent"));
