@@ -1275,7 +1275,7 @@ async function renderPage(e, t, n) {
 }
 var clientAddressSymbol = Symbol.for("astro.clientAddress");
 function createAPIContext({ request: e, params: t, site: n, props: a, adapterName: i }) {
-  return { cookies: new AstroCookies(e), request: e, params: t, site: n ? new URL(n) : void 0, generator: "Astro v1.5.3", props: a, redirect: (e2, t2) => new Response(null, { status: t2 || 302, headers: { Location: e2 } }), url: new URL(e.url), get clientAddress() {
+  return { cookies: new AstroCookies(e), request: e, params: t, site: n ? new URL(n) : void 0, generator: "Astro v1.6.0", props: a, redirect: (e2, t2) => new Response(null, { status: t2 || 302, headers: { Location: e2 } }), url: new URL(e.url), get clientAddress() {
     if (!(clientAddressSymbol in e))
       throw i ? new Error(`clientAddress is not available in the ${i} adapter. File an issue with the adapter to add support.`) : new Error("clientAddress is not available in your environment. Ensure that you are using an SSR adapter that supports this feature.");
     return Reflect.get(e, clientAddressSymbol);
@@ -1808,7 +1808,7 @@ function createAstroGlobFn() {
 }
 function createAstro(e, t, n) {
   const a = t ? new URL(t) : void 0, i = new URL(e, "http://localhost"), r = new URL(n);
-  return { site: a, generator: "Astro v1.5.3", fetchContent: createDeprecatedFetchContentFn(), glob: createAstroGlobFn(), resolve(...e2) {
+  return { site: a, generator: "Astro v1.6.0", fetchContent: createDeprecatedFetchContentFn(), glob: createAstroGlobFn(), resolve(...e2) {
     let t2 = e2.reduce((e3, t3) => new URL(t3, e3), i).pathname;
     return t2.startsWith(r.pathname) && (t2 = "/" + t2.slice(r.pathname.length)), t2;
   } };
