@@ -594,7 +594,7 @@ function isAstroComponent$1(e) {
   return "object" == typeof e && "[object AstroComponent]" === Object.prototype.toString.call(e);
 }
 function isAstroComponentFactory$1(e) {
-  return null != e && !!e.isAstroComponentFactory;
+  return null != e && true === e.isAstroComponentFactory;
 }
 async function* renderAstroComponent$1(e) {
   for await (const t of e)
@@ -724,7 +724,7 @@ function getComponentType$1(e) {
 }
 async function renderComponent$1(e, t, n, a, i = {}) {
   var r;
-  switch (getComponentType$1(n = await n)) {
+  switch (getComponentType$1(n = await n ?? n)) {
     case "fragment": {
       const t2 = await renderSlot$1(e, null == i ? void 0 : i.default);
       return null == t2 ? t2 : markHTMLString$1(t2);
@@ -756,12 +756,17 @@ Did you mean to add ${formatList$1(u.map((e3) => "`" + e3 + "`"))}?`;
   const { children: f, slotInstructions: h } = await renderSlots$1(e, i);
   let v;
   if ("only" !== s.hydrate) {
-    if (n && n[Renderer$1]) {
+    let t2 = false;
+    try {
+      t2 = n && n[Renderer$1];
+    } catch {
+    }
+    if (t2) {
       const e2 = n[Renderer$1];
-      v = o.find(({ name: t2 }) => t2 === e2);
+      v = o.find(({ name: t3 }) => t3 === e2);
     }
     if (!v) {
-      let t2;
+      let t3;
       for (const a2 of o)
         try {
           if (await a2.ssr.check.call({ result: e }, n, c, f)) {
@@ -769,10 +774,10 @@ Did you mean to add ${formatList$1(u.map((e3) => "`" + e3 + "`"))}?`;
             break;
           }
         } catch (e2) {
-          t2 ?? (t2 = e2);
+          t3 ?? (t3 = e2);
         }
-      if (!v && t2)
-        throw t2;
+      if (!v && t3)
+        throw t3;
     }
     if (!v && "function" == typeof HTMLElement && componentIsHTMLElement$1(n)) {
       return renderHTMLElement$1(e, n, a, i);
@@ -1275,7 +1280,7 @@ async function renderPage(e, t, n) {
 }
 var clientAddressSymbol = Symbol.for("astro.clientAddress");
 function createAPIContext({ request: e, params: t, site: n, props: a, adapterName: i }) {
-  return { cookies: new AstroCookies(e), request: e, params: t, site: n ? new URL(n) : void 0, generator: "Astro v1.6.0", props: a, redirect: (e2, t2) => new Response(null, { status: t2 || 302, headers: { Location: e2 } }), url: new URL(e.url), get clientAddress() {
+  return { cookies: new AstroCookies(e), request: e, params: t, site: n ? new URL(n) : void 0, generator: "Astro v1.6.1", props: a, redirect: (e2, t2) => new Response(null, { status: t2 || 302, headers: { Location: e2 } }), url: new URL(e.url), get clientAddress() {
     if (!(clientAddressSymbol in e))
       throw i ? new Error(`clientAddress is not available in the ${i} adapter. File an issue with the adapter to add support.`) : new Error("clientAddress is not available in your environment. Ensure that you are using an SSR adapter that supports this feature.");
     return Reflect.get(e, clientAddressSymbol);
@@ -1808,7 +1813,7 @@ function createAstroGlobFn() {
 }
 function createAstro(e, t, n) {
   const a = t ? new URL(t) : void 0, i = new URL(e, "http://localhost"), r = new URL(n);
-  return { site: a, generator: "Astro v1.6.0", fetchContent: createDeprecatedFetchContentFn(), glob: createAstroGlobFn(), resolve(...e2) {
+  return { site: a, generator: "Astro v1.6.1", fetchContent: createDeprecatedFetchContentFn(), glob: createAstroGlobFn(), resolve(...e2) {
     let t2 = e2.reduce((e3, t3) => new URL(t3, e3), i).pathname;
     return t2.startsWith(r.pathname) && (t2 = "/" + t2.slice(r.pathname.length)), t2;
   } };
@@ -2132,7 +2137,7 @@ function isAstroComponent(e) {
   return "object" == typeof e && "[object AstroComponent]" === Object.prototype.toString.call(e);
 }
 function isAstroComponentFactory(e) {
-  return null != e && !!e.isAstroComponentFactory;
+  return null != e && true === e.isAstroComponentFactory;
 }
 async function* renderAstroComponent(e) {
   for await (const t of e)
@@ -2262,7 +2267,7 @@ function getComponentType(e) {
 }
 async function renderComponent(e, t, n, a, i = {}) {
   var r;
-  switch (getComponentType(n = await n)) {
+  switch (getComponentType(n = await n ?? n)) {
     case "fragment": {
       const t2 = await renderSlot(e, null == i ? void 0 : i.default);
       return null == t2 ? t2 : markHTMLString(t2);
@@ -2294,12 +2299,17 @@ Did you mean to add ${formatList(u.map((e3) => "`" + e3 + "`"))}?`;
   const { children: f, slotInstructions: h } = await renderSlots(e, i);
   let v;
   if ("only" !== s.hydrate) {
-    if (n && n[Renderer]) {
+    let t2 = false;
+    try {
+      t2 = n && n[Renderer];
+    } catch {
+    }
+    if (t2) {
       const e2 = n[Renderer];
-      v = o.find(({ name: t2 }) => t2 === e2);
+      v = o.find(({ name: t3 }) => t3 === e2);
     }
     if (!v) {
-      let t2;
+      let t3;
       for (const a2 of o)
         try {
           if (await a2.ssr.check.call({ result: e }, n, c, f)) {
@@ -2307,10 +2317,10 @@ Did you mean to add ${formatList(u.map((e3) => "`" + e3 + "`"))}?`;
             break;
           }
         } catch (e2) {
-          t2 ?? (t2 = e2);
+          t3 ?? (t3 = e2);
         }
-      if (!v && t2)
-        throw t2;
+      if (!v && t3)
+        throw t3;
     }
     if (!v && "function" == typeof HTMLElement && componentIsHTMLElement(n)) {
       return renderHTMLElement(e, n, a, i);
