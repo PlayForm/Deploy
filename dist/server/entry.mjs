@@ -1813,7 +1813,7 @@ function createAstroGlobFn() {
 }
 function createAstro(e, t, n) {
   const a = t ? new URL(t) : void 0, i = new URL(e, "http://localhost"), r = new URL(n);
-  return { site: a, generator: "Astro v1.6.1", fetchContent: createDeprecatedFetchContentFn(), glob: createAstroGlobFn(), resolve(...e2) {
+  return { site: a, generator: "Astro v1.6.2", fetchContent: createDeprecatedFetchContentFn(), glob: createAstroGlobFn(), resolve(...e2) {
     let t2 = e2.reduce((e3, t3) => new URL(t3, e3), i).pathname;
     return t2.startsWith(r.pathname) && (t2 = "/" + t2.slice(r.pathname.length)), t2;
   } };
