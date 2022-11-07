@@ -2,10 +2,9 @@ import deno from "@astrojs/deno";
 import sitemap from "@astrojs/sitemap";
 import compress from "astro-compress";
 import critters from "astro-critters";
-import { defineConfig } from "astro/config";
 
 // https://astro.build/config
-export default defineConfig({
+export default {
 	// TODO Place your site URL here
 	// site: "",
 	integrations: [
@@ -17,4 +16,4 @@ export default defineConfig({
 	],
 	output: "server",
 	adapter: deno(),
-});
+};
