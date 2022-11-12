@@ -983,9 +983,9 @@ If you're still stuck, please open an issue on GitHub or join us at https://astr
     return async function* () {
       x && (yield* x), d || "astro:jsx" === (null == y ? void 0 : y.name) ? yield f : yield markHTMLString(f.replace(/\<\/?astro-slot\>/g, ""));
     }();
-  const w = shorthash(`<!--${l.componentExport.value}:${l.componentUrl}-->
+  const b = shorthash(`<!--${l.componentExport.value}:${l.componentUrl}-->
 ${f}
-${serializeProps(m, l)}`), b = await generateHydrateScript({ renderer: y, result: e, astroId: w, props: m, attrs: u }, l);
+${serializeProps(m, l)}`), w = await generateHydrateScript({ renderer: y, result: e, astroId: b, props: m, attrs: u }, l);
   let _ = [];
   if (f) {
     if (Object.keys(g).length > 0)
@@ -994,8 +994,8 @@ ${serializeProps(m, l)}`), b = await generateHydrateScript({ renderer: y, result
   } else
     _ = Object.keys(g);
   const S = _.length > 0 ? _.map((e2) => `<template data-astro-template${"default" !== e2 ? `="${e2}"` : ""}>${g[e2]}</template>`).join("") : "";
-  return b.children = `${f ?? ""}${S}`, b.children && (b.props["await-children"] = ""), async function* () {
-    x && (yield* x), yield { type: "directive", hydration: c, result: e }, yield markHTMLString(renderElement("astro-island", b, false));
+  return w.children = `${f ?? ""}${S}`, w.children && (w.props["await-children"] = ""), async function* () {
+    x && (yield* x), yield { type: "directive", hydration: c, result: e }, yield markHTMLString(renderElement("astro-island", w, false));
   }();
 }
 var uniqueElements = (e, t, a) => {
@@ -1758,8 +1758,8 @@ function parse(e, t) {
         l += g;
       else if (l && (o.push(l), l = ""), c("OPEN")) {
         v = m();
-        var x = c("NAME") || "", y = c("PATTERN") || "", w = m();
-        d("CLOSE"), o.push({ name: x || (y ? s++ : ""), pattern: x && !y ? r : y, prefix: v, suffix: w, modifier: c("MODIFIER") || "" });
+        var x = c("NAME") || "", y = c("PATTERN") || "", b = m();
+        d("CLOSE"), o.push({ name: x || (y ? s++ : ""), pattern: x && !y ? r : y, prefix: v, suffix: b, modifier: c("MODIFIER") || "" });
       } else
         d("END");
     }
@@ -2046,7 +2046,7 @@ var $$file = "D:/Developer/app/lightrix/astro-deno-deploy/src/pages/index.astro"
 var _page0 = Object.freeze(Object.defineProperty({ __proto__: null, default: $$Index, file: $$file, url: "" }, Symbol.toStringTag, { value: "Module" }));
 var pageMap = /* @__PURE__ */ new Map([["src/pages/index.astro", _page0]]);
 var renderers = [Object.assign({ name: "astro:jsx", serverEntrypoint: "astro/jsx/server.js", jsxImportSource: "astro" }, { ssr: server_default })];
-var _manifest = Object.assign(deserializeManifest({ adapterName: "@astrojs/deno", routes: [{ file: "", links: ["assets/index.ecc12e06.css"], scripts: [{ type: "inline", value: 'document.documentElement.classList.remove("no-js");document.documentElement.classList.add("js");\n' }], routeData: { route: "/", type: "page", pattern: "^\\/$", segments: [], params: [], component: "src/pages/index.astro", pathname: "/", _meta: { trailingSlash: "ignore" } } }], base: "/", markdown: { drafts: false, syntaxHighlight: "shiki", shikiConfig: { langs: [], theme: "github-dark", wrap: false }, remarkPlugins: [], rehypePlugins: [], remarkRehype: {}, extendDefaultPlugins: false, isAstroFlavoredMd: false }, pageMap: null, renderers: [], entryModules: { "\0@astrojs-ssr-virtual-entry": "entry.mjs", "/astro/hoisted.js?q=0": "hoisted.217f67e9.js", "astro:scripts/before-hydration.js": "" }, assets: ["/assets/index.ecc12e06.css", "/robots.txt", "/site.webmanifest"] }), { pageMap, renderers });
+var _manifest = Object.assign(deserializeManifest({ adapterName: "@astrojs/deno", routes: [{ file: "", links: ["assets/index.c57ad5eb.css"], scripts: [{ type: "inline", value: 'document.documentElement.classList.remove("no-js");document.documentElement.classList.add("js");\n' }], routeData: { route: "/", type: "page", pattern: "^\\/$", segments: [], params: [], component: "src/pages/index.astro", pathname: "/", _meta: { trailingSlash: "ignore" } } }], base: "/", markdown: { drafts: false, syntaxHighlight: "shiki", shikiConfig: { langs: [], theme: "github-dark", wrap: false }, remarkPlugins: [], rehypePlugins: [], remarkRehype: {}, extendDefaultPlugins: false, isAstroFlavoredMd: false }, pageMap: null, renderers: [], entryModules: { "\0@astrojs-ssr-virtual-entry": "entry.mjs", "/astro/hoisted.js?q=0": "hoisted.217f67e9.js", "astro:scripts/before-hydration.js": "" }, assets: ["/assets/index.c57ad5eb.css", "/robots.txt", "/site.webmanifest"] }), { pageMap, renderers });
 var _args = {};
 var _exports = createExports(_manifest, _args);
 var stop = _exports.stop;
