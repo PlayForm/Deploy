@@ -264,7 +264,7 @@ function createAstroGlobFn() {
 }
 function createAstro(e, t, a) {
   const n = t ? new URL(t) : void 0, i = new URL(e, "http://localhost"), r = new URL(a);
-  return { site: n, generator: "Astro v1.6.7", fetchContent: createDeprecatedFetchContentFn(), glob: createAstroGlobFn(), resolve(...e2) {
+  return { site: n, generator: "Astro v1.6.8", fetchContent: createDeprecatedFetchContentFn(), glob: createAstroGlobFn(), resolve(...e2) {
     let t2 = e2.reduce((e3, t3) => new URL(t3, e3), i).pathname;
     return t2.startsWith(r.pathname) && (t2 = "/" + t2.slice(r.pathname.length)), t2;
   } };
@@ -1373,7 +1373,7 @@ async function callGetStaticPaths({ isValidate: e, logging: t, mod: a, route: n,
   let r = [];
   r = await a.getStaticPaths({ paginate: generatePaginateFunction(n), rss() {
     throw new AstroError(AstroErrorData.GetStaticPathsDeprecatedRSS);
-  } }), e && validateGetStaticPathsResult(r, t, n), r = r.flat();
+  } }), Array.isArray(r) && (r = r.flat()), e && validateGetStaticPathsResult(r, t, n);
   const o = r;
   o.keyed = /* @__PURE__ */ new Map();
   for (const e2 of o) {
@@ -1436,7 +1436,7 @@ async function renderPage(e, t, a) {
 }
 var clientAddressSymbol = Symbol.for("astro.clientAddress");
 function createAPIContext({ request: e, params: t, site: a, props: n, adapterName: i }) {
-  return { cookies: new AstroCookies(e), request: e, params: t, site: a ? new URL(a) : void 0, generator: "Astro v1.6.7", props: n, redirect: (e2, t2) => new Response(null, { status: t2 || 302, headers: { Location: e2 } }), url: new URL(e.url), get clientAddress() {
+  return { cookies: new AstroCookies(e), request: e, params: t, site: a ? new URL(a) : void 0, generator: "Astro v1.6.8", props: n, redirect: (e2, t2) => new Response(null, { status: t2 || 302, headers: { Location: e2 } }), url: new URL(e.url), get clientAddress() {
     if (!(clientAddressSymbol in e))
       throw new AstroError(i ? { ...AstroErrorData.SSRClientAddressNotAvailableInAdapter, message: AstroErrorData.SSRClientAddressNotAvailableInAdapter.message(i) } : AstroErrorData.StaticClientAddressNotAvailable);
     return Reflect.get(e, clientAddressSymbol);
@@ -1658,7 +1658,7 @@ var posix = { resolve: function() {
 posix.posix = posix;
 var pathBrowserify = posix;
 function getRootPath(e) {
-  return appendForwardSlash(new URL(e || "http://localhost/").pathname);
+  return appendForwardSlash(new URL(e || "/", "http://localhost/").pathname);
 }
 function joinToRoot(e, t) {
   return pathBrowserify.posix.join(getRootPath(t), e);
@@ -1949,12 +1949,14 @@ function createExports(e, t) {
   }, running: () => void 0 !== _server, start: async () => start$1(e, t), handle: async (e2) => a.render(e2) };
 }
 _env = /* @__PURE__ */ new WeakMap(), _manifest$1 = /* @__PURE__ */ new WeakMap(), _manifestData = /* @__PURE__ */ new WeakMap(), _routeDataToRouteInfo = /* @__PURE__ */ new WeakMap(), _encoder = /* @__PURE__ */ new WeakMap(), _logging = /* @__PURE__ */ new WeakMap(), _base = /* @__PURE__ */ new WeakMap(), _baseWithoutTrailingSlash = /* @__PURE__ */ new WeakMap(), _renderPage = /* @__PURE__ */ new WeakSet(), renderPage_fn = async function(e, t, a, n = 200) {
-  const i = new URL(e.url), r = __privateGet(this, _manifest$1), o = __privateGet(this, _routeDataToRouteInfo).get(t), s = createLinkStylesheetElementSet(o.links, r.site);
-  let p = /* @__PURE__ */ new Set();
-  for (const e2 of o.scripts)
-    "stage" in e2 ? "head-inline" === e2.stage && p.add({ props: {}, children: e2.children }) : p.add(createModuleScriptElement(e2, r.site));
+  const i = new URL(e.url);
+  __privateGet(this, _manifest$1);
+  const r = __privateGet(this, _routeDataToRouteInfo).get(t), o = createLinkStylesheetElementSet(r.links);
+  let s = /* @__PURE__ */ new Set();
+  for (const e2 of r.scripts)
+    "stage" in e2 ? "head-inline" === e2.stage && s.add({ props: {}, children: e2.children }) : s.add(createModuleScriptElement(e2));
   try {
-    const r2 = createRenderContext({ request: e, origin: i.origin, pathname: i.pathname, scripts: p, links: s, route: t, status: n });
+    const r2 = createRenderContext({ request: e, origin: i.origin, pathname: i.pathname, scripts: s, links: o, route: t, status: n });
     return await renderPage(a, r2, __privateGet(this, _env));
   } catch (e2) {
     return error(__privateGet(this, _logging), "ssr", e2.stack || e2.message || String(e2)), new Response(null, { status: 500, statusText: "Internal server error" });
