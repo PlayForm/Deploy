@@ -264,7 +264,7 @@ function createAstroGlobFn() {
 }
 function createAstro(e, t, a) {
   const n = t ? new URL(t) : void 0, i = new URL(e, "http://localhost"), r = new URL(a);
-  return { site: n, generator: "Astro v1.6.9", fetchContent: createDeprecatedFetchContentFn(), glob: createAstroGlobFn(), resolve(...e2) {
+  return { site: n, generator: "Astro v1.6.10", fetchContent: createDeprecatedFetchContentFn(), glob: createAstroGlobFn(), resolve(...e2) {
     let t2 = e2.reduce((e3, t3) => new URL(t3, e3), i).pathname;
     return t2.startsWith(r.pathname) && (t2 = "/" + t2.slice(r.pathname.length)), t2;
   } };
@@ -493,6 +493,9 @@ function serializeListValue(e) {
     });
   }(e), Object.keys(t).join(" ");
 }
+function isPromise(e) {
+  return !!e && "object" == typeof e && "function" == typeof e.then;
+}
 var HydrationDirectivesRaw = ["load", "idle", "media", "visible", "only"];
 var HydrationDirectives = new Set(HydrationDirectivesRaw);
 var HydrationDirectiveProps = new Set(HydrationDirectivesRaw.map((e) => `client:${e}`));
@@ -542,7 +545,10 @@ function validateComponentProps(e, t) {
 }
 var AstroComponent = class {
   constructor(e, t) {
-    this.htmlParts = e, this.expressions = t;
+    this.htmlParts = e, this.error = void 0, this.expressions = t.map((e2) => isPromise(e2) ? Promise.resolve(e2).catch((e3) => {
+      if (!this.error)
+        throw this.error = e3, e3;
+    }) : e2);
   }
   get [Symbol.toStringTag]() {
     return "AstroComponent";
@@ -1436,7 +1442,7 @@ async function renderPage(e, t, a) {
 }
 var clientAddressSymbol = Symbol.for("astro.clientAddress");
 function createAPIContext({ request: e, params: t, site: a, props: n, adapterName: i }) {
-  return { cookies: new AstroCookies(e), request: e, params: t, site: a ? new URL(a) : void 0, generator: "Astro v1.6.9", props: n, redirect: (e2, t2) => new Response(null, { status: t2 || 302, headers: { Location: e2 } }), url: new URL(e.url), get clientAddress() {
+  return { cookies: new AstroCookies(e), request: e, params: t, site: a ? new URL(a) : void 0, generator: "Astro v1.6.10", props: n, redirect: (e2, t2) => new Response(null, { status: t2 || 302, headers: { Location: e2 } }), url: new URL(e.url), get clientAddress() {
     if (!(clientAddressSymbol in e))
       throw new AstroError(i ? { ...AstroErrorData.SSRClientAddressNotAvailableInAdapter, message: AstroErrorData.SSRClientAddressNotAvailableInAdapter.message(i) } : AstroErrorData.StaticClientAddressNotAvailable);
     return Reflect.get(e, clientAddressSymbol);
