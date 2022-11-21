@@ -12,9 +12,7 @@ export default {
 		sitemap(),
 		critters(),
 		rome(),
-		compress({
-			logger: 1,
-		}),
+		compress(),
 	],
 	output: "server",
 	adapter: deno(),
