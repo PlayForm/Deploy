@@ -8,12 +8,5 @@ import rome from "astro-rome";
 export default {
 	// TODO Place your site URL here
 	// site: "",
-	integrations: [
-		sitemap(),
-		critters(),
-		rome(),
-		compress(),
-	],
-	output: "server",
-	adapter: deno(),
+	integrations: [sitemap(), critters(), rome(), compress()],
 };
