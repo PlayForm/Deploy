@@ -9,4 +9,6 @@ export default {
 	// TODO Place your site URL here
 	// site: "",
 	integrations: [sitemap(), critters(), rome(), compress()],
+	output: "server",
+	adapter: deno(),
 };
