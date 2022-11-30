@@ -1,14 +1,15 @@
-import deno from "@astrojs/deno";
-import sitemap from "@astrojs/sitemap";
+import { defineConfig } from "astro/config";
+
 import compress from "astro-compress";
 import critters from "astro-critters";
+import deno from "@astrojs/deno";
+import prefetch from "@astrojs/prefetch";
 import rome from "astro-rome";
-
-// https://astro.build/config
-export default {
+import sitemap from "@astrojs/sitemap";
+export default defineConfig({
 	// TODO Place your site URL here
 	// site: "",
-	integrations: [sitemap(), critters(), rome(), compress()],
+	integrations: [sitemap(), critters(), prefetch(), rome(), compress()],
 	output: "server",
 	adapter: deno(),
-};
+});

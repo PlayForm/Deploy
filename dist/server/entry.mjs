@@ -264,7 +264,7 @@ function createAstroGlobFn() {
 }
 function createAstro(e, t, a) {
   const i = t ? new URL(t) : void 0, n = new URL(e, "http://localhost"), r = new URL(a);
-  return { site: i, generator: "Astro v1.6.11", fetchContent: createDeprecatedFetchContentFn(), glob: createAstroGlobFn(), resolve(...e2) {
+  return { site: i, generator: "Astro v1.6.12", fetchContent: createDeprecatedFetchContentFn(), glob: createAstroGlobFn(), resolve(...e2) {
     let t2 = e2.reduce((e3, t3) => new URL(t3, e3), n).pathname;
     return t2.startsWith(r.pathname) && (t2 = "/" + t2.slice(r.pathname.length)), t2;
   } };
@@ -1223,7 +1223,7 @@ function stringifyParams(e, t) {
   const a = Object.entries(e).reduce((e2, a2) => {
     validateGetStaticPathsParameter(a2, t);
     const [i, n] = a2;
-    return e2[i] = void 0 === n ? void 0 : `${n}`, e2;
+    return e2[i] = null == n ? void 0 : n.toString(), e2;
   }, {});
   return JSON.stringify(a, Object.keys(e).sort());
 }
@@ -1442,7 +1442,7 @@ async function renderPage(e, t, a) {
 }
 var clientAddressSymbol = Symbol.for("astro.clientAddress");
 function createAPIContext({ request: e, params: t, site: a, props: i, adapterName: n }) {
-  return { cookies: new AstroCookies(e), request: e, params: t, site: a ? new URL(a) : void 0, generator: "Astro v1.6.11", props: i, redirect: (e2, t2) => new Response(null, { status: t2 || 302, headers: { Location: e2 } }), url: new URL(e.url), get clientAddress() {
+  return { cookies: new AstroCookies(e), request: e, params: t, site: a ? new URL(a) : void 0, generator: "Astro v1.6.12", props: i, redirect: (e2, t2) => new Response(null, { status: t2 || 302, headers: { Location: e2 } }), url: new URL(e.url), get clientAddress() {
     if (!(clientAddressSymbol in e))
       throw new AstroError(n ? { ...AstroErrorData.ClientAddressNotAvailable, message: AstroErrorData.ClientAddressNotAvailable.message(n) } : AstroErrorData.StaticClientAddressNotAvailable);
     return Reflect.get(e, clientAddressSymbol);
@@ -2054,7 +2054,7 @@ var $$file = "D:/Developer/app/lightrix/astro-deno-deploy/src/pages/index.astro"
 var _page0 = Object.freeze(Object.defineProperty({ __proto__: null, default: $$Index, file: $$file, url: "" }, Symbol.toStringTag, { value: "Module" }));
 var pageMap = /* @__PURE__ */ new Map([["src/pages/index.astro", _page0]]);
 var renderers = [Object.assign({ name: "astro:jsx", serverEntrypoint: "astro/jsx/server.js", jsxImportSource: "astro" }, { ssr: server_default })];
-var _manifest = Object.assign(deserializeManifest({ adapterName: "@astrojs/deno", routes: [{ file: "", links: ["assets/index.c57ad5eb.css"], scripts: [{ type: "external", value: "hoisted.588b150b.js" }], routeData: { route: "/", type: "page", pattern: "^\\/$", segments: [], params: [], component: "src/pages/index.astro", pathname: "/", _meta: { trailingSlash: "ignore" } } }], base: "/", markdown: { drafts: false, syntaxHighlight: "shiki", shikiConfig: { langs: [], theme: "github-dark", wrap: false }, remarkPlugins: [], rehypePlugins: [], remarkRehype: {}, extendDefaultPlugins: false, isAstroFlavoredMd: false }, pageMap: null, renderers: [], entryModules: { "\0@astrojs-ssr-virtual-entry": "entry.mjs", "/astro/hoisted.js?q=0": "hoisted.588b150b.js", "astro:scripts/before-hydration.js": "" }, assets: ["/assets/index.c57ad5eb.css", "/hoisted.588b150b.js", "/robots.txt", "/site.webmanifest"] }), { pageMap, renderers });
+var _manifest = Object.assign(deserializeManifest({ adapterName: "@astrojs/deno", routes: [{ file: "", links: ["assets/index.c57ad5eb.css"], scripts: [{ type: "external", value: "hoisted.588b150b.js" }, { type: "external", value: "page.5a6f3db5.js" }], routeData: { route: "/", type: "page", pattern: "^\\/$", segments: [], params: [], component: "src/pages/index.astro", pathname: "/", _meta: { trailingSlash: "ignore" } } }], base: "/", markdown: { drafts: false, syntaxHighlight: "shiki", shikiConfig: { langs: [], theme: "github-dark", wrap: false }, remarkPlugins: [], rehypePlugins: [], remarkRehype: {}, extendDefaultPlugins: false, isAstroFlavoredMd: false }, pageMap: null, renderers: [], entryModules: { "\0@astrojs-ssr-virtual-entry": "entry.mjs", "/astro/hoisted.js?q=0": "hoisted.588b150b.js", "astro:scripts/page.js": "page.5a6f3db5.js", "astro:scripts/before-hydration.js": "" }, assets: ["/assets/index.c57ad5eb.css", "/hoisted.588b150b.js", "/page.5a6f3db5.js", "/robots.txt", "/site.webmanifest", "/page.5a6f3db5.js"] }), { pageMap, renderers });
 var _args = {};
 var _exports = createExports(_manifest, _args);
 var stop = _exports.stop;
