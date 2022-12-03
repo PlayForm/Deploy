@@ -1357,11 +1357,12 @@ function generatePaginateFunction(e) {
     let { pageSize: i, params: n, props: r } = a;
     const o = i || 10, s = "page", p = n || {}, l = r || {};
     let c;
-    if (e.params.includes("...page"))
+    if (e.params.includes(`...${s}`))
       c = false;
     else {
-      if (!e.params.includes("page"))
-        throw new Error("[paginate()] page number param `page` not found in your filepath.\nRename your file to `[...page].astro` or customize the param name via the `paginate([], {param: '...'}` option.");
+      if (!e.params.includes(`${s}`))
+        throw new Error(`[paginate()] page number param \`${s}\` not found in your filepath.
+Rename your file to \`[...page].astro\` or customize the param name via the \`paginate([], {param: '...'}\` option.`);
       c = true;
     }
     const d = Math.max(1, Math.ceil(t.length / o)), m = [...Array(d).keys()].map((a2) => {
@@ -2010,7 +2011,7 @@ async function renderToStaticMarkup(e, t = {}, { default: a = null, ...i } = {})
   return { html: await renderJSX(r, createVNode(e, { ...t, ...n, children: a })) };
 }
 var server_default = { check, renderToStaticMarkup };
-var $$Astro$1 = createAstro("D:/Developer/app/lightrix/astro-deno-deploy/src/layouts/Base.astro", "", "file:///D:/Developer/app/lightrix/astro-deno-deploy/");
+var $$Astro$1 = createAstro("D:/Developer/app/lightrix/astro-deno-deploy/src/layouts/Base.astro", "https://astro-deno-deploy.deno.dev/", "file:///D:/Developer/app/lightrix/astro-deno-deploy/");
 var $$Base = createComponent(async (e, t, a) => {
   const i = e.createAstro($$Astro$1, t, a);
   i.self = $$Base;
@@ -2024,8 +2025,7 @@ var $$Base = createComponent(async (e, t, a) => {
 		<meta charset="utf-8">
 		<meta name="description"${addAttribute(r, "content")}>
 		<meta name="viewport" content="width=device-width,initial-scale=1.0">
-		<!-- TODO Define your color theme in hex here -->
-		<meta name="theme-color" content="">
+		<meta name="theme-color" content="#FF5D01">
 		<meta name="format-detection" content="telephone=no">
 		<meta name="twitter:dnt" content="on">
 
@@ -2040,21 +2040,20 @@ var $$Base = createComponent(async (e, t, a) => {
 	${renderHead(e)}</head>
 
 	<body>
-		<!-- TODO Generate the ID here -->
-		<div id="">
+		<div id="astro-deno-deploy-web">
 			<div class="grow">
 				${renderSlot(e, a.default)}
 			</div>
 		</div>
 	</body></html>`;
 });
-var $$Astro = createAstro("D:/Developer/app/lightrix/astro-deno-deploy/src/pages/index.astro", "", "file:///D:/Developer/app/lightrix/astro-deno-deploy/");
+var $$Astro = createAstro("D:/Developer/app/lightrix/astro-deno-deploy/src/pages/index.astro", "https://astro-deno-deploy.deno.dev/", "file:///D:/Developer/app/lightrix/astro-deno-deploy/");
 var $$Index = createComponent(async (e, t, a) => (e.createAstro($$Astro, t, a).self = $$Index, renderTemplate`${renderComponent(e, "Base", $$Base, {}, {})}`));
 var $$file = "D:/Developer/app/lightrix/astro-deno-deploy/src/pages/index.astro";
 var _page0 = Object.freeze(Object.defineProperty({ __proto__: null, default: $$Index, file: $$file, url: "" }, Symbol.toStringTag, { value: "Module" }));
 var pageMap = /* @__PURE__ */ new Map([["src/pages/index.astro", _page0]]);
 var renderers = [Object.assign({ name: "astro:jsx", serverEntrypoint: "astro/jsx/server.js", jsxImportSource: "astro" }, { ssr: server_default })];
-var _manifest = Object.assign(deserializeManifest({ adapterName: "@astrojs/deno", routes: [{ file: "", links: ["assets/index.c57ad5eb.css"], scripts: [{ type: "external", value: "hoisted.588b150b.js" }, { type: "external", value: "page.5a6f3db5.js" }], routeData: { route: "/", type: "page", pattern: "^\\/$", segments: [], params: [], component: "src/pages/index.astro", pathname: "/", _meta: { trailingSlash: "ignore" } } }], base: "/", markdown: { drafts: false, syntaxHighlight: "shiki", shikiConfig: { langs: [], theme: "github-dark", wrap: false }, remarkPlugins: [], rehypePlugins: [], remarkRehype: {}, extendDefaultPlugins: false, isAstroFlavoredMd: false }, pageMap: null, renderers: [], entryModules: { "\0@astrojs-ssr-virtual-entry": "entry.mjs", "/astro/hoisted.js?q=0": "hoisted.588b150b.js", "astro:scripts/page.js": "page.5a6f3db5.js", "astro:scripts/before-hydration.js": "" }, assets: ["/assets/index.c57ad5eb.css", "/hoisted.588b150b.js", "/page.5a6f3db5.js", "/robots.txt", "/site.webmanifest", "/page.5a6f3db5.js"] }), { pageMap, renderers });
+var _manifest = Object.assign(deserializeManifest({ adapterName: "@astrojs/deno", routes: [{ file: "", links: ["assets/index.c57ad5eb.css"], scripts: [{ type: "external", value: "hoisted.588b150b.js" }, { type: "external", value: "page.5a6f3db5.js" }], routeData: { route: "/", type: "page", pattern: "^\\/$", segments: [], params: [], component: "src/pages/index.astro", pathname: "/", _meta: { trailingSlash: "ignore" } } }], site: "https://astro-deno-deploy.deno.dev/", base: "/", markdown: { drafts: false, syntaxHighlight: "shiki", shikiConfig: { langs: [], theme: "github-dark", wrap: false }, remarkPlugins: [], rehypePlugins: [], remarkRehype: {}, extendDefaultPlugins: false, isAstroFlavoredMd: false }, pageMap: null, renderers: [], entryModules: { "\0@astrojs-ssr-virtual-entry": "entry.mjs", "/astro/hoisted.js?q=0": "hoisted.588b150b.js", "astro:scripts/page.js": "page.5a6f3db5.js", "astro:scripts/before-hydration.js": "" }, assets: ["/assets/index.c57ad5eb.css", "/hoisted.588b150b.js", "/page.5a6f3db5.js", "/robots.txt", "/site.webmanifest", "/page.5a6f3db5.js"] }), { pageMap, renderers });
 var _args = {};
 var _exports = createExports(_manifest, _args);
 var stop = _exports.stop;
@@ -2062,7 +2061,7 @@ var handle = _exports.handle;
 var start = _exports.start;
 var running = _exports.running;
 var _start = "start";
-_start in adapter && adapter.start(_manifest, _args);
+_start in adapter && adapter[_start](_manifest, _args);
 export {
   handle,
   running,

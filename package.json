@@ -24,7 +24,7 @@
 	},
 	"dependencies": {
 		"@astrojs/deno": "2.0.0",
-		"@astrojs/prefetch": "^0.1.1"
+		"@astrojs/prefetch": "0.1.1"
 	},
 	"devDependencies": {
 		"@astrojs/sitemap": "1.0.0",
