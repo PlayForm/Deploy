@@ -46,7 +46,7 @@ const V=function(e){const t=[];let r=0;for(let n=0;n<e.length;n++){let a=e.charC
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */const se=()=>re().__FIREBASE_DEFAULTS__,ae=()=>{if(typeof process>"u"||typeof process.env>"u")return;const e=process.env.__FIREBASE_DEFAULTS__;return e?JSON.parse(e):void 0},ie=()=>{if(typeof document>"u")return;let e;try{e=document.cookie.match(/__FIREBASE_DEFAULTS__=([^;]+)/)}catch{return}const t=e&&ee(e[1]);return t&&JSON.parse(t)},oe=()=>{try{return re().__FIREBASE_DEFAULTS__||ae()||ie()}catch(e){return void console.info(`Unable to get __FIREBASE_DEFAULTS__ due to: ${e}`)}},ce=()=>{var e;return null===(e=oe())||void 0===e?void 0:e.config};
+ */const se=()=>re().__FIREBASE_DEFAULTS__,ae=()=>{if(typeof process>"u"||typeof process.env>"u")return;const e={}.__FIREBASE_DEFAULTS__;return e?JSON.parse(e):void 0},ie=()=>{if(typeof document>"u")return;let e;try{e=document.cookie.match(/__FIREBASE_DEFAULTS__=([^;]+)/)}catch{return}const t=e&&ee(e[1]);return t&&JSON.parse(t)},oe=()=>{try{return re().__FIREBASE_DEFAULTS__||ae()||ie()}catch(e){return void console.info(`Unable to get __FIREBASE_DEFAULTS__ due to: ${e}`)}},ce=()=>{var e;return null===(e=oe())||void 0===e?void 0:e.config};
 /**
  * @license
  * Copyright 2017 Google LLC
