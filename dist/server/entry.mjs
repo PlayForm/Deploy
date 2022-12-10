@@ -546,7 +546,25 @@ function* getSetCookiesFromResponse(response) {
   }
 }
 
-const ASTRO_VERSION = "1.6.13";
+function baseCreateComponent(cb, moduleId) {
+  cb.isAstroComponentFactory = true;
+  cb.moduleId = moduleId;
+  return cb;
+}
+function createComponentWithOptions(opts) {
+  const cb = baseCreateComponent(opts.factory, opts.moduleId);
+  cb.propagation = opts.propagation;
+  return cb;
+}
+function createComponent(arg1, moduleId) {
+  if (typeof arg1 === "function") {
+    return baseCreateComponent(arg1, moduleId);
+  } else {
+    return createComponentWithOptions(arg1);
+  }
+}
+
+const ASTRO_VERSION = "1.6.14";
 
 function createDeprecatedFetchContentFn() {
   return () => {
@@ -829,6 +847,118 @@ function getPrescripts(type, directive) {
       return `<script>${getDirectiveScriptText(directive)}<\/script>`;
   }
   return "";
+}
+
+const headAndContentSym = Symbol.for("astro.headAndContent");
+function isHeadAndContent(obj) {
+  return typeof obj === "object" && !!obj[headAndContentSym];
+}
+
+function serializeListValue(value) {
+  const hash = {};
+  push(value);
+  return Object.keys(hash).join(" ");
+  function push(item) {
+    if (item && typeof item.forEach === "function")
+      item.forEach(push);
+    else if (item === Object(item))
+      Object.keys(item).forEach((name) => {
+        if (item[name])
+          push(name);
+      });
+    else {
+      item = item === false || item == null ? "" : String(item).trim();
+      if (item) {
+        item.split(/\s+/).forEach((name) => {
+          hash[name] = true;
+        });
+      }
+    }
+  }
+}
+function isPromise(value) {
+  return !!value && typeof value === "object" && typeof value.then === "function";
+}
+
+var _a$1;
+const renderTemplateResultSym = Symbol.for("astro.renderTemplateResult");
+class RenderTemplateResult {
+  constructor(htmlParts, expressions) {
+    this[_a$1] = true;
+    this.htmlParts = htmlParts;
+    this.error = void 0;
+    this.expressions = expressions.map((expression) => {
+      if (isPromise(expression)) {
+        return Promise.resolve(expression).catch((err) => {
+          if (!this.error) {
+            this.error = err;
+            throw err;
+          }
+        });
+      }
+      return expression;
+    });
+  }
+  get [(_a$1 = renderTemplateResultSym, Symbol.toStringTag)]() {
+    return "AstroComponent";
+  }
+  async *[Symbol.asyncIterator]() {
+    const { htmlParts, expressions } = this;
+    for (let i = 0; i < htmlParts.length; i++) {
+      const html = htmlParts[i];
+      const expression = expressions[i];
+      yield markHTMLString(html);
+      yield* renderChild(expression);
+    }
+  }
+}
+function isRenderTemplateResult(obj) {
+  return typeof obj === "object" && !!obj[renderTemplateResultSym];
+}
+async function* renderAstroTemplateResult(component) {
+  for await (const value of component) {
+    if (value || value === 0) {
+      for await (const chunk of renderChild(value)) {
+        switch (chunk.type) {
+          case "directive": {
+            yield chunk;
+            break;
+          }
+          default: {
+            yield markHTMLString(chunk);
+            break;
+          }
+        }
+      }
+    }
+  }
+}
+function renderTemplate(htmlParts, ...expressions) {
+  return new RenderTemplateResult(htmlParts, expressions);
+}
+
+function isAstroComponentFactory(obj) {
+  return obj == null ? false : obj.isAstroComponentFactory === true;
+}
+async function renderToString(result, componentFactory, props, children) {
+  const factoryResult = await componentFactory(result, props, children);
+  if (factoryResult instanceof Response) {
+    const response = factoryResult;
+    throw response;
+  }
+  let parts = new HTMLParts();
+  const templateResult = isHeadAndContent(factoryResult) ? factoryResult.content : factoryResult;
+  for await (const chunk of renderAstroTemplateResult(templateResult)) {
+    parts.append(chunk, result);
+  }
+  return parts.toString();
+}
+function isAPropagatingComponent(result, factory) {
+  let hint = factory.propagation || "none";
+  if (factory.moduleId && result.propagation.has(factory.moduleId) && hint === "none") {
+    hint = result.propagation.get(factory.moduleId);
+  }
+  return hint === "in-tree" || hint === "self";
 }
 
 const defineErrors = (errs) => errs;
@@ -1186,32 +1316,6 @@ function serializeProps(props, metadata) {
   return serialized;
 }
 
-function serializeListValue(value) {
-  const hash = {};
-  push(value);
-  return Object.keys(hash).join(" ");
-  function push(item) {
-    if (item && typeof item.forEach === "function")
-      item.forEach(push);
-    else if (item === Object(item))
-      Object.keys(item).forEach((name) => {
-        if (item[name])
-          push(name);
-      });
-    else {
-      item = item === false || item == null ? "" : String(item).trim();
-      if (item) {
-        item.split(/\s+/).forEach((name) => {
-          hash[name] = true;
-        });
-      }
-    }
-  }
-}
-function isPromise(value) {
-  return !!value && typeof value === "object" && typeof value.then === "function";
-}
-
 const HydrationDirectivesRaw = ["load", "idle", "media", "visible", "only"];
 const HydrationDirectives = new Set(HydrationDirectivesRaw);
 const HydrationDirectiveProps = new Set(HydrationDirectivesRaw.map((n) => `client:${n}`));
@@ -1320,6 +1424,36 @@ async function generateHydrateScript(scriptOptions, metadata) {
   return island;
 }
 
+var _a;
+const astroComponentInstanceSym = Symbol.for("astro.componentInstance");
+class AstroComponentInstance {
+  constructor(result, props, slots, factory) {
+    this[_a] = true;
+    this.result = result;
+    this.props = props;
+    this.slots = slots;
+    this.factory = factory;
+  }
+  async init() {
+    this.returnValue = this.factory(this.result, this.props, this.slots);
+    return this.returnValue;
+  }
+  async *render() {
+    if (this.returnValue === void 0) {
+      await this.init();
+    }
+    let value = this.returnValue;
+    if (isPromise(value)) {
+      value = await value;
+    }
+    if (isHeadAndContent(value)) {
+      yield* value.content;
+    } else {
+      yield* renderChild(value);
+    }
+  }
+}
+_a = astroComponentInstanceSym;
 function validateComponentProps(props, displayName) {
   if (props != null) {
     for (const prop of Object.keys(props)) {
@@ -1331,85 +1465,16 @@ function validateComponentProps(props, displayName) {
     }
   }
 }
-class AstroComponent {
-  constructor(htmlParts, expressions) {
-    this.htmlParts = htmlParts;
-    this.error = void 0;
-    this.expressions = expressions.map((expression) => {
-      if (isPromise(expression)) {
-        return Promise.resolve(expression).catch((err) => {
-          if (!this.error) {
-            this.error = err;
-            throw err;
-          }
-        });
-      }
-      return expression;
-    });
-  }
-  get [Symbol.toStringTag]() {
-    return "AstroComponent";
-  }
-  async *[Symbol.asyncIterator]() {
-    const { htmlParts, expressions } = this;
-    for (let i = 0; i < htmlParts.length; i++) {
-      const html = htmlParts[i];
-      const expression = expressions[i];
-      yield markHTMLString(html);
-      yield* renderChild(expression);
-    }
-  }
-}
-function isAstroComponent(obj) {
-  return typeof obj === "object" && Object.prototype.toString.call(obj) === "[object AstroComponent]";
-}
-function isAstroComponentFactory(obj) {
-  return obj == null ? false : obj.isAstroComponentFactory === true;
-}
-async function* renderAstroComponent(component) {
-  for await (const value of component) {
-    if (value || value === 0) {
-      for await (const chunk of renderChild(value)) {
-        switch (chunk.type) {
-          case "directive": {
-            yield chunk;
-            break;
-          }
-          default: {
-            yield markHTMLString(chunk);
-            break;
-          }
-        }
-      }
-    }
-  }
-}
-async function renderToString(result, componentFactory, props, children) {
-  const Component = await componentFactory(result, props, children);
-  if (!isAstroComponent(Component)) {
-    const response = Component;
-    throw response;
-  }
-  let parts = new HTMLParts();
-  for await (const chunk of renderAstroComponent(Component)) {
-    parts.append(chunk, result);
-  }
-  return parts.toString();
-}
-async function renderToIterable(result, componentFactory, displayName, props, children) {
+function createAstroComponentInstance(result, displayName, factory, props, slots = {}) {
   validateComponentProps(props, displayName);
-  const Component = await componentFactory(result, props, children);
-  if (!isAstroComponent(Component)) {
-    console.warn(
-      `Returning a Response is only supported inside of page components. Consider refactoring this logic into something like a function that can be used in the page.`
-    );
-    const response = Component;
-    throw response;
+  const instance = new AstroComponentInstance(result, props, slots, factory);
+  if (isAPropagatingComponent(result, factory) && !result.propagators.has(factory)) {
+    result.propagators.set(factory, instance);
   }
-  return renderAstroComponent(Component);
+  return instance;
 }
-async function renderTemplate(htmlParts, ...expressions) {
-  return new AstroComponent(htmlParts, expressions);
+function isAstroComponentInstance(obj) {
+  return typeof obj === "object" && !!obj[astroComponentInstanceSym];
 }
 
 async function* renderChild(child) {
@@ -1429,8 +1494,10 @@ async function* renderChild(child) {
     yield* renderChild(child());
   } else if (typeof child === "string") {
     yield markHTMLString(escapeHTML(child));
-  } else if (!child && child !== 0) ; else if (child instanceof AstroComponent || Object.prototype.toString.call(child) === "[object AstroComponent]") {
-    yield* renderAstroComponent(child);
+  } else if (!child && child !== 0) ; else if (isRenderTemplateResult(child)) {
+    yield* renderAstroTemplateResult(child);
+  } else if (isAstroComponentInstance(child)) {
+    yield* child.render();
   } else if (ArrayBuffer.isView(child)) {
     yield child;
   } else if (typeof child === "object" && (Symbol.asyncIterator in child || Symbol.iterator in child)) {
@@ -1699,7 +1766,7 @@ Did you forget to import the component or is it possible there is a typo?`);
       props[Skip.symbol] = skip;
       let output;
       if (vnode.type === ClientOnlyPlaceholder && vnode.props["client:only"]) {
-        output = await renderComponent(
+        output = await renderComponentToIterable(
           result,
           vnode.props["client:display-name"] ?? "",
           null,
@@ -1707,7 +1774,7 @@ Did you forget to import the component or is it possible there is a typo?`);
           slots
         );
       } else {
-        output = await renderComponent(
+        output = await renderComponentToIterable(
           result,
           typeof vnode.type === "function" ? vnode.type.name : vnode.type,
           vnode.type,
@@ -1946,43 +2013,14 @@ function guessRenderers(componentUrl) {
       ];
   }
 }
-function getComponentType(Component) {
-  if (Component === Fragment) {
-    return "fragment";
-  }
-  if (Component && typeof Component === "object" && Component["astro:html"]) {
-    return "html";
-  }
-  if (isAstroComponentFactory(Component)) {
-    return "astro-factory";
-  }
-  return "unknown";
+function isFragmentComponent(Component) {
+  return Component === Fragment;
 }
-async function renderComponent(result, displayName, Component, _props, slots = {}, route) {
+function isHTMLComponent(Component) {
+  return Component && typeof Component === "object" && Component["astro:html"];
+}
+async function renderFrameworkComponent(result, displayName, Component, _props, slots = {}) {
   var _a, _b;
-  Component = await Component ?? Component;
-  switch (getComponentType(Component)) {
-    case "fragment": {
-      const children2 = await renderSlot(result, slots == null ? void 0 : slots.default);
-      if (children2 == null) {
-        return children2;
-      }
-      return markHTMLString(children2);
-    }
-    case "html": {
-      const { slotInstructions: slotInstructions2, children: children2 } = await renderSlots(result, slots);
-      const html2 = Component.render({ slots: children2 });
-      const hydrationHtml = slotInstructions2 ? slotInstructions2.map((instr) => stringifyChunk(result, instr)).join("") : "";
-      return markHTMLString(hydrationHtml + html2);
-    }
-    case "astro-factory": {
-      async function* renderAstroComponentInline() {
-        let iterable = await renderToIterable(result, Component, displayName, _props, slots);
-        yield* iterable;
-      }
-      return renderAstroComponentInline();
-    }
-  }
   if (!Component && !_props["client:only"]) {
     throw new Error(
       `Unable to render ${displayName} because it is ${Component}!
@@ -2127,7 +2165,7 @@ If you're still stuck, please open an issue on GitHub or join us at https://astr
   }
   if (!html && typeof Component === "string") {
     const childSlots = Object.values(children).join("");
-    const iterable = renderAstroComponent(
+    const iterable = renderAstroTemplateResult(
       await renderTemplate`<${Component}${internalSpreadAttributes(props)}${markHTMLString(
         childSlots === "" && voidElementNames.test(Component) ? `/>` : `>${childSlots}</${Component}>`
       )}`
@@ -2189,27 +2227,79 @@ ${serializeProps(
   }
   return renderAll();
 }
+async function renderFragmentComponent(result, slots = {}) {
+  const children = await renderSlot(result, slots == null ? void 0 : slots.default);
+  if (children == null) {
+    return children;
+  }
+  return markHTMLString(children);
+}
+async function renderHTMLComponent(result, Component, _props, slots = {}) {
+  const { slotInstructions, children } = await renderSlots(result, slots);
+  const html = Component.render({ slots: children });
+  const hydrationHtml = slotInstructions ? slotInstructions.map((instr) => stringifyChunk(result, instr)).join("") : "";
+  return markHTMLString(hydrationHtml + html);
+}
+function renderComponent(result, displayName, Component, props, slots = {}) {
+  if (isPromise(Component)) {
+    return Promise.resolve(Component).then((Unwrapped) => {
+      return renderComponent(result, displayName, Unwrapped, props, slots);
+    });
+  }
+  if (isFragmentComponent(Component)) {
+    return renderFragmentComponent(result, slots);
+  }
+  if (isHTMLComponent(Component)) {
+    return renderHTMLComponent(result, Component, props, slots);
+  }
+  if (isAstroComponentFactory(Component)) {
+    return createAstroComponentInstance(result, displayName, Component, props, slots);
+  }
+  return renderFrameworkComponent(result, displayName, Component, props, slots);
+}
+function renderComponentToIterable(result, displayName, Component, props, slots = {}) {
+  const renderResult = renderComponent(result, displayName, Component, props, slots);
+  if (isAstroComponentInstance(renderResult)) {
+    return renderResult.render();
+  }
+  return renderResult;
+}
 
 const uniqueElements = (item, index, all) => {
   const props = JSON.stringify(item.props);
   const children = item.children;
   return index === all.findIndex((i) => JSON.stringify(i.props) === props && i.children == children);
 };
-function renderHead(result) {
-  result._metadata.hasRenderedHead = true;
+async function* renderExtraHead(result, base) {
+  yield base;
+  for (const part of result.extraHead) {
+    yield* renderChild(part);
+  }
+}
+function renderAllHeadContent(result) {
   const styles = Array.from(result.styles).filter(uniqueElements).map((style) => renderElement("style", style));
   result.styles.clear();
   const scripts = Array.from(result.scripts).filter(uniqueElements).map((script, i) => {
     return renderElement("script", script, false);
   });
   const links = Array.from(result.links).filter(uniqueElements).map((link) => renderElement("link", link, false));
-  return markHTMLString(links.join("\n") + styles.join("\n") + scripts.join("\n"));
+  const baseHeadContent = markHTMLString(links.join("\n") + styles.join("\n") + scripts.join("\n"));
+  if (result.extraHead.length > 0) {
+    return renderExtraHead(result, baseHeadContent);
+  } else {
+    return baseHeadContent;
+  }
 }
+function createRenderHead(result) {
+  result._metadata.hasRenderedHead = true;
+  return renderAllHeadContent.bind(null, result);
+}
+const renderHead = createRenderHead;
 async function* maybeRenderHead(result) {
   if (result._metadata.hasRenderedHead) {
     return;
   }
-  yield renderHead(result);
+  yield createRenderHead(result)();
 }
 
 var __accessCheck$2 = (obj, member, msg) => {
@@ -2313,19 +2403,36 @@ async function iterableToHTMLBytes(result, iterable, onDocTypeInjection) {
   }
   return parts.toArrayBuffer();
 }
+async function bufferHeadContent(result) {
+  const iterator = result.propagators.values();
+  while (true) {
+    const { value, done } = iterator.next();
+    if (done) {
+      break;
+    }
+    const returnValue = await value.init();
+    if (isHeadAndContent(returnValue)) {
+      result.extraHead.push(returnValue.head);
+    }
+  }
+}
 async function renderPage$1(result, componentFactory, props, children, streaming, route) {
   if (!isAstroComponentFactory(componentFactory)) {
     const pageProps = { ...props ?? {}, "server:root": true };
     let output;
     try {
-      output = await renderComponent(
+      const renderResult = await renderComponent(
         result,
         componentFactory.name,
         componentFactory,
         pageProps,
-        null,
-        route
+        null
       );
+      if (isAstroComponentInstance(renderResult)) {
+        output = renderResult.render();
+      } else {
+        output = renderResult;
+      }
     } catch (e) {
       if (AstroError.is(e) && !e.loc) {
         e.setLocation({
@@ -2349,8 +2456,11 @@ async function renderPage$1(result, componentFactory, props, children, streaming
     });
   }
   const factoryReturnValue = await componentFactory(result, props, children);
-  if (isAstroComponent(factoryReturnValue)) {
-    let iterable = renderAstroComponent(factoryReturnValue);
+  const factoryIsHeadAndContent = isHeadAndContent(factoryReturnValue);
+  if (isRenderTemplateResult(factoryReturnValue) || factoryIsHeadAndContent) {
+    await bufferHeadContent(result);
+    const templateResult = factoryIsHeadAndContent ? factoryReturnValue.content : factoryReturnValue;
+    let iterable = renderAstroTemplateResult(templateResult);
     let init = result.response;
     let headers = new Headers(init.headers);
     let body;
@@ -2407,10 +2517,6 @@ async function renderPage$1(result, componentFactory, props, children, streaming
   return factoryReturnValue;
 }
 
-function createComponent(cb) {
-  cb.isAstroComponentFactory = true;
-  return cb;
-}
 function spreadAttributes(values, _name, { class: scopedClassName } = {}) {
   let output = "";
   if (scopedClassName) {
@@ -2951,7 +3057,7 @@ var __privateSet$1 = (obj, member, value, setter) => {
   setter ? setter.call(obj, value) : member.set(obj, value);
   return value;
 };
-var _cache, _result, _slots, _loggingOpts;
+var _result, _slots, _loggingOpts;
 const clientAddressSymbol$1 = Symbol.for("astro.clientAddress");
 function onlyAvailableInSSR(name) {
   return function _onlyAvailableInSSR() {
@@ -2971,7 +3077,6 @@ function getFunctionExpression(slot) {
 }
 class Slots {
   constructor(result, slots, logging) {
-    __privateAdd$1(this, _cache, /* @__PURE__ */ new Map());
     __privateAdd$1(this, _result, void 0);
     __privateAdd$1(this, _slots, void 0);
     __privateAdd$1(this, _loggingOpts, void 0);
@@ -3001,46 +3106,34 @@ class Slots {
     return Boolean(__privateGet$1(this, _slots)[name]);
   }
   async render(name, args = []) {
-    const cacheable = args.length === 0;
-    if (!__privateGet$1(this, _slots))
-      return void 0;
-    if (cacheable && __privateGet$1(this, _cache).has(name)) {
-      const result = __privateGet$1(this, _cache).get(name);
-      return result;
-    }
-    if (!this.has(name))
-      return void 0;
-    if (!cacheable) {
+    if (!__privateGet$1(this, _slots) || !this.has(name))
+      return;
+    if (!Array.isArray(args)) {
+      warn(
+        __privateGet$1(this, _loggingOpts),
+        "Astro.slots.render",
+        `Expected second parameter to be an array, received a ${typeof args}. If you're trying to pass an array as a single argument and getting unexpected results, make sure you're passing your array as a item of an array. Ex: Astro.slots.render('default', [["Hello", "World"]])`
+      );
+    } else if (args.length > 0) {
       const component = await __privateGet$1(this, _slots)[name]();
-      if (!Array.isArray(args)) {
-        warn(
-          __privateGet$1(this, _loggingOpts),
-          "Astro.slots.render",
-          `Expected second parameter to be an array, received a ${typeof args}. If you're trying to pass an array as a single argument and getting unexpected results, make sure you're passing your array as a item of an array. Ex: Astro.slots.render('default', [["Hello", "World"]])`
+      const expression = getFunctionExpression(component);
+      if (expression) {
+        const slot = expression(...args);
+        return await renderSlot(__privateGet$1(this, _result), slot).then(
+          (res) => res != null ? String(res) : res
         );
-      } else {
-        const expression = getFunctionExpression(component);
-        if (expression) {
-          const slot = expression(...args);
-          return await renderSlot(__privateGet$1(this, _result), slot).then(
-            (res) => res != null ? String(res) : res
-          );
-        }
-        if (typeof component === "function") {
-          return await renderJSX(__privateGet$1(this, _result), component(...args)).then(
-            (res) => res != null ? String(res) : res
-          );
-        }
+      }
+      if (typeof component === "function") {
+        return await renderJSX(__privateGet$1(this, _result), component(...args)).then(
+          (res) => res != null ? String(res) : res
+        );
       }
     }
     const content = await renderSlot(__privateGet$1(this, _result), __privateGet$1(this, _slots)[name]);
     const outHTML = stringifyChunk(__privateGet$1(this, _result), content);
-    if (cacheable)
-      __privateGet$1(this, _cache).set(name, outHTML);
     return outHTML;
   }
 }
-_cache = new WeakMap();
 _result = new WeakMap();
 _slots = new WeakMap();
 _loggingOpts = new WeakMap();
@@ -3065,6 +3158,9 @@ function createResult(args) {
     styles: args.styles ?? /* @__PURE__ */ new Set(),
     scripts: args.scripts ?? /* @__PURE__ */ new Set(),
     links: args.links ?? /* @__PURE__ */ new Set(),
+    propagation: args.propagation ?? /* @__PURE__ */ new Map(),
+    propagators: /* @__PURE__ */ new Map(),
+    extraHead: [],
     cookies,
     createAstro(astroGlobal, props, slots) {
       const astroSlots = new Slots(result, slots, args.logging);
@@ -3369,6 +3465,7 @@ async function renderPage(mod, ctx, env) {
     params,
     props: pageProps,
     pathname: ctx.pathname,
+    propagation: ctx.propagation,
     resolve: env.resolve,
     renderers: env.renderers,
     request: ctx.request,
@@ -4546,7 +4643,7 @@ _baseWithoutTrailingSlash = new WeakMap();
 _renderPage = new WeakSet();
 renderPage_fn = async function(request, routeData, mod, status = 200) {
   const url = new URL(request.url);
-  __privateGet(this, _manifest$1);
+  const pathname = "/" + this.removeBase(url.pathname);
   const info = __privateGet(this, _routeDataToRouteInfo).get(routeData);
   const links = createLinkStylesheetElementSet(info.links);
   let scripts = /* @__PURE__ */ new Set();
@@ -4566,7 +4663,7 @@ renderPage_fn = async function(request, routeData, mod, status = 200) {
     const ctx = createRenderContext({
       request,
       origin: url.origin,
-      pathname: url.pathname,
+      pathname,
       scripts,
       links,
       route: routeData,
@@ -4585,11 +4682,12 @@ renderPage_fn = async function(request, routeData, mod, status = 200) {
 _callEndpoint = new WeakSet();
 callEndpoint_fn = async function(request, routeData, mod, status = 200) {
   const url = new URL(request.url);
+  const pathname = "/" + this.removeBase(url.pathname);
   const handler = mod;
   const ctx = createRenderContext({
     request,
     origin: url.origin,
-    pathname: url.pathname,
+    pathname,
     route: routeData,
     status
   });
@@ -4762,14 +4860,14 @@ const $$Base = createComponent(async ($$result, $$props, $$slots) => {
 			</div>
 		</div>
 	</body></html>`;
-});
+}, "D:/Developer/app/lightrix/astro-deno-deploy/src/layouts/Base.astro");
 
 const $$Astro = createAstro("D:/Developer/app/lightrix/astro-deno-deploy/src/pages/index.astro", "https://astro-deno-deploy.deno.dev/", "file:///D:/Developer/app/lightrix/astro-deno-deploy/");
 const $$Index = createComponent(async ($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
   Astro2.self = $$Index;
   return renderTemplate`${renderComponent($$result, "Base", $$Base, {}, {})}`;
-});
+}, "D:/Developer/app/lightrix/astro-deno-deploy/src/pages/index.astro");
 
 const $$file = "D:/Developer/app/lightrix/astro-deno-deploy/src/pages/index.astro";
 const $$url = "";
@@ -4784,7 +4882,7 @@ const _page0 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
 const pageMap = new Map([['src/pages/index.astro', _page0],]);
 const renderers = [Object.assign({"name":"astro:jsx","serverEntrypoint":"astro/jsx/server.js","jsxImportSource":"astro"}, { ssr: server_default }),];
 
-const _manifest = Object.assign(deserializeManifest({"adapterName":"@astrojs/deno","routes":[{"file":"","links":["assets/index.c57ad5eb.css"],"scripts":[{"type":"external","value":"hoisted.0b9eb5d0.js"},{"type":"external","value":"page.5a6f3db5.js"}],"routeData":{"route":"/","type":"page","pattern":"^\\/$","segments":[],"params":[],"component":"src/pages/index.astro","pathname":"/","_meta":{"trailingSlash":"ignore"}}}],"site":"https://astro-deno-deploy.deno.dev/","base":"/","markdown":{"drafts":false,"syntaxHighlight":"shiki","shikiConfig":{"langs":[],"theme":"github-dark","wrap":false},"remarkPlugins":[],"rehypePlugins":[],"remarkRehype":{},"extendDefaultPlugins":false,"isAstroFlavoredMd":false},"pageMap":null,"renderers":[],"entryModules":{"\u0000@astrojs-ssr-virtual-entry":"entry.mjs","/astro/hoisted.js?q=0":"hoisted.0b9eb5d0.js","astro:scripts/page.js":"page.5a6f3db5.js","astro:scripts/before-hydration.js":""},"assets":["/assets/index.c57ad5eb.css","/hoisted.0b9eb5d0.js","/page.5a6f3db5.js","/robots.txt","/site.webmanifest","/page.5a6f3db5.js"]}), {
+const _manifest = Object.assign(deserializeManifest({"adapterName":"@astrojs/deno","routes":[{"file":"","links":["assets/index.c57ad5eb.css"],"scripts":[{"type":"external","value":"hoisted.66498f27.js"},{"type":"external","value":"page.5a6f3db5.js"}],"routeData":{"route":"/","type":"page","pattern":"^\\/$","segments":[],"params":[],"component":"src/pages/index.astro","pathname":"/","_meta":{"trailingSlash":"ignore"}}}],"site":"https://astro-deno-deploy.deno.dev/","base":"/","markdown":{"drafts":false,"syntaxHighlight":"shiki","shikiConfig":{"langs":[],"theme":"github-dark","wrap":false},"remarkPlugins":[],"rehypePlugins":[],"remarkRehype":{},"extendDefaultPlugins":false,"isAstroFlavoredMd":false},"pageMap":null,"renderers":[],"entryModules":{"\u0000@astrojs-ssr-virtual-entry":"entry.mjs","/astro/hoisted.js?q=0":"hoisted.66498f27.js","astro:scripts/page.js":"page.5a6f3db5.js","astro:scripts/before-hydration.js":""},"assets":["/assets/index.c57ad5eb.css","/hoisted.66498f27.js","/page.5a6f3db5.js","/robots.txt","/site.webmanifest","/page.5a6f3db5.js"]}), {
 	pageMap: pageMap,
 	renderers: renderers
 });
