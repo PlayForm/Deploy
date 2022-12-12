@@ -275,7 +275,7 @@ function createAstroGlobFn() {
 }
 function createAstro(e, t, a) {
   const n = t ? new URL(t) : void 0, i = new URL(e, "http://localhost"), r = new URL(a);
-  return { site: n, generator: "Astro v1.6.14", fetchContent: createDeprecatedFetchContentFn(), glob: createAstroGlobFn(), resolve(...e2) {
+  return { site: n, generator: "Astro v1.6.15", fetchContent: createDeprecatedFetchContentFn(), glob: createAstroGlobFn(), resolve(...e2) {
     let t2 = e2.reduce((e3, t3) => new URL(t3, e3), i).pathname;
     return t2.startsWith(r.pathname) && (t2 = "/" + t2.slice(r.pathname.length)), t2;
   } };
@@ -1491,7 +1491,7 @@ async function renderPage(e, t, a) {
 }
 var clientAddressSymbol = Symbol.for("astro.clientAddress");
 function createAPIContext({ request: e, params: t, site: a, props: n, adapterName: i }) {
-  return { cookies: new AstroCookies(e), request: e, params: t, site: a ? new URL(a) : void 0, generator: "Astro v1.6.14", props: n, redirect: (e2, t2) => new Response(null, { status: t2 || 302, headers: { Location: e2 } }), url: new URL(e.url), get clientAddress() {
+  return { cookies: new AstroCookies(e), request: e, params: t, site: a ? new URL(a) : void 0, generator: "Astro v1.6.15", props: n, redirect: (e2, t2) => new Response(null, { status: t2 || 302, headers: { Location: e2 } }), url: new URL(e.url), get clientAddress() {
     if (!(clientAddressSymbol in e))
       throw new AstroError(i ? { ...AstroErrorData.ClientAddressNotAvailable, message: AstroErrorData.ClientAddressNotAvailable.message(i) } : AstroErrorData.StaticClientAddressNotAvailable);
     return Reflect.get(e, clientAddressSymbol);
