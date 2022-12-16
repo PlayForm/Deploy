@@ -22,11 +22,9 @@
 		"preview": "deno run --allow-net --allow-read --allow-env ./dist/server/entry.mjs",
 		"start": "astro dev"
 	},
-	"dependencies": {
-		"@astrojs/deno": "2.0.1",
-		"@astrojs/prefetch": "0.1.1"
-	},
 	"devDependencies": {
+		"@astrojs/deno": "2.0.1",
+		"@astrojs/prefetch": "0.1.1",
 		"@astrojs/sitemap": "1.0.0",
 		"@lightrix/config": "0.0.6",
 		"@tailwindcss/aspect-ratio": "0.4.2",
