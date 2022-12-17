@@ -4,7 +4,7 @@ globalThis.process = {
 };
 
 // dist/server/entry.mjs
-import { Server } from "https://deno.land/std@0.132.0/http/server.ts";
+import { Server } from "https://deno.land/std@0.167.0/http/server.ts";
 import { fetch } from "https://deno.land/x/file_fetch/mod.ts";
 function Mime$1() {
   this._types = /* @__PURE__ */ Object.create(null), this._extensions = /* @__PURE__ */ Object.create(null);
@@ -194,7 +194,7 @@ var AstroCookies = class {
   }
   delete(e, t) {
     const a = { expires: DELETED_EXPIRATION };
-    (null == t ? void 0 : t.path) && (a.path = t.path), __privateMethod$1(this, _ensureOutgoingMap, ensureOutgoingMap_fn).call(this).set(e, ["deleted", serialize_1(e, "deleted", a), false]);
+    (null == t ? void 0 : t.domain) && (a.domain = t.domain), (null == t ? void 0 : t.path) && (a.path = t.path), __privateMethod$1(this, _ensureOutgoingMap, ensureOutgoingMap_fn).call(this).set(e, ["deleted", serialize_1(e, "deleted", a), false]);
   }
   get(e) {
     if (null !== __privateGet$3(this, _outgoing) && __privateGet$3(this, _outgoing).has(e)) {
@@ -275,7 +275,7 @@ function createAstroGlobFn() {
 }
 function createAstro(e, t, a) {
   const n = t ? new URL(t) : void 0, i = new URL(e, "http://localhost"), r = new URL(a);
-  return { site: n, generator: "Astro v1.6.15", fetchContent: createDeprecatedFetchContentFn(), glob: createAstroGlobFn(), resolve(...e2) {
+  return { site: n, generator: "Astro v1.7.1", fetchContent: createDeprecatedFetchContentFn(), glob: createAstroGlobFn(), resolve(...e2) {
     let t2 = e2.reduce((e3, t3) => new URL(t3, e3), i).pathname;
     return t2.startsWith(r.pathname) && (t2 = "/" + t2.slice(r.pathname.length)), t2;
   } };
@@ -452,12 +452,17 @@ function isAPropagatingComponent(e, t) {
   let a = t.propagation || "none";
   return t.moduleId && e.propagation.has(t.moduleId) && "none" === a && (a = e.propagation.get(t.moduleId)), "in-tree" === a || "self" === a;
 }
-var AstroErrorData = { UnknownCompilerError: { title: "Unknown compiler error.", code: 1e3 }, StaticRedirectNotAvailable: { title: "`Astro.redirect` is not available in static mode.", code: 3001, message: "Redirects are only available when using `output: 'server'`. Update your Astro config if you need SSR features.", hint: "See https://docs.astro.build/en/guides/server-side-rendering/#enabling-ssr-in-your-project for more information on how to enable SSR." }, ClientAddressNotAvailable: { title: "`Astro.clientAddress` is not available in current adapter.", code: 3002, message: (e) => `\`Astro.clientAddress\` is not available in the \`${e}\` adapter. File an issue with the adapter to add support.` }, StaticClientAddressNotAvailable: { title: "`Astro.clientAddress` is not available in static mode.", code: 3003, message: "`Astro.clientAddress` is only available when using `output: 'server'`. Update your Astro config if you need SSR features.", hint: "See https://docs.astro.build/en/guides/server-side-rendering/#enabling-ssr-in-your-project for more information on how to enable SSR." }, NoMatchingStaticPathFound: { title: "No static path found for requested path.", code: 3004, message: (e) => `A \`getStaticPaths()\` route pattern was matched, but no matching static path was found for requested path \`${e}\`.`, hint: (e) => `Possible dynamic routes being matched: ${e.join(", ")}.` }, OnlyResponseCanBeReturned: { title: "Invalid type returned by Astro page.", code: 3005, message: (e, t) => `Route ${e || ""} returned a \`${t}\`. Only a Response can be returned from Astro files.`, hint: "See https://docs.astro.build/en/guides/server-side-rendering/#response for more information." }, MissingMediaQueryDirective: { title: "Missing value for `client:media` directive.", code: 3006, message: 'Media query not provided for `client:media` directive. A media query similar to `client:media="(max-width: 600px)"` must be provided' }, NoMatchingRenderer: { title: "No matching renderer found.", code: 3007, message: (e, t, a, n) => `Unable to render \`${e}\`.
+var AstroErrorData = { UnknownCompilerError: { title: "Unknown compiler error.", code: 1e3 }, StaticRedirectNotAvailable: { title: "`Astro.redirect` is not available in static mode.", code: 3001, message: "Redirects are only available when using `output: 'server'`. Update your Astro config if you need SSR features.", hint: "See https://docs.astro.build/en/guides/server-side-rendering/#enabling-ssr-in-your-project for more information on how to enable SSR." }, ClientAddressNotAvailable: { title: "`Astro.clientAddress` is not available in current adapter.", code: 3002, message: (e) => `\`Astro.clientAddress\` is not available in the \`${e}\` adapter. File an issue with the adapter to add support.` }, StaticClientAddressNotAvailable: { title: "`Astro.clientAddress` is not available in static mode.", code: 3003, message: "`Astro.clientAddress` is only available when using `output: 'server'`. Update your Astro config if you need SSR features.", hint: "See https://docs.astro.build/en/guides/server-side-rendering/#enabling-ssr-in-your-project for more information on how to enable SSR." }, NoMatchingStaticPathFound: { title: "No static path found for requested path.", code: 3004, message: (e) => `A \`getStaticPaths()\` route pattern was matched, but no matching static path was found for requested path \`${e}\`.`, hint: (e) => `Possible dynamic routes being matched: ${e.join(", ")}.` }, OnlyResponseCanBeReturned: { title: "Invalid type returned by Astro page.", code: 3005, message: (e, t) => `Route \`${e || ""}\` returned a \`${t}\`. Only a [Response](https://developer.mozilla.org/en-US/docs/Web/API/Response) can be returned from Astro files.`, hint: "See https://docs.astro.build/en/guides/server-side-rendering/#response for more information." }, MissingMediaQueryDirective: { title: "Missing value for `client:media` directive.", code: 3006, message: 'Media query not provided for `client:media` directive. A media query similar to `client:media="(max-width: 600px)"` must be provided' }, NoMatchingRenderer: { title: "No matching renderer found.", code: 3007, message: (e, t, a, n) => `Unable to render \`${e}\`.
 
 ${n > 0 ? `There ${a ? "are." : "is."} ${n} renderer${a ? "s." : ""} configured in your \`astro.config.mjs\` file,
 but ${a ? "none were." : "it was not."} able to server-side render \`${e}\`.` : "No valid renderer was found " + (t ? `for the \`.${t}\` file extension.` : "for this file extension.")}`, hint: (e) => `Did you mean to enable the ${e} integration?
 
-See https://docs.astro.build/en/core-concepts/framework-components/ for more information on how to install and configure integrations.` }, NoClientEntrypoint: { title: "No client entrypoint specified in renderer.", code: 3008, message: (e, t, a) => `\`${e}\` component has a \`client:${t}\` directive, but no client entrypoint was provided by \`${a}\`.`, hint: "See https://docs.astro.build/en/reference/integrations-reference/#addrenderer-option for more information on how to configure your renderer." }, NoClientOnlyHint: { title: "Missing hint on client:only directive.", code: 3009, message: (e) => `Unable to render \`${e}\`. When using the \`client:only\` hydration strategy, Astro needs a hint to use the correct renderer.`, hint: (e) => `Did you mean to pass \`client:only="${e}"\`? See https://docs.astro.build/en/reference/directives-reference/#clientonly for more information on client:only` }, InvalidGetStaticPathParam: { title: "Invalid value returned by a `getStaticPaths` path.", code: 3010, message: (e) => `Invalid params given to \`getStaticPaths\` path. Expected an \`object\`, got \`${e}\``, hint: "See https://docs.astro.build/en/reference/api-reference/#getstaticpaths for more information on getStaticPaths." }, InvalidGetStaticPathsReturn: { title: "Invalid value returned by getStaticPaths.", code: 3011, message: (e) => `Invalid type returned by \`getStaticPaths\`. Expected an \`array\`, got \`${e}\``, hint: "See https://docs.astro.build/en/reference/api-reference/#getstaticpaths for more information on getStaticPaths." }, GetStaticPathsRemovedRSSHelper: { title: "getStaticPaths RSS helper is not available anymore.", code: 3012, message: "The RSS helper has been removed from `getStaticPaths`. Try the new @astrojs/rss package instead.", hint: "See https://docs.astro.build/en/guides/rss/ for more information." }, GetStaticPathsExpectedParams: { title: "Missing params property on `getStaticPaths` route.", code: 3013, message: "Missing or empty required `params` property on `getStaticPaths` route.", hint: "See https://docs.astro.build/en/reference/api-reference/#getstaticpaths for more information on getStaticPaths." }, GetStaticPathsInvalidRouteParam: { title: "Invalid value for `getStaticPaths` route parameter.", code: 3014, message: (e, t, a) => `Invalid getStaticPaths route parameter for \`${e}\`. Expected undefined, a string or a number, received \`${a}\` (\`${t}\`)`, hint: "See https://docs.astro.build/en/reference/api-reference/#getstaticpaths for more information on getStaticPaths." }, GetStaticPathsRequired: { title: "`getStaticPaths()` function required for dynamic routes.", code: 3015, message: "`getStaticPaths()` function is required for dynamic routes. Make sure that you `export` a `getStaticPaths` function from your dynamic route.", hint: 'See https://docs.astro.build/en/core-concepts/routing/#dynamic-routes for more information on dynamic routes.\n\nAlternatively, set `output: "server"` in your Astro config file to switch to a non-static server build.\nSee https://docs.astro.build/en/guides/server-side-rendering/ for more information on non-static rendering.' }, ReservedSlotName: { title: "Invalid slot name.", code: 3016, message: (e) => `Unable to create a slot named \`${e}\`. \`${e}\` is a reserved slot name. Please update the name of this slot.` }, NoAdapterInstalled: { title: "Cannot use Server-side Rendering without an adapter.", code: 3017, message: "Cannot use `output: 'server'` without an adapter. Please install and configure the appropriate server adapter for your final deployment.", hint: "See https://docs.astro.build/en/guides/server-side-rendering/ for more information." }, NoMatchingImport: { title: "No import found for component.", code: 3018, message: (e) => `Could not render \`${e}\`. No matching import has been found for \`${e}\`.`, hint: "Please make sure the component is properly imported." }, UnknownViteError: { title: "Unknown Vite Error.", code: 4e3 }, FailedToLoadModuleSSR: { title: "Could not import file.", code: 4001, message: (e) => `Could not import \`${e}\`.`, hint: "This is often caused by a typo in the import path. Please make sure the file exists." }, InvalidGlob: { title: "Invalid glob pattern.", code: 4002, message: (e) => `Invalid glob pattern: \`${e}\`. Glob patterns must start with './', '../' or '/'.`, hint: "See https://docs.astro.build/en/guides/imports/#glob-patterns for more information on supported glob patterns." }, UnknownCSSError: { title: "Unknown CSS Error.", code: 5e3 }, CSSSyntaxError: { title: "CSS Syntax Error.", code: 5001 }, UnknownMarkdownError: { title: "Unknown Markdown Error.", code: 6e3 }, MarkdownFrontmatterParseError: { title: "Failed to parse Markdown frontmatter.", code: 6001 }, UnknownConfigError: { title: "Unknown configuration error.", code: 7e3 }, ConfigNotFound: { title: "Specified configuration file not found.", code: 7001, message: (e) => `Unable to resolve \`--config "${e}"\`. Does the file exist?` }, ConfigLegacyKey: { title: "Legacy configuration detected.", code: 7002, message: (e) => `Legacy configuration detected: \`${e}\`.`, hint: "Please update your configuration to the new format.\nSee https://astro.build/config for more information." }, UnknownError: { title: "Unknown Error.", code: 99999 } };
+See https://docs.astro.build/en/core-concepts/framework-components/ for more information on how to install and configure integrations.` }, NoClientEntrypoint: { title: "No client entrypoint specified in renderer.", code: 3008, message: (e, t, a) => `\`${e}\` component has a \`client:${t}\` directive, but no client entrypoint was provided by \`${a}\`.`, hint: "See https://docs.astro.build/en/reference/integrations-reference/#addrenderer-option for more information on how to configure your renderer." }, NoClientOnlyHint: { title: "Missing hint on client:only directive.", code: 3009, message: (e) => `Unable to render \`${e}\`. When using the \`client:only\` hydration strategy, Astro needs a hint to use the correct renderer.`, hint: (e) => `Did you mean to pass \`client:only="${e}"\`? See https://docs.astro.build/en/reference/directives-reference/#clientonly for more information on client:only` }, InvalidGetStaticPathParam: { title: "Invalid value returned by a `getStaticPaths` path.", code: 3010, message: (e) => `Invalid params given to \`getStaticPaths\` path. Expected an \`object\`, got \`${e}\``, hint: "See https://docs.astro.build/en/reference/api-reference/#getstaticpaths for more information on getStaticPaths." }, InvalidGetStaticPathsReturn: { title: "Invalid value returned by getStaticPaths.", code: 3011, message: (e) => `Invalid type returned by \`getStaticPaths\`. Expected an \`array\`, got \`${e}\``, hint: "See https://docs.astro.build/en/reference/api-reference/#getstaticpaths for more information on getStaticPaths." }, GetStaticPathsRemovedRSSHelper: { title: "getStaticPaths RSS helper is not available anymore.", code: 3012, message: "The RSS helper has been removed from `getStaticPaths`. Try the new @astrojs/rss package instead.", hint: "See https://docs.astro.build/en/guides/rss/ for more information." }, GetStaticPathsExpectedParams: { title: "Missing params property on `getStaticPaths` route.", code: 3013, message: "Missing or empty required `params` property on `getStaticPaths` route.", hint: "See https://docs.astro.build/en/reference/api-reference/#getstaticpaths for more information on getStaticPaths." }, GetStaticPathsInvalidRouteParam: { title: "Invalid value for `getStaticPaths` route parameter.", code: 3014, message: (e, t, a) => `Invalid getStaticPaths route parameter for \`${e}\`. Expected undefined, a string or a number, received \`${a}\` (\`${t}\`)`, hint: "See https://docs.astro.build/en/reference/api-reference/#getstaticpaths for more information on getStaticPaths." }, GetStaticPathsRequired: { title: "`getStaticPaths()` function required for dynamic routes.", code: 3015, message: "`getStaticPaths()` function is required for dynamic routes. Make sure that you `export` a `getStaticPaths` function from your dynamic route.", hint: 'See https://docs.astro.build/en/core-concepts/routing/#dynamic-routes for more information on dynamic routes.\n\nAlternatively, set `output: "server"` in your Astro config file to switch to a non-static server build.\nSee https://docs.astro.build/en/guides/server-side-rendering/ for more information on non-static rendering.' }, ReservedSlotName: { title: "Invalid slot name.", code: 3016, message: (e) => `Unable to create a slot named \`${e}\`. \`${e}\` is a reserved slot name. Please update the name of this slot.` }, NoAdapterInstalled: { title: "Cannot use Server-side Rendering without an adapter.", code: 3017, message: "Cannot use `output: 'server'` without an adapter. Please install and configure the appropriate server adapter for your final deployment.", hint: "See https://docs.astro.build/en/guides/server-side-rendering/ for more information." }, NoMatchingImport: { title: "No import found for component.", code: 3018, message: (e) => `Could not render \`${e}\`. No matching import has been found for \`${e}\`.`, hint: "Please make sure the component is properly imported." }, InvalidPrerenderExport: { title: "Invalid prerender export.", code: 3019, message: (e, t) => {
+  let a = "A `prerender` export has been detected, but its value cannot be statically analyzed.";
+  return "const" !== e && (a += `
+Expected \`const\` declaration but got \`${e}\`.`), "true" !== t && (a += `
+Expected \`true\` value but got \`${t}\`.`), a;
+}, hint: "Mutable values declared at runtime are not supported. Please make sure to use exactly `export const prerender = true`." }, UnknownViteError: { title: "Unknown Vite Error.", code: 4e3 }, FailedToLoadModuleSSR: { title: "Could not import file.", code: 4001, message: (e) => `Could not import \`${e}\`.`, hint: "This is often caused by a typo in the import path. Please make sure the file exists." }, InvalidGlob: { title: "Invalid glob pattern.", code: 4002, message: (e) => `Invalid glob pattern: \`${e}\`. Glob patterns must start with './', '../' or '/'.`, hint: "See https://docs.astro.build/en/guides/imports/#glob-patterns for more information on supported glob patterns." }, UnknownCSSError: { title: "Unknown CSS Error.", code: 5e3 }, CSSSyntaxError: { title: "CSS Syntax Error.", code: 5001 }, UnknownMarkdownError: { title: "Unknown Markdown Error.", code: 6e3 }, MarkdownFrontmatterParseError: { title: "Failed to parse Markdown frontmatter.", code: 6001 }, MarkdownContentSchemaValidationError: { title: "Content collection frontmatter invalid.", code: 6002, message: (e, t, a) => [`${String(e)} \u2192 ${String(t)} frontmatter does not match collection schema.`, ...a.errors.map((e2) => e2.message)].join("\n"), hint: "See https://docs.astro.build/en/guides/content-collections for more information on content schemas." }, UnknownConfigError: { title: "Unknown configuration error.", code: 7e3 }, ConfigNotFound: { title: "Specified configuration file not found.", code: 7001, message: (e) => `Unable to resolve \`--config "${e}"\`. Does the file exist?` }, ConfigLegacyKey: { title: "Legacy configuration detected.", code: 7002, message: (e) => `Legacy configuration detected: \`${e}\`.`, hint: "Please update your configuration to the new format.\nSee https://astro.build/config for more information." }, UnknownError: { title: "Unknown Error.", code: 99999 } };
 function normalizeLF(e) {
   return e.replace(/\r\n|\r(?!\n)|\n/g, "\n");
 }
@@ -491,11 +496,10 @@ var AstroError = class extends Error {
     var a;
     super(...t), this.type = "AstroError";
     const { code: n, name: i, title: r, message: o, stack: s, location: p, hint: l, frame: c } = e;
-    this.errorCode = n, this.name = i || ((null == (a = getErrorDataByCode(this.errorCode)) ? void 0 : a.name) ?? "UnknownError"), this.title = r, o && (this.message = o), this.stack = s || this.stack, this.loc = p, this.hint = l, this.frame = c;
+    this.errorCode = n, this.name = i && "Error" !== i ? i : (null == (a = getErrorDataByCode(this.errorCode)) ? void 0 : a.name) ?? "UnknownError", this.title = r, o && (this.message = o), this.stack = s || this.stack, this.loc = p, this.hint = l, this.frame = c;
   }
   setErrorCode(e) {
-    var t;
-    this.errorCode = e, this.name = (null == (t = getErrorDataByCode(this.errorCode)) ? void 0 : t.name) ?? "UnknownError";
+    this.errorCode = e;
   }
   setLocation(e) {
     this.loc = e;
@@ -609,10 +613,12 @@ var _a;
 var astroComponentInstanceSym = Symbol.for("astro.componentInstance");
 var AstroComponentInstance = class {
   constructor(e, t, a, n) {
-    this[_a] = true, this.result = e, this.props = t, this.slots = a, this.factory = n;
+    this[_a] = true, this.result = e, this.props = t, this.factory = n, this.slotValues = {};
+    for (const e2 in a)
+      this.slotValues[e2] = a[e2]();
   }
   async init() {
-    return this.returnValue = this.factory(this.result, this.props, this.slots), this.returnValue;
+    return this.returnValue = this.factory(this.result, this.props, this.slotValues), this.returnValue;
   }
   async *render() {
     void 0 === this.returnValue && await this.init();
@@ -1004,9 +1010,9 @@ If you're still stuck, please open an issue on GitHub or join us at https://astr
   if (x && !x.clientEntrypoint && "@astrojs/lit" !== x.name && p.hydrate)
     throw new AstroError({ ...AstroErrorData.NoClientEntrypoint, message: AstroErrorData.NoClientEntrypoint.message(t, p.hydrate, x.name) });
   if (!u && "string" == typeof a) {
-    const e2 = Object.values(v).join(""), t2 = renderAstroTemplateResult(await renderTemplate`<${a}${internalSpreadAttributes(d)}${markHTMLString("" === e2 && voidElementNames.test(a) ? "/>" : `>${e2}</${a}>`)}`);
+    const e2 = sanitizeElementName(a), t2 = Object.values(v).join(""), n2 = renderAstroTemplateResult(await renderTemplate`<${e2}${internalSpreadAttributes(d)}${markHTMLString("" === t2 && voidElementNames.test(e2) ? "/>" : `>${t2}</${e2}>`)}`);
     u = "";
-    for await (const e3 of t2)
+    for await (const e3 of n2)
       u += e3;
   }
   if (!l)
@@ -1027,6 +1033,10 @@ ${serializeProps(d, p)}`), b = await generateHydrateScript({ renderer: x, result
   return b.children = `${u ?? ""}${_}`, b.children && (b.props["await-children"] = ""), async function* () {
     g && (yield* g), yield { type: "directive", hydration: l, result: e }, yield markHTMLString(renderElement("astro-island", b, false));
   }();
+}
+function sanitizeElementName(e) {
+  const t = /[&<>'"\s]+/g;
+  return t.test(e) ? e.trim().split(t)[0].trim() : e;
 }
 async function renderFragmentComponent(e, t = {}) {
   const a = await renderSlot(e, null == t ? void 0 : t.default);
@@ -1332,13 +1342,13 @@ var Slots = class {
       return;
     if (Array.isArray(t)) {
       if (t.length > 0) {
-        const a2 = await __privateGet$1(this, _slots)[e](), n = getFunctionExpression(a2);
-        if (n) {
-          const e2 = n(...t);
+        const a2 = __privateGet$1(this, _slots)[e], n = "function" == typeof a2 ? await a2() : await a2, i = getFunctionExpression(n);
+        if (i) {
+          const e2 = i(...t);
           return await renderSlot(__privateGet$1(this, _result), e2).then((e3) => null != e3 ? String(e3) : e3);
         }
-        if ("function" == typeof a2)
-          return await renderJSX(__privateGet$1(this, _result), a2(...t)).then((e2) => null != e2 ? String(e2) : e2);
+        if ("function" == typeof n)
+          return await renderJSX(__privateGet$1(this, _result), n(...t)).then((e2) => null != e2 ? String(e2) : e2);
       }
     } else
       warn(__privateGet$1(this, _loggingOpts), "Astro.slots.render", `Expected second parameter to be an array, received a ${typeof t}. If you're trying to pass an array as a single argument and getting unexpected results, make sure you're passing your array as a item of an array. Ex: Astro.slots.render('default', [["Hello", "World"]])`);
@@ -1491,7 +1501,7 @@ async function renderPage(e, t, a) {
 }
 var clientAddressSymbol = Symbol.for("astro.clientAddress");
 function createAPIContext({ request: e, params: t, site: a, props: n, adapterName: i }) {
-  return { cookies: new AstroCookies(e), request: e, params: t, site: a ? new URL(a) : void 0, generator: "Astro v1.6.15", props: n, redirect: (e2, t2) => new Response(null, { status: t2 || 302, headers: { Location: e2 } }), url: new URL(e.url), get clientAddress() {
+  return { cookies: new AstroCookies(e), request: e, params: t, site: a ? new URL(a) : void 0, generator: "Astro v1.7.1", props: n, redirect: (e2, t2) => new Response(null, { status: t2 || 302, headers: { Location: e2 } }), url: new URL(e.url), get clientAddress() {
     if (!(clientAddressSymbol in e))
       throw new AstroError(i ? { ...AstroErrorData.ClientAddressNotAvailable, message: AstroErrorData.ClientAddressNotAvailable.message(i) } : AstroErrorData.StaticClientAddressNotAvailable);
     return Reflect.get(e, clientAddressSymbol);
@@ -1733,6 +1743,15 @@ function createModuleScriptElementWithSrc(e, t) {
 function matchRoute(e, t) {
   return t.routes.find((t2) => t2.pattern.test(e));
 }
+function matchAssets(e, t) {
+  for (const a of t)
+    if (a.endsWith(".html")) {
+      if (e.pattern.test(a))
+        return a;
+      if (e.pattern.test(a.replace(/index\.html$/, "")))
+        return a;
+    }
+}
 function lexer(e) {
   for (var t = [], a = 0; a < e.length; ) {
     var n = e[a];
@@ -1939,7 +1958,12 @@ var App = class {
     if (__privateGet(this, _manifest$1).assets.has(a.pathname))
       return;
     let n = matchRoute("/" + this.removeBase(a.pathname), __privateGet(this, _manifestData));
-    return n || (t ? matchRoute("/404", __privateGet(this, _manifestData)) : void 0);
+    if (n) {
+      if (matchAssets(n, __privateGet(this, _manifest$1).assets))
+        return;
+      return n;
+    }
+    return t ? matchRoute("/404", __privateGet(this, _manifestData)) : void 0;
   }
   async render(e, t) {
     let a = 200;
@@ -2110,6 +2134,8 @@ var _start = "start";
 _start in adapter && adapter[_start](_manifest, _args);
 export {
   handle,
+  pageMap,
+  renderers,
   running,
   start,
   stop
