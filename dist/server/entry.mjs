@@ -3,7 +3,7 @@ globalThis.process = {
 	env: Deno.env.toObject(),
 };
 
-// dist/server/chunks/astro.c2d31e92.mjs
+// dist/server/chunks/astro.196a8c4b.mjs
 function Mime$1() {
   this._types = /* @__PURE__ */ Object.create(null), this._extensions = /* @__PURE__ */ Object.create(null);
   for (let e = 0; e < arguments.length; e++)
@@ -344,7 +344,7 @@ function createAstroGlobFn() {
   };
 }
 function createAstro(e) {
-  return { site: e ? new URL(e) : void 0, generator: "Astro v2.0.5", glob: createAstroGlobFn() };
+  return { site: e ? new URL(e) : void 0, generator: "Astro v2.0.6", glob: createAstroGlobFn() };
 }
 function getHandlerFromModule(e, t) {
   return e[t] ? e[t] : "delete" === t && e.del ? e.del : e.all ? e.all : void 0;
@@ -518,6 +518,7 @@ function renderElement$1(e, { props: t, children: a = "" }, n = true) {
   const { lang: i, "data-astro-id": o, "define:vars": r, ...s } = t;
   return r && ("style" === e && (delete s["is:global"], delete s["is:scoped"]), "script" === e && (delete s.hoist, a = defineScriptVars(r) + "\n" + a)), null != a && "" != a || !voidElementNames.test(e) ? `<${e}${internalSpreadAttributes(s, n)}>${a}</${e}>` : `<${e}${internalSpreadAttributes(s, n)} />`;
 }
+var ScopeFlags = { Astro: 1, JSX: 2, Slot: 4 };
 var uniqueElements = (e, t, a) => {
   const n = JSON.stringify(e.props), i = e.children;
   return t === a.findIndex((e2) => JSON.stringify(e2.props) === n && e2.children == i);
@@ -537,7 +538,7 @@ function* renderHead(e) {
   yield { type: "head", result: e };
 }
 function* maybeRenderHead(e) {
-  e._metadata.hasRenderedHead || (yield { type: "head", result: e });
+  e._metadata.hasRenderedHead || e.scope !== (ScopeFlags.JSX | ScopeFlags.Slot | ScopeFlags.Astro) && (yield { type: "head", result: e });
 }
 var headAndContentSym = Symbol.for("astro.headAndContent");
 function isHeadAndContent(e) {
@@ -579,6 +580,7 @@ function isAstroComponentFactory(e) {
   return null != e && true === e.isAstroComponentFactory;
 }
 async function renderToString(e, t, a, n) {
+  e.scope |= ScopeFlags.Astro;
   const i = await t(e, a, n);
   if (i instanceof Response) {
     throw i;
@@ -735,10 +737,11 @@ function isSlotString(e) {
 }
 async function renderSlot(e, t, a) {
   if (t) {
-    let e2 = renderChild(t), a2 = "", n = null;
-    for await (const t2 of e2)
-      "string" == typeof t2.type ? (null === n && (n = []), n.push(t2)) : a2 += t2;
-    return markHTMLString(new SlotString(a2, n));
+    e.scope |= ScopeFlags.Slot;
+    let a2 = renderChild(t), n = "", i = null;
+    for await (const e2 of a2)
+      "string" == typeof e2.type ? (null === i && (i = []), i.push(e2)) : n += e2;
+    return e.scope &= ~ScopeFlags.Slot, markHTMLString(new SlotString(n, i));
   }
   return a;
 }
@@ -846,7 +849,7 @@ Did you forget to import the component or is it possible there is a typo?`);
         let a2 = {}, n = {};
         for (const [i, o] of Object.entries(t.props ?? {}))
           "children" === i || o && "object" == typeof o && o.$$slot ? n["children" === i ? "default" : i] = () => renderJSX(e, o) : a2[i] = o;
-        return markHTMLString(await renderToString(e, t.type, a2, n));
+        return e.scope |= ScopeFlags.JSX, markHTMLString(await renderToString(e, t.type, a2, n));
       }
       case (!t.type && 0 !== t.type):
         return "";
@@ -1385,7 +1388,7 @@ function createResult(e) {
   const l = { status: e.status, statusText: "OK", headers: p };
   let c;
   Object.defineProperty(l, "headers", { value: l.headers, enumerable: true, writable: false });
-  const d = { styles: e.styles ?? /* @__PURE__ */ new Set(), scripts: e.scripts ?? /* @__PURE__ */ new Set(), links: e.links ?? /* @__PURE__ */ new Set(), propagation: e.propagation ?? /* @__PURE__ */ new Map(), propagators: /* @__PURE__ */ new Map(), extraHead: [], cookies: c, createAstro(n2, i2, r2) {
+  const d = { styles: e.styles ?? /* @__PURE__ */ new Set(), scripts: e.scripts ?? /* @__PURE__ */ new Set(), links: e.links ?? /* @__PURE__ */ new Set(), propagation: e.propagation ?? /* @__PURE__ */ new Map(), propagators: /* @__PURE__ */ new Map(), extraHead: [], scope: 0, cookies: c, createAstro(n2, i2, r2) {
     const p2 = new Slots(d, r2, e.logging), m = { __proto__: n2, get clientAddress() {
       if (!(clientAddressSymbol$1 in o))
         throw e.adapterName ? new AstroError({ ...AstroErrorData.ClientAddressNotAvailable, message: AstroErrorData.ClientAddressNotAvailable.message(e.adapterName) }) : new AstroError(AstroErrorData.StaticClientAddressNotAvailable);
@@ -1497,7 +1500,7 @@ async function renderPage(e, t, a) {
 }
 var clientAddressSymbol = Symbol.for("astro.clientAddress");
 function createAPIContext({ request: e, params: t, site: a, props: n, adapterName: i }) {
-  return { cookies: new AstroCookies(e), request: e, params: t, site: a ? new URL(a) : void 0, generator: "Astro v2.0.5", props: n, redirect: (e2, t2) => new Response(null, { status: t2 || 302, headers: { Location: e2 } }), url: new URL(e.url), get clientAddress() {
+  return { cookies: new AstroCookies(e), request: e, params: t, site: a ? new URL(a) : void 0, generator: "Astro v2.0.6", props: n, redirect: (e2, t2) => new Response(null, { status: t2 || 302, headers: { Location: e2 } }), url: new URL(e.url), get clientAddress() {
     if (!(clientAddressSymbol in e))
       throw new AstroError(i ? { ...AstroErrorData.ClientAddressNotAvailable, message: AstroErrorData.ClientAddressNotAvailable.message(i) } : AstroErrorData.StaticClientAddressNotAvailable);
     return Reflect.get(e, clientAddressSymbol);
@@ -1885,7 +1888,7 @@ var server_default = { check, renderToStaticMarkup };
 import { Server } from "https://deno.land/std@0.167.0/http/server.ts";
 import { fetch } from "https://deno.land/x/file_fetch/mod.ts";
 
-// dist/server/chunks/pages/all.a93de1fb.mjs
+// dist/server/chunks/pages/all.6a5169b5.mjs
 var $$Astro$1 = createAstro("https://astro-deno-deploy.deno.dev/");
 var $$Base = createComponent(async (e, t, o) => {
   const r = e.createAstro($$Astro$1, t, o);
@@ -1965,7 +1968,7 @@ function createExports(e, r) {
 var adapter = Object.freeze(Object.defineProperty({ __proto__: null, createExports, start: start$1 }, Symbol.toStringTag, { value: "Module" }));
 var pageMap = /* @__PURE__ */ new Map([["src/pages/index.astro", _page0]]);
 var renderers = [Object.assign({ name: "astro:jsx", serverEntrypoint: "astro/jsx/server.js", jsxImportSource: "astro" }, { ssr: server_default })];
-var _manifest2 = Object.assign(deserializeManifest({ adapterName: "@astrojs/deno", routes: [{ file: "", links: ["_astro/index.c57ad5eb.css"], scripts: [{ type: "external", value: "_astro/hoisted.b0b413a3.js" }, { type: "external", value: "_astro/page.b7cc8384.js" }], routeData: { route: "/", type: "page", pattern: "^\\/$", segments: [], params: [], component: "src/pages/index.astro", pathname: "/", _meta: { trailingSlash: "ignore" } } }], site: "https://astro-deno-deploy.deno.dev/", base: "/", markdown: { drafts: false, syntaxHighlight: "shiki", shikiConfig: { langs: [], theme: "github-dark", wrap: false }, remarkPlugins: [], rehypePlugins: [], remarkRehype: {}, gfm: true, smartypants: true, contentDir: "file:///D:/Developer/app/lightrix/astro-deno-deploy/src/content/" }, pageMap: null, renderers: [], entryModules: { "\0@astrojs-ssr-virtual-entry": "_@astrojs-ssr-virtual-entry.mjs", "astro:scripts/page.js": "_astro/page.b7cc8384.js", "/astro/hoisted.js?q=0": "_astro/hoisted.b0b413a3.js", "astro:scripts/before-hydration.js": "" }, assets: ["/_astro/index.c57ad5eb.css", "/robots.txt", "/site.webmanifest", "/_astro/hoisted.b0b413a3.js", "/_astro/page.b7cc8384.js", "/_astro/page.b7cc8384.js"] }), { pageMap, renderers });
+var _manifest2 = Object.assign(deserializeManifest({ adapterName: "@astrojs/deno", routes: [{ file: "", links: ["_astro/index.c57ad5eb.css"], scripts: [{ type: "external", value: "_astro/hoisted.5ce92ca5.js" }, { type: "external", value: "_astro/page.b7cc8384.js" }], routeData: { route: "/", type: "page", pattern: "^\\/$", segments: [], params: [], component: "src/pages/index.astro", pathname: "/", _meta: { trailingSlash: "ignore" } } }], site: "https://astro-deno-deploy.deno.dev/", base: "/", markdown: { drafts: false, syntaxHighlight: "shiki", shikiConfig: { langs: [], theme: "github-dark", wrap: false }, remarkPlugins: [], rehypePlugins: [], remarkRehype: {}, gfm: true, smartypants: true, contentDir: "file:///D:/Developer/app/lightrix/astro-deno-deploy/src/content/" }, pageMap: null, renderers: [], entryModules: { "\0@astrojs-ssr-virtual-entry": "_@astrojs-ssr-virtual-entry.mjs", "astro:scripts/page.js": "_astro/page.b7cc8384.js", "/astro/hoisted.js?q=0": "_astro/hoisted.5ce92ca5.js", "astro:scripts/before-hydration.js": "" }, assets: ["/_astro/index.c57ad5eb.css", "/robots.txt", "/site.webmanifest", "/_astro/hoisted.5ce92ca5.js", "/_astro/page.b7cc8384.js", "/_astro/page.b7cc8384.js"] }), { pageMap, renderers });
 var _args = {};
 var _exports = createExports(_manifest2, _args);
 var stop = _exports.stop;
