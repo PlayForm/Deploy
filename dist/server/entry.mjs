@@ -335,6 +335,7 @@ function createComponentWithOptions(e) {
 function createComponent(e, t) {
   return "function" == typeof e ? baseCreateComponent(e, t) : createComponentWithOptions(e);
 }
+var ASTRO_VERSION = "2.0.6";
 function createAstroGlobFn() {
   return (e, t) => {
     let a = [...Object.values(e)];
@@ -344,7 +345,7 @@ function createAstroGlobFn() {
   };
 }
 function createAstro(e) {
-  return { site: e ? new URL(e) : void 0, generator: "Astro v2.0.6", glob: createAstroGlobFn() };
+  return { site: e ? new URL(e) : void 0, generator: `Astro v${ASTRO_VERSION}`, glob: createAstroGlobFn() };
 }
 function getHandlerFromModule(e, t) {
   return e[t] ? e[t] : "delete" === t && e.del ? e.del : e.all ? e.all : void 0;
@@ -403,6 +404,7 @@ function isHTMLString(e) {
 }
 var AstroJSX = "astro:jsx";
 var Empty = Symbol("empty");
+var toSlotName = (e) => e;
 function isVNode(e) {
   return e && "object" == typeof e && e[AstroJSX];
 }
@@ -416,7 +418,7 @@ function transformSlots(e) {
       return;
     if (!("slot" in a.props))
       return;
-    const n = a.props.slot;
+    const n = toSlotName(a.props.slot);
     t[n] = [a], t[n].$$slot = true, delete a.props.slot, delete e.props.children;
   }
   Array.isArray(e.props.children) && (e.props.children = e.props.children.map((e2) => {
@@ -424,7 +426,7 @@ function transformSlots(e) {
       return e2;
     if (!("slot" in e2.props))
       return e2;
-    const a = e2.props.slot;
+    const a = toSlotName(e2.props.slot);
     return Array.isArray(t[a]) ? t[a].push(e2) : (t[a] = [e2], t[a].$$slot = true), delete e2.props.slot, Empty;
   }).filter((e2) => e2 !== Empty)), Object.assign(e.props, t);
 }
@@ -479,14 +481,15 @@ var htmlBooleanAttributes = /^(allowfullscreen|async|autofocus|autoplay|controls
 var htmlEnumAttributes = /^(contenteditable|draggable|spellcheck|value)$/i;
 var svgEnumAttributes = /^(autoReverse|externalResourcesRequired|focusable|preserveAlpha)$/i;
 var STATIC_DIRECTIVES = /* @__PURE__ */ new Set(["set:html", "set:text"]);
+var toIdent = (e) => e.trim().replace(/(?:(?!^)\b\w|\s+|[^\w]+)/g, (e2, t) => /[^\w]|\s/.test(e2) ? "" : 0 === t ? e2 : e2.toUpperCase());
 var toAttributeString = (e, t = true) => t ? String(e).replace(/&/g, "&#38;").replace(/"/g, "&#34;") : e;
 var kebab = (e) => e.toLowerCase() === e ? e : e.replace(/[A-Z]/g, (e2) => `-${e2.toLowerCase()}`);
+var toStyleString = (e) => Object.entries(e).map(([e2, t]) => `${kebab(e2)}:${t}`).join(";");
 function defineScriptVars(e) {
   let t = "";
-  for (const [n, i] of Object.entries(e))
-    t += `const ${a = n, a.trim().replace(/(?:(?!^)\b\w|\s+|[^\w]+)/g, (e2, t2) => /[^\w]|\s/.test(e2) ? "" : 0 === t2 ? e2 : e2.toUpperCase())} = ${JSON.stringify(i)};
+  for (const [a, n] of Object.entries(e))
+    t += `const ${toIdent(a)} = ${JSON.stringify(n)};
 `;
-  var a;
   return markHTMLString(t);
 }
 function formatList(e) {
@@ -502,11 +505,10 @@ function addAttribute(e, t, a = true) {
 
 Make sure to use the static attribute syntax (\`${t}={value}\`) instead of the dynamic spread syntax (\`{...{ "${t}": value }}\`).`), "";
   if ("class:list" === t) {
-    const n2 = toAttributeString(serializeListValue(e), a);
-    return "" === n2 ? "" : markHTMLString(` ${t.slice(0, -5)}="${n2}"`);
+    const n = toAttributeString(serializeListValue(e), a);
+    return "" === n ? "" : markHTMLString(` ${t.slice(0, -5)}="${n}"`);
   }
-  return "style" !== t || e instanceof HTMLString || "object" != typeof e ? "className" === t ? markHTMLString(` class="${toAttributeString(e, a)}"`) : true === e && (t.startsWith("data-") || htmlBooleanAttributes.test(t)) ? markHTMLString(` ${t}`) : markHTMLString(` ${t}="${toAttributeString(e, a)}"`) : markHTMLString(` ${t}="${toAttributeString((n = e, Object.entries(n).map(([e2, t2]) => `${kebab(e2)}:${t2}`).join(";")), a)}"`);
-  var n;
+  return "style" !== t || e instanceof HTMLString || "object" != typeof e ? "className" === t ? markHTMLString(` class="${toAttributeString(e, a)}"`) : true === e && (t.startsWith("data-") || htmlBooleanAttributes.test(t)) ? markHTMLString(` ${t}`) : markHTMLString(` ${t}="${toAttributeString(e, a)}"`) : markHTMLString(` ${t}="${toAttributeString(toStyleString(e), a)}"`);
 }
 function internalSpreadAttributes(e, t = true) {
   let a = "";
@@ -804,6 +806,7 @@ function chunkToByteArray(e, t) {
   let a = stringifyChunk(e, t);
   return encoder.encode(a.toString());
 }
+var ClientOnlyPlaceholder = "astro-client-only";
 var Skip = class {
   constructor(e) {
     this.vnode = e, this.count = 0;
@@ -853,7 +856,7 @@ Did you forget to import the component or is it possible there is a typo?`);
       }
       case (!t.type && 0 !== t.type):
         return "";
-      case ("string" == typeof t.type && "astro-client-only" !== t.type):
+      case ("string" == typeof t.type && t.type !== ClientOnlyPlaceholder):
         return markHTMLString(await renderElement(e, t.type, t.props ?? {}));
     }
     if (t.type) {
@@ -893,7 +896,7 @@ Did you forget to import the component or is it possible there is a typo?`);
           0 !== e2.toString().trim().length && (p[t2] = () => e2);
         }));
       let l;
-      if (await Promise.all(s), o[Skip.symbol] = a, l = "astro-client-only" === t.type && t.props["client:only"] ? await renderComponentToIterable(e, t.props["client:display-name"] ?? "", null, o, p) : await renderComponentToIterable(e, "function" == typeof t.type ? t.type.name : t.type, t.type, o, p), "string" != typeof l && Symbol.asyncIterator in l) {
+      if (await Promise.all(s), o[Skip.symbol] = a, l = t.type === ClientOnlyPlaceholder && t.props["client:only"] ? await renderComponentToIterable(e, t.props["client:display-name"] ?? "", null, o, p) : await renderComponentToIterable(e, "function" == typeof t.type ? t.type.name : t.type, t.type, o, p), "string" != typeof l && Symbol.asyncIterator in l) {
         let t2 = new HTMLParts();
         for await (const a2 of l)
           t2.append(a2, e);
@@ -1500,7 +1503,7 @@ async function renderPage(e, t, a) {
 }
 var clientAddressSymbol = Symbol.for("astro.clientAddress");
 function createAPIContext({ request: e, params: t, site: a, props: n, adapterName: i }) {
-  return { cookies: new AstroCookies(e), request: e, params: t, site: a ? new URL(a) : void 0, generator: "Astro v2.0.6", props: n, redirect: (e2, t2) => new Response(null, { status: t2 || 302, headers: { Location: e2 } }), url: new URL(e.url), get clientAddress() {
+  return { cookies: new AstroCookies(e), request: e, params: t, site: a ? new URL(a) : void 0, generator: `Astro v${ASTRO_VERSION}`, props: n, redirect: (e2, t2) => new Response(null, { status: t2 || 302, headers: { Location: e2 } }), url: new URL(e.url), get clientAddress() {
     if (!(clientAddressSymbol in e))
       throw new AstroError(i ? { ...AstroErrorData.ClientAddressNotAvailable, message: AstroErrorData.ClientAddressNotAvailable.message(i) } : AstroErrorData.StaticClientAddressNotAvailable);
     return Reflect.get(e, clientAddressSymbol);
