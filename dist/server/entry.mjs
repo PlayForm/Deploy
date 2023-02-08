@@ -3,37 +3,52 @@ globalThis.process = {
 	env: Deno.env.toObject(),
 };
 
-// dist/server/chunks/astro.196a8c4b.mjs
+// dist/server/chunks/astro.9d998af0.mjs
 function Mime$1() {
-  this._types = /* @__PURE__ */ Object.create(null), this._extensions = /* @__PURE__ */ Object.create(null);
-  for (let e = 0; e < arguments.length; e++)
-    this.define(arguments[e]);
-  this.define = this.define.bind(this), this.getType = this.getType.bind(this), this.getExtension = this.getExtension.bind(this);
+  this._types = /* @__PURE__ */ Object.create(null);
+  this._extensions = /* @__PURE__ */ Object.create(null);
+  for (let i = 0; i < arguments.length; i++) {
+    this.define(arguments[i]);
+  }
+  this.define = this.define.bind(this);
+  this.getType = this.getType.bind(this);
+  this.getExtension = this.getExtension.bind(this);
 }
-Mime$1.prototype.define = function(e, t) {
-  for (let a in e) {
-    let n = e[a].map(function(e2) {
-      return e2.toLowerCase();
+Mime$1.prototype.define = function(typeMap, force) {
+  for (let type in typeMap) {
+    let extensions = typeMap[type].map(function(t) {
+      return t.toLowerCase();
     });
-    a = a.toLowerCase();
-    for (let e2 = 0; e2 < n.length; e2++) {
-      const i = n[e2];
-      if ("*" !== i[0]) {
-        if (!t && i in this._types)
-          throw new Error('Attempt to change mapping for "' + i + '" extension from "' + this._types[i] + '" to "' + a + '". Pass `force=true` to allow this, otherwise remove "' + i + '" from the list of extensions for "' + a + '".');
-        this._types[i] = a;
+    type = type.toLowerCase();
+    for (let i = 0; i < extensions.length; i++) {
+      const ext = extensions[i];
+      if (ext[0] === "*") {
+        continue;
       }
+      if (!force && ext in this._types) {
+        throw new Error(
+          'Attempt to change mapping for "' + ext + '" extension from "' + this._types[ext] + '" to "' + type + '". Pass `force=true` to allow this, otherwise remove "' + ext + '" from the list of extensions for "' + type + '".'
+        );
+      }
+      this._types[ext] = type;
     }
-    if (t || !this._extensions[a]) {
-      const e2 = n[0];
-      this._extensions[a] = "*" !== e2[0] ? e2 : e2.substr(1);
+    if (force || !this._extensions[type]) {
+      const ext = extensions[0];
+      this._extensions[type] = ext[0] !== "*" ? ext : ext.substr(1);
     }
   }
-}, Mime$1.prototype.getType = function(e) {
-  let t = (e = String(e)).replace(/^.*[/\\]/, "").toLowerCase(), a = t.replace(/^.*\./, "").toLowerCase(), n = t.length < e.length;
-  return (a.length < t.length - 1 || !n) && this._types[a] || null;
-}, Mime$1.prototype.getExtension = function(e) {
-  return (e = /^\s*([^;\s]*)/.test(e) && RegExp.$1) && this._extensions[e.toLowerCase()] || null;
+};
+Mime$1.prototype.getType = function(path) {
+  path = String(path);
+  let last = path.replace(/^.*[/\\]/, "").toLowerCase();
+  let ext = last.replace(/^.*\./, "").toLowerCase();
+  let hasPath = last.length < path.length;
+  let hasDot = ext.length < last.length - 1;
+  return (hasDot || !hasPath) && this._types[ext] || null;
+};
+Mime$1.prototype.getExtension = function(type) {
+  type = /^\s*([^;\s]*)/.test(type) && RegExp.$1;
+  return type && this._extensions[type.toLowerCase()] || null;
 };
 var Mime_1 = Mime$1;
 var standard = { "application/andrew-inset": ["ez"], "application/applixware": ["aw"], "application/atom+xml": ["atom"], "application/atomcat+xml": ["atomcat"], "application/atomdeleted+xml": ["atomdeleted"], "application/atomsvc+xml": ["atomsvc"], "application/atsc-dwd+xml": ["dwd"], "application/atsc-held+xml": ["held"], "application/atsc-rsat+xml": ["rsat"], "application/bdoc": ["bdoc"], "application/calendar+xml": ["xcs"], "application/ccxml+xml": ["ccxml"], "application/cdfx+xml": ["cdfx"], "application/cdmi-capability": ["cdmia"], "application/cdmi-container": ["cdmic"], "application/cdmi-domain": ["cdmid"], "application/cdmi-object": ["cdmio"], "application/cdmi-queue": ["cdmiq"], "application/cu-seeme": ["cu"], "application/dash+xml": ["mpd"], "application/davmount+xml": ["davmount"], "application/docbook+xml": ["dbk"], "application/dssc+der": ["dssc"], "application/dssc+xml": ["xdssc"], "application/ecmascript": ["es", "ecma"], "application/emma+xml": ["emma"], "application/emotionml+xml": ["emotionml"], "application/epub+zip": ["epub"], "application/exi": ["exi"], "application/express": ["exp"], "application/fdt+xml": ["fdt"], "application/font-tdpfr": ["pfr"], "application/geo+json": ["geojson"], "application/gml+xml": ["gml"], "application/gpx+xml": ["gpx"], "application/gxf": ["gxf"], "application/gzip": ["gz"], "application/hjson": ["hjson"], "application/hyperstudio": ["stk"], "application/inkml+xml": ["ink", "inkml"], "application/ipfix": ["ipfix"], "application/its+xml": ["its"], "application/java-archive": ["jar", "war", "ear"], "application/java-serialized-object": ["ser"], "application/java-vm": ["class"], "application/javascript": ["js", "mjs"], "application/json": ["json", "map"], "application/json5": ["json5"], "application/jsonml+json": ["jsonml"], "application/ld+json": ["jsonld"], "application/lgr+xml": ["lgr"], "application/lost+xml": ["lostxml"], "application/mac-binhex40": ["hqx"], "application/mac-compactpro": ["cpt"], "application/mads+xml": ["mads"], "application/manifest+json": ["webmanifest"], "application/marc": ["mrc"], "application/marcxml+xml": ["mrcx"], "application/mathematica": ["ma", "nb", "mb"], "application/mathml+xml": ["mathml"], "application/mbox": ["mbox"], "application/mediaservercontrol+xml": ["mscml"], "application/metalink+xml": ["metalink"], "application/metalink4+xml": ["meta4"], "application/mets+xml": ["mets"], "application/mmt-aei+xml": ["maei"], "application/mmt-usd+xml": ["musd"], "application/mods+xml": ["mods"], "application/mp21": ["m21", "mp21"], "application/mp4": ["mp4s", "m4p"], "application/msword": ["doc", "dot"], "application/mxf": ["mxf"], "application/n-quads": ["nq"], "application/n-triples": ["nt"], "application/node": ["cjs"], "application/octet-stream": ["bin", "dms", "lrf", "mar", "so", "dist", "distz", "pkg", "bpk", "dump", "elc", "deploy", "exe", "dll", "deb", "dmg", "iso", "img", "msi", "msp", "msm", "buffer"], "application/oda": ["oda"], "application/oebps-package+xml": ["opf"], "application/ogg": ["ogx"], "application/omdoc+xml": ["omdoc"], "application/onenote": ["onetoc", "onetoc2", "onetmp", "onepkg"], "application/oxps": ["oxps"], "application/p2p-overlay+xml": ["relo"], "application/patch-ops-error+xml": ["xer"], "application/pdf": ["pdf"], "application/pgp-encrypted": ["pgp"], "application/pgp-signature": ["asc", "sig"], "application/pics-rules": ["prf"], "application/pkcs10": ["p10"], "application/pkcs7-mime": ["p7m", "p7c"], "application/pkcs7-signature": ["p7s"], "application/pkcs8": ["p8"], "application/pkix-attr-cert": ["ac"], "application/pkix-cert": ["cer"], "application/pkix-crl": ["crl"], "application/pkix-pkipath": ["pkipath"], "application/pkixcmp": ["pki"], "application/pls+xml": ["pls"], "application/postscript": ["ai", "eps", "ps"], "application/provenance+xml": ["provx"], "application/pskc+xml": ["pskcxml"], "application/raml+yaml": ["raml"], "application/rdf+xml": ["rdf", "owl"], "application/reginfo+xml": ["rif"], "application/relax-ng-compact-syntax": ["rnc"], "application/resource-lists+xml": ["rl"], "application/resource-lists-diff+xml": ["rld"], "application/rls-services+xml": ["rs"], "application/route-apd+xml": ["rapd"], "application/route-s-tsid+xml": ["sls"], "application/route-usd+xml": ["rusd"], "application/rpki-ghostbusters": ["gbr"], "application/rpki-manifest": ["mft"], "application/rpki-roa": ["roa"], "application/rsd+xml": ["rsd"], "application/rss+xml": ["rss"], "application/rtf": ["rtf"], "application/sbml+xml": ["sbml"], "application/scvp-cv-request": ["scq"], "application/scvp-cv-response": ["scs"], "application/scvp-vp-request": ["spq"], "application/scvp-vp-response": ["spp"], "application/sdp": ["sdp"], "application/senml+xml": ["senmlx"], "application/sensml+xml": ["sensmlx"], "application/set-payment-initiation": ["setpay"], "application/set-registration-initiation": ["setreg"], "application/shf+xml": ["shf"], "application/sieve": ["siv", "sieve"], "application/smil+xml": ["smi", "smil"], "application/sparql-query": ["rq"], "application/sparql-results+xml": ["srx"], "application/srgs": ["gram"], "application/srgs+xml": ["grxml"], "application/sru+xml": ["sru"], "application/ssdl+xml": ["ssdl"], "application/ssml+xml": ["ssml"], "application/swid+xml": ["swidtag"], "application/tei+xml": ["tei", "teicorpus"], "application/thraud+xml": ["tfi"], "application/timestamped-data": ["tsd"], "application/toml": ["toml"], "application/trig": ["trig"], "application/ttml+xml": ["ttml"], "application/ubjson": ["ubj"], "application/urc-ressheet+xml": ["rsheet"], "application/urc-targetdesc+xml": ["td"], "application/voicexml+xml": ["vxml"], "application/wasm": ["wasm"], "application/widget": ["wgt"], "application/winhlp": ["hlp"], "application/wsdl+xml": ["wsdl"], "application/wspolicy+xml": ["wspolicy"], "application/xaml+xml": ["xaml"], "application/xcap-att+xml": ["xav"], "application/xcap-caps+xml": ["xca"], "application/xcap-diff+xml": ["xdf"], "application/xcap-el+xml": ["xel"], "application/xcap-ns+xml": ["xns"], "application/xenc+xml": ["xenc"], "application/xhtml+xml": ["xhtml", "xht"], "application/xliff+xml": ["xlf"], "application/xml": ["xml", "xsl", "xsd", "rng"], "application/xml-dtd": ["dtd"], "application/xop+xml": ["xop"], "application/xproc+xml": ["xpl"], "application/xslt+xml": ["*xsl", "xslt"], "application/xspf+xml": ["xspf"], "application/xv+xml": ["mxml", "xhvml", "xvml", "xvm"], "application/yang": ["yang"], "application/yin+xml": ["yin"], "application/zip": ["zip"], "audio/3gpp": ["*3gpp"], "audio/adpcm": ["adp"], "audio/amr": ["amr"], "audio/basic": ["au", "snd"], "audio/midi": ["mid", "midi", "kar", "rmi"], "audio/mobile-xmf": ["mxmf"], "audio/mp3": ["*mp3"], "audio/mp4": ["m4a", "mp4a"], "audio/mpeg": ["mpga", "mp2", "mp2a", "mp3", "m2a", "m3a"], "audio/ogg": ["oga", "ogg", "spx", "opus"], "audio/s3m": ["s3m"], "audio/silk": ["sil"], "audio/wav": ["wav"], "audio/wave": ["*wav"], "audio/webm": ["weba"], "audio/xm": ["xm"], "font/collection": ["ttc"], "font/otf": ["otf"], "font/ttf": ["ttf"], "font/woff": ["woff"], "font/woff2": ["woff2"], "image/aces": ["exr"], "image/apng": ["apng"], "image/avif": ["avif"], "image/bmp": ["bmp"], "image/cgm": ["cgm"], "image/dicom-rle": ["drle"], "image/emf": ["emf"], "image/fits": ["fits"], "image/g3fax": ["g3"], "image/gif": ["gif"], "image/heic": ["heic"], "image/heic-sequence": ["heics"], "image/heif": ["heif"], "image/heif-sequence": ["heifs"], "image/hej2k": ["hej2"], "image/hsj2": ["hsj2"], "image/ief": ["ief"], "image/jls": ["jls"], "image/jp2": ["jp2", "jpg2"], "image/jpeg": ["jpeg", "jpg", "jpe"], "image/jph": ["jph"], "image/jphc": ["jhc"], "image/jpm": ["jpm"], "image/jpx": ["jpx", "jpf"], "image/jxr": ["jxr"], "image/jxra": ["jxra"], "image/jxrs": ["jxrs"], "image/jxs": ["jxs"], "image/jxsc": ["jxsc"], "image/jxsi": ["jxsi"], "image/jxss": ["jxss"], "image/ktx": ["ktx"], "image/ktx2": ["ktx2"], "image/png": ["png"], "image/sgi": ["sgi"], "image/svg+xml": ["svg", "svgz"], "image/t38": ["t38"], "image/tiff": ["tif", "tiff"], "image/tiff-fx": ["tfx"], "image/webp": ["webp"], "image/wmf": ["wmf"], "message/disposition-notification": ["disposition-notification"], "message/global": ["u8msg"], "message/global-delivery-status": ["u8dsn"], "message/global-disposition-notification": ["u8mdn"], "message/global-headers": ["u8hdr"], "message/rfc822": ["eml", "mime"], "model/3mf": ["3mf"], "model/gltf+json": ["gltf"], "model/gltf-binary": ["glb"], "model/iges": ["igs", "iges"], "model/mesh": ["msh", "mesh", "silo"], "model/mtl": ["mtl"], "model/obj": ["obj"], "model/step+xml": ["stpx"], "model/step+zip": ["stpz"], "model/step-xml+zip": ["stpxz"], "model/stl": ["stl"], "model/vrml": ["wrl", "vrml"], "model/x3d+binary": ["*x3db", "x3dbz"], "model/x3d+fastinfoset": ["x3db"], "model/x3d+vrml": ["*x3dv", "x3dvz"], "model/x3d+xml": ["x3d", "x3dz"], "model/x3d-vrml": ["x3dv"], "text/cache-manifest": ["appcache", "manifest"], "text/calendar": ["ics", "ifb"], "text/coffeescript": ["coffee", "litcoffee"], "text/css": ["css"], "text/csv": ["csv"], "text/html": ["html", "htm", "shtml"], "text/jade": ["jade"], "text/jsx": ["jsx"], "text/less": ["less"], "text/markdown": ["markdown", "md"], "text/mathml": ["mml"], "text/mdx": ["mdx"], "text/n3": ["n3"], "text/plain": ["txt", "text", "conf", "def", "list", "log", "in", "ini"], "text/richtext": ["rtx"], "text/rtf": ["*rtf"], "text/sgml": ["sgml", "sgm"], "text/shex": ["shex"], "text/slim": ["slim", "slm"], "text/spdx": ["spdx"], "text/stylus": ["stylus", "styl"], "text/tab-separated-values": ["tsv"], "text/troff": ["t", "tr", "roff", "man", "me", "ms"], "text/turtle": ["ttl"], "text/uri-list": ["uri", "uris", "urls"], "text/vcard": ["vcard"], "text/vtt": ["vtt"], "text/xml": ["*xml"], "text/yaml": ["yaml", "yml"], "video/3gpp": ["3gp", "3gpp"], "video/3gpp2": ["3g2"], "video/h261": ["h261"], "video/h263": ["h263"], "video/h264": ["h264"], "video/iso.segment": ["m4s"], "video/jpeg": ["jpgv"], "video/jpm": ["*jpm", "jpgm"], "video/mj2": ["mj2", "mjp2"], "video/mp2t": ["ts"], "video/mp4": ["mp4", "mp4v", "mpg4"], "video/mpeg": ["mpeg", "mpg", "mpe", "m1v", "m2v"], "video/ogg": ["ogv"], "video/quicktime": ["qt", "mov"], "video/webm": ["webm"] };
@@ -44,110 +59,159 @@ var parse_1 = parse$1;
 var serialize_1 = serialize;
 var __toString = Object.prototype.toString;
 var fieldContentRegExp = /^[\u0009\u0020-\u007e\u0080-\u00ff]+$/;
-function parse$1(e, t) {
-  if ("string" != typeof e)
+function parse$1(str, options) {
+  if (typeof str !== "string") {
     throw new TypeError("argument str must be a string");
-  for (var a = {}, n = (t || {}).decode || decode, i = 0; i < e.length; ) {
-    var o = e.indexOf("=", i);
-    if (-1 === o)
+  }
+  var obj = {};
+  var opt = options || {};
+  var dec = opt.decode || decode;
+  var index = 0;
+  while (index < str.length) {
+    var eqIdx = str.indexOf("=", index);
+    if (eqIdx === -1) {
       break;
-    var r = e.indexOf(";", i);
-    if (-1 === r)
-      r = e.length;
-    else if (r < o) {
-      i = e.lastIndexOf(";", o - 1) + 1;
+    }
+    var endIdx = str.indexOf(";", index);
+    if (endIdx === -1) {
+      endIdx = str.length;
+    } else if (endIdx < eqIdx) {
+      index = str.lastIndexOf(";", eqIdx - 1) + 1;
       continue;
     }
-    var s = e.slice(i, o).trim();
-    if (void 0 === a[s]) {
-      var p = e.slice(o + 1, r).trim();
-      34 === p.charCodeAt(0) && (p = p.slice(1, -1)), a[s] = tryDecode(p, n);
+    var key = str.slice(index, eqIdx).trim();
+    if (void 0 === obj[key]) {
+      var val = str.slice(eqIdx + 1, endIdx).trim();
+      if (val.charCodeAt(0) === 34) {
+        val = val.slice(1, -1);
+      }
+      obj[key] = tryDecode(val, dec);
     }
-    i = r + 1;
+    index = endIdx + 1;
   }
-  return a;
+  return obj;
 }
-function serialize(e, t, a) {
-  var n = a || {}, i = n.encode || encode;
-  if ("function" != typeof i)
+function serialize(name, val, options) {
+  var opt = options || {};
+  var enc = opt.encode || encode;
+  if (typeof enc !== "function") {
     throw new TypeError("option encode is invalid");
-  if (!fieldContentRegExp.test(e))
+  }
+  if (!fieldContentRegExp.test(name)) {
     throw new TypeError("argument name is invalid");
-  var o = i(t);
-  if (o && !fieldContentRegExp.test(o))
+  }
+  var value = enc(val);
+  if (value && !fieldContentRegExp.test(value)) {
     throw new TypeError("argument val is invalid");
-  var r = e + "=" + o;
-  if (null != n.maxAge) {
-    var s = n.maxAge - 0;
-    if (isNaN(s) || !isFinite(s))
+  }
+  var str = name + "=" + value;
+  if (null != opt.maxAge) {
+    var maxAge = opt.maxAge - 0;
+    if (isNaN(maxAge) || !isFinite(maxAge)) {
       throw new TypeError("option maxAge is invalid");
-    r += "; Max-Age=" + Math.floor(s);
+    }
+    str += "; Max-Age=" + Math.floor(maxAge);
   }
-  if (n.domain) {
-    if (!fieldContentRegExp.test(n.domain))
+  if (opt.domain) {
+    if (!fieldContentRegExp.test(opt.domain)) {
       throw new TypeError("option domain is invalid");
-    r += "; Domain=" + n.domain;
+    }
+    str += "; Domain=" + opt.domain;
   }
-  if (n.path) {
-    if (!fieldContentRegExp.test(n.path))
+  if (opt.path) {
+    if (!fieldContentRegExp.test(opt.path)) {
       throw new TypeError("option path is invalid");
-    r += "; Path=" + n.path;
+    }
+    str += "; Path=" + opt.path;
   }
-  if (n.expires) {
-    var p = n.expires;
-    if (!isDate(p) || isNaN(p.valueOf()))
+  if (opt.expires) {
+    var expires = opt.expires;
+    if (!isDate(expires) || isNaN(expires.valueOf())) {
       throw new TypeError("option expires is invalid");
-    r += "; Expires=" + p.toUTCString();
+    }
+    str += "; Expires=" + expires.toUTCString();
   }
-  if (n.httpOnly && (r += "; HttpOnly"), n.secure && (r += "; Secure"), n.priority)
-    switch ("string" == typeof n.priority ? n.priority.toLowerCase() : n.priority) {
+  if (opt.httpOnly) {
+    str += "; HttpOnly";
+  }
+  if (opt.secure) {
+    str += "; Secure";
+  }
+  if (opt.priority) {
+    var priority = typeof opt.priority === "string" ? opt.priority.toLowerCase() : opt.priority;
+    switch (priority) {
       case "low":
-        r += "; Priority=Low";
+        str += "; Priority=Low";
         break;
       case "medium":
-        r += "; Priority=Medium";
+        str += "; Priority=Medium";
         break;
       case "high":
-        r += "; Priority=High";
+        str += "; Priority=High";
         break;
       default:
         throw new TypeError("option priority is invalid");
     }
-  if (n.sameSite)
-    switch ("string" == typeof n.sameSite ? n.sameSite.toLowerCase() : n.sameSite) {
+  }
+  if (opt.sameSite) {
+    var sameSite = typeof opt.sameSite === "string" ? opt.sameSite.toLowerCase() : opt.sameSite;
+    switch (sameSite) {
       case true:
-        r += "; SameSite=Strict";
+        str += "; SameSite=Strict";
         break;
       case "lax":
-        r += "; SameSite=Lax";
+        str += "; SameSite=Lax";
         break;
       case "strict":
-        r += "; SameSite=Strict";
+        str += "; SameSite=Strict";
         break;
       case "none":
-        r += "; SameSite=None";
+        str += "; SameSite=None";
         break;
       default:
         throw new TypeError("option sameSite is invalid");
     }
-  return r;
+  }
+  return str;
 }
-function decode(e) {
-  return -1 !== e.indexOf("%") ? decodeURIComponent(e) : e;
+function decode(str) {
+  return str.indexOf("%") !== -1 ? decodeURIComponent(str) : str;
 }
-function encode(e) {
-  return encodeURIComponent(e);
+function encode(val) {
+  return encodeURIComponent(val);
 }
-function isDate(e) {
-  return "[object Date]" === __toString.call(e) || e instanceof Date;
+function isDate(val) {
+  return __toString.call(val) === "[object Date]" || val instanceof Date;
 }
-function tryDecode(e, t) {
+function tryDecode(str, decode2) {
   try {
-    return t(e);
-  } catch (t2) {
-    return e;
+    return decode2(str);
+  } catch (e) {
+    return str;
   }
 }
+var __accessCheck$3 = (obj, member, msg) => {
+  if (!member.has(obj))
+    throw TypeError("Cannot " + msg);
+};
+var __privateGet$3 = (obj, member, getter) => {
+  __accessCheck$3(obj, member, "read from private field");
+  return getter ? getter.call(obj) : member.get(obj);
+};
+var __privateAdd$3 = (obj, member, value) => {
+  if (member.has(obj))
+    throw TypeError("Cannot add the same private member more than once");
+  member instanceof WeakSet ? member.add(obj) : member.set(obj, value);
+};
+var __privateSet$3 = (obj, member, value, setter) => {
+  __accessCheck$3(obj, member, "write to private field");
+  setter ? setter.call(obj, value) : member.set(obj, value);
+  return value;
+};
+var __privateMethod$1 = (obj, member, method) => {
+  __accessCheck$3(obj, member, "access private method");
+  return method;
+};
 var _request;
 var _requestValues;
 var _outgoing;
@@ -157,239 +221,657 @@ var _ensureOutgoingMap;
 var ensureOutgoingMap_fn;
 var _parse;
 var parse_fn;
-var __accessCheck$3 = (e, t, a) => {
-  if (!t.has(e))
-    throw TypeError("Cannot " + a);
-};
-var __privateGet$3 = (e, t, a) => (__accessCheck$3(e, t, "read from private field"), a ? a.call(e) : t.get(e));
-var __privateAdd$3 = (e, t, a) => {
-  if (t.has(e))
-    throw TypeError("Cannot add the same private member more than once");
-  t instanceof WeakSet ? t.add(e) : t.set(e, a);
-};
-var __privateSet$3 = (e, t, a, n) => (__accessCheck$3(e, t, "write to private field"), n ? n.call(e, a) : t.set(e, a), a);
-var __privateMethod$1 = (e, t, a) => (__accessCheck$3(e, t, "access private method"), a);
 var DELETED_EXPIRATION = new Date(0);
+var DELETED_VALUE = "deleted";
 var AstroCookie = class {
-  constructor(e) {
-    this.value = e;
+  constructor(value) {
+    this.value = value;
   }
   json() {
-    if (void 0 === this.value)
-      throw new Error("Cannot convert undefined to an object.");
+    if (this.value === void 0) {
+      throw new Error(`Cannot convert undefined to an object.`);
+    }
     return JSON.parse(this.value);
   }
   number() {
     return Number(this.value);
   }
   boolean() {
-    return "false" !== this.value && ("0" !== this.value && Boolean(this.value));
+    if (this.value === "false")
+      return false;
+    if (this.value === "0")
+      return false;
+    return Boolean(this.value);
   }
 };
 var AstroCookies = class {
-  constructor(e) {
-    __privateAdd$3(this, _ensureParsed), __privateAdd$3(this, _ensureOutgoingMap), __privateAdd$3(this, _parse), __privateAdd$3(this, _request, void 0), __privateAdd$3(this, _requestValues, void 0), __privateAdd$3(this, _outgoing, void 0), __privateSet$3(this, _request, e), __privateSet$3(this, _requestValues, null), __privateSet$3(this, _outgoing, null);
+  constructor(request) {
+    __privateAdd$3(this, _ensureParsed);
+    __privateAdd$3(this, _ensureOutgoingMap);
+    __privateAdd$3(this, _parse);
+    __privateAdd$3(this, _request, void 0);
+    __privateAdd$3(this, _requestValues, void 0);
+    __privateAdd$3(this, _outgoing, void 0);
+    __privateSet$3(this, _request, request);
+    __privateSet$3(this, _requestValues, null);
+    __privateSet$3(this, _outgoing, null);
   }
-  delete(e, t) {
-    const a = { expires: DELETED_EXPIRATION };
-    (null == t ? void 0 : t.domain) && (a.domain = t.domain), (null == t ? void 0 : t.path) && (a.path = t.path), __privateMethod$1(this, _ensureOutgoingMap, ensureOutgoingMap_fn).call(this).set(e, ["deleted", serialize_1(e, "deleted", a), false]);
-  }
-  get(e) {
-    if (null !== __privateGet$3(this, _outgoing) && __privateGet$3(this, _outgoing).has(e)) {
-      let [t2, , a] = __privateGet$3(this, _outgoing).get(e);
-      return new AstroCookie(a ? t2 : void 0);
+  delete(key, options) {
+    const serializeOptions = {
+      expires: DELETED_EXPIRATION
+    };
+    if (options == null ? void 0 : options.domain) {
+      serializeOptions.domain = options.domain;
     }
-    const t = __privateMethod$1(this, _ensureParsed, ensureParsed_fn).call(this)[e];
-    return new AstroCookie(t);
-  }
-  has(e) {
-    if (null !== __privateGet$3(this, _outgoing) && __privateGet$3(this, _outgoing).has(e)) {
-      let [, , t] = __privateGet$3(this, _outgoing).get(e);
-      return t;
+    if (options == null ? void 0 : options.path) {
+      serializeOptions.path = options.path;
     }
-    return !!__privateMethod$1(this, _ensureParsed, ensureParsed_fn).call(this)[e];
+    __privateMethod$1(this, _ensureOutgoingMap, ensureOutgoingMap_fn).call(this).set(key, [
+      DELETED_VALUE,
+      serialize_1(key, DELETED_VALUE, serializeOptions),
+      false
+    ]);
   }
-  set(e, t, a) {
-    let n;
-    if ("string" == typeof t)
-      n = t;
-    else {
-      let e2 = t.toString();
-      n = e2 === Object.prototype.toString.call(t) ? JSON.stringify(t) : e2;
+  get(key) {
+    if (__privateGet$3(this, _outgoing) !== null && __privateGet$3(this, _outgoing).has(key)) {
+      let [serializedValue, , isSetValue] = __privateGet$3(this, _outgoing).get(key);
+      if (isSetValue) {
+        return new AstroCookie(serializedValue);
+      } else {
+        return new AstroCookie(void 0);
+      }
     }
-    const i = {};
-    a && Object.assign(i, a), __privateMethod$1(this, _ensureOutgoingMap, ensureOutgoingMap_fn).call(this).set(e, [n, serialize_1(e, n, i), true]);
+    const values = __privateMethod$1(this, _ensureParsed, ensureParsed_fn).call(this);
+    const value = values[key];
+    return new AstroCookie(value);
+  }
+  has(key) {
+    if (__privateGet$3(this, _outgoing) !== null && __privateGet$3(this, _outgoing).has(key)) {
+      let [, , isSetValue] = __privateGet$3(this, _outgoing).get(key);
+      return isSetValue;
+    }
+    const values = __privateMethod$1(this, _ensureParsed, ensureParsed_fn).call(this);
+    return !!values[key];
+  }
+  set(key, value, options) {
+    let serializedValue;
+    if (typeof value === "string") {
+      serializedValue = value;
+    } else {
+      let toStringValue = value.toString();
+      if (toStringValue === Object.prototype.toString.call(value)) {
+        serializedValue = JSON.stringify(value);
+      } else {
+        serializedValue = toStringValue;
+      }
+    }
+    const serializeOptions = {};
+    if (options) {
+      Object.assign(serializeOptions, options);
+    }
+    __privateMethod$1(this, _ensureOutgoingMap, ensureOutgoingMap_fn).call(this).set(key, [
+      serializedValue,
+      serialize_1(key, serializedValue, serializeOptions),
+      true
+    ]);
   }
   *headers() {
-    if (null != __privateGet$3(this, _outgoing))
-      for (const [, e] of __privateGet$3(this, _outgoing))
-        yield e[1];
+    if (__privateGet$3(this, _outgoing) == null)
+      return;
+    for (const [, value] of __privateGet$3(this, _outgoing)) {
+      yield value[1];
+    }
   }
 };
-_request = /* @__PURE__ */ new WeakMap(), _requestValues = /* @__PURE__ */ new WeakMap(), _outgoing = /* @__PURE__ */ new WeakMap(), _ensureParsed = /* @__PURE__ */ new WeakSet(), ensureParsed_fn = function() {
-  return __privateGet$3(this, _requestValues) || __privateMethod$1(this, _parse, parse_fn).call(this), __privateGet$3(this, _requestValues) || __privateSet$3(this, _requestValues, {}), __privateGet$3(this, _requestValues);
-}, _ensureOutgoingMap = /* @__PURE__ */ new WeakSet(), ensureOutgoingMap_fn = function() {
-  return __privateGet$3(this, _outgoing) || __privateSet$3(this, _outgoing, /* @__PURE__ */ new Map()), __privateGet$3(this, _outgoing);
-}, _parse = /* @__PURE__ */ new WeakSet(), parse_fn = function() {
-  const e = __privateGet$3(this, _request).headers.get("cookie");
-  e && __privateSet$3(this, _requestValues, parse_1(e));
+_request = /* @__PURE__ */ new WeakMap();
+_requestValues = /* @__PURE__ */ new WeakMap();
+_outgoing = /* @__PURE__ */ new WeakMap();
+_ensureParsed = /* @__PURE__ */ new WeakSet();
+ensureParsed_fn = function() {
+  if (!__privateGet$3(this, _requestValues)) {
+    __privateMethod$1(this, _parse, parse_fn).call(this);
+  }
+  if (!__privateGet$3(this, _requestValues)) {
+    __privateSet$3(this, _requestValues, {});
+  }
+  return __privateGet$3(this, _requestValues);
+};
+_ensureOutgoingMap = /* @__PURE__ */ new WeakSet();
+ensureOutgoingMap_fn = function() {
+  if (!__privateGet$3(this, _outgoing)) {
+    __privateSet$3(this, _outgoing, /* @__PURE__ */ new Map());
+  }
+  return __privateGet$3(this, _outgoing);
+};
+_parse = /* @__PURE__ */ new WeakSet();
+parse_fn = function() {
+  const raw = __privateGet$3(this, _request).headers.get("cookie");
+  if (!raw) {
+    return;
+  }
+  __privateSet$3(this, _requestValues, parse_1(raw));
 };
 var astroCookiesSymbol = Symbol.for("astro.cookies");
-function attachToResponse(e, t) {
-  Reflect.set(e, astroCookiesSymbol, t);
+function attachToResponse(response, cookies) {
+  Reflect.set(response, astroCookiesSymbol, cookies);
 }
-function getFromResponse(e) {
-  let t = Reflect.get(e, astroCookiesSymbol);
-  return null != t ? t : void 0;
+function getFromResponse(response) {
+  let cookies = Reflect.get(response, astroCookiesSymbol);
+  if (cookies != null) {
+    return cookies;
+  } else {
+    return void 0;
+  }
 }
-function* getSetCookiesFromResponse(e) {
-  const t = getFromResponse(e);
-  if (t)
-    for (const e2 of t.headers())
-      yield e2;
+function* getSetCookiesFromResponse(response) {
+  const cookies = getFromResponse(response);
+  if (!cookies) {
+    return;
+  }
+  for (const headerValue of cookies.headers()) {
+    yield headerValue;
+  }
 }
-var AstroErrorData = { UnknownCompilerError: { title: "Unknown compiler error.", code: 1e3, hint: "This is almost always a problem with the Astro compiler, not your code. Please open an issue at https://astro.build/issues/compiler." }, StaticRedirectNotAvailable: { title: "`Astro.redirect` is not available in static mode.", code: 3001, message: "Redirects are only available when using `output: 'server'`. Update your Astro config if you need SSR features.", hint: "See https://docs.astro.build/en/guides/server-side-rendering/#enabling-ssr-in-your-project for more information on how to enable SSR." }, ClientAddressNotAvailable: { title: "`Astro.clientAddress` is not available in current adapter.", code: 3002, message: (e) => `\`Astro.clientAddress\` is not available in the \`${e}\` adapter. File an issue with the adapter to add support.` }, StaticClientAddressNotAvailable: { title: "`Astro.clientAddress` is not available in static mode.", code: 3003, message: "`Astro.clientAddress` is only available when using `output: 'server'`. Update your Astro config if you need SSR features.", hint: "See https://docs.astro.build/en/guides/server-side-rendering/#enabling-ssr-in-your-project for more information on how to enable SSR." }, NoMatchingStaticPathFound: { title: "No static path found for requested path.", code: 3004, message: (e) => `A \`getStaticPaths()\` route pattern was matched, but no matching static path was found for requested path \`${e}\`.`, hint: (e) => `Possible dynamic routes being matched: ${e.join(", ")}.` }, OnlyResponseCanBeReturned: { title: "Invalid type returned by Astro page.", code: 3005, message: (e, t) => `Route \`${e || ""}\` returned a \`${t}\`. Only a [Response](https://developer.mozilla.org/en-US/docs/Web/API/Response) can be returned from Astro files.`, hint: "See https://docs.astro.build/en/guides/server-side-rendering/#response for more information." }, MissingMediaQueryDirective: { title: "Missing value for `client:media` directive.", code: 3006, message: 'Media query not provided for `client:media` directive. A media query similar to `client:media="(max-width: 600px)"` must be provided' }, NoMatchingRenderer: { title: "No matching renderer found.", code: 3007, message: (e, t, a, n) => `Unable to render \`${e}\`.
+var defineErrors = (errs) => errs;
+var AstroErrorData = defineErrors({
+  UnknownCompilerError: {
+    title: "Unknown compiler error.",
+    code: 1e3,
+    hint: "This is almost always a problem with the Astro compiler, not your code. Please open an issue at https://astro.build/issues/compiler."
+  },
+  StaticRedirectNotAvailable: {
+    title: "`Astro.redirect` is not available in static mode.",
+    code: 3001,
+    message: "Redirects are only available when using `output: 'server'`. Update your Astro config if you need SSR features.",
+    hint: "See https://docs.astro.build/en/guides/server-side-rendering/#enabling-ssr-in-your-project for more information on how to enable SSR."
+  },
+  ClientAddressNotAvailable: {
+    title: "`Astro.clientAddress` is not available in current adapter.",
+    code: 3002,
+    message: (adapterName) => `\`Astro.clientAddress\` is not available in the \`${adapterName}\` adapter. File an issue with the adapter to add support.`
+  },
+  StaticClientAddressNotAvailable: {
+    title: "`Astro.clientAddress` is not available in static mode.",
+    code: 3003,
+    message: "`Astro.clientAddress` is only available when using `output: 'server'`. Update your Astro config if you need SSR features.",
+    hint: "See https://docs.astro.build/en/guides/server-side-rendering/#enabling-ssr-in-your-project for more information on how to enable SSR."
+  },
+  NoMatchingStaticPathFound: {
+    title: "No static path found for requested path.",
+    code: 3004,
+    message: (pathName) => `A \`getStaticPaths()\` route pattern was matched, but no matching static path was found for requested path \`${pathName}\`.`,
+    hint: (possibleRoutes) => `Possible dynamic routes being matched: ${possibleRoutes.join(", ")}.`
+  },
+  OnlyResponseCanBeReturned: {
+    title: "Invalid type returned by Astro page.",
+    code: 3005,
+    message: (route, returnedValue) => `Route \`${route ? route : ""}\` returned a \`${returnedValue}\`. Only a [Response](https://developer.mozilla.org/en-US/docs/Web/API/Response) can be returned from Astro files.`,
+    hint: "See https://docs.astro.build/en/guides/server-side-rendering/#response for more information."
+  },
+  MissingMediaQueryDirective: {
+    title: "Missing value for `client:media` directive.",
+    code: 3006,
+    message: 'Media query not provided for `client:media` directive. A media query similar to `client:media="(max-width: 600px)"` must be provided'
+  },
+  NoMatchingRenderer: {
+    title: "No matching renderer found.",
+    code: 3007,
+    message: (componentName, componentExtension, plural, validRenderersCount) => `Unable to render \`${componentName}\`.
 
-${n > 0 ? `There ${a ? "are." : "is."} ${n} renderer${a ? "s." : ""} configured in your \`astro.config.mjs\` file,
-but ${a ? "none were." : "it was not."} able to server-side render \`${e}\`.` : "No valid renderer was found " + (t ? `for the \`.${t}\` file extension.` : "for this file extension.")}`, hint: (e) => `Did you mean to enable the ${e} integration?
+${validRenderersCount > 0 ? `There ${plural ? "are." : "is."} ${validRenderersCount} renderer${plural ? "s." : ""} configured in your \`astro.config.mjs\` file,
+but ${plural ? "none were." : "it was not."} able to server-side render \`${componentName}\`.` : `No valid renderer was found ${componentExtension ? `for the \`.${componentExtension}\` file extension.` : `for this file extension.`}`}`,
+    hint: (probableRenderers) => `Did you mean to enable the ${probableRenderers} integration?
 
-See https://docs.astro.build/en/core-concepts/framework-components/ for more information on how to install and configure integrations.` }, NoClientEntrypoint: { title: "No client entrypoint specified in renderer.", code: 3008, message: (e, t, a) => `\`${e}\` component has a \`client:${t}\` directive, but no client entrypoint was provided by \`${a}\`.`, hint: "See https://docs.astro.build/en/reference/integrations-reference/#addrenderer-option for more information on how to configure your renderer." }, NoClientOnlyHint: { title: "Missing hint on client:only directive.", code: 3009, message: (e) => `Unable to render \`${e}\`. When using the \`client:only\` hydration strategy, Astro needs a hint to use the correct renderer.`, hint: (e) => `Did you mean to pass \`client:only="${e}"\`? See https://docs.astro.build/en/reference/directives-reference/#clientonly for more information on client:only` }, InvalidGetStaticPathParam: { title: "Invalid value returned by a `getStaticPaths` path.", code: 3010, message: (e) => `Invalid params given to \`getStaticPaths\` path. Expected an \`object\`, got \`${e}\``, hint: "See https://docs.astro.build/en/reference/api-reference/#getstaticpaths for more information on getStaticPaths." }, InvalidGetStaticPathsReturn: { title: "Invalid value returned by getStaticPaths.", code: 3011, message: (e) => `Invalid type returned by \`getStaticPaths\`. Expected an \`array\`, got \`${e}\``, hint: "See https://docs.astro.build/en/reference/api-reference/#getstaticpaths for more information on getStaticPaths." }, GetStaticPathsRemovedRSSHelper: { title: "getStaticPaths RSS helper is not available anymore.", code: 3012, message: "The RSS helper has been removed from `getStaticPaths`. Try the new @astrojs/rss package instead.", hint: "See https://docs.astro.build/en/guides/rss/ for more information." }, GetStaticPathsExpectedParams: { title: "Missing params property on `getStaticPaths` route.", code: 3013, message: "Missing or empty required `params` property on `getStaticPaths` route.", hint: "See https://docs.astro.build/en/reference/api-reference/#getstaticpaths for more information on getStaticPaths." }, GetStaticPathsInvalidRouteParam: { title: "Invalid value for `getStaticPaths` route parameter.", code: 3014, message: (e, t, a) => `Invalid getStaticPaths route parameter for \`${e}\`. Expected undefined, a string or a number, received \`${a}\` (\`${t}\`)`, hint: "See https://docs.astro.build/en/reference/api-reference/#getstaticpaths for more information on getStaticPaths." }, GetStaticPathsRequired: { title: "`getStaticPaths()` function required for dynamic routes.", code: 3015, message: "`getStaticPaths()` function is required for dynamic routes. Make sure that you `export` a `getStaticPaths` function from your dynamic route.", hint: 'See https://docs.astro.build/en/core-concepts/routing/#dynamic-routes for more information on dynamic routes.\n\nAlternatively, set `output: "server"` in your Astro config file to switch to a non-static server build. This error can also occur if using `export const prerender = true;`.\nSee https://docs.astro.build/en/guides/server-side-rendering/ for more information on non-static rendering.' }, ReservedSlotName: { title: "Invalid slot name.", code: 3016, message: (e) => `Unable to create a slot named \`${e}\`. \`${e}\` is a reserved slot name. Please update the name of this slot.` }, NoAdapterInstalled: { title: "Cannot use Server-side Rendering without an adapter.", code: 3017, message: "Cannot use `output: 'server'` without an adapter. Please install and configure the appropriate server adapter for your final deployment.", hint: "See https://docs.astro.build/en/guides/server-side-rendering/ for more information." }, NoMatchingImport: { title: "No import found for component.", code: 3018, message: (e) => `Could not render \`${e}\`. No matching import has been found for \`${e}\`.`, hint: "Please make sure the component is properly imported." }, InvalidPrerenderExport: { title: "Invalid prerender export.", code: 3019, message: (e, t) => {
-  let a = "A `prerender` export has been detected, but its value cannot be statically analyzed.";
-  return "const" !== e && (a += `
-Expected \`const\` declaration but got \`${e}\`.`), "true" !== t && (a += `
-Expected \`true\` value but got \`${t}\`.`), a;
-}, hint: "Mutable values declared at runtime are not supported. Please make sure to use exactly `export const prerender = true`." }, InvalidComponentArgs: { title: "Invalid component arguments.", code: 3020, message: (e) => `Invalid arguments passed to${e ? ` <${e}>` : ""} component.`, hint: "Astro components cannot be rendered directly via function call, such as `Component()` or `{items.map(Component)}`." }, UnknownViteError: { title: "Unknown Vite Error.", code: 4e3 }, FailedToLoadModuleSSR: { title: "Could not import file.", code: 4001, message: (e) => `Could not import \`${e}\`.`, hint: "This is often caused by a typo in the import path. Please make sure the file exists." }, InvalidGlob: { title: "Invalid glob pattern.", code: 4002, message: (e) => `Invalid glob pattern: \`${e}\`. Glob patterns must start with './', '../' or '/'.`, hint: "See https://docs.astro.build/en/guides/imports/#glob-patterns for more information on supported glob patterns." }, UnknownCSSError: { title: "Unknown CSS Error.", code: 5e3 }, CSSSyntaxError: { title: "CSS Syntax Error.", code: 5001 }, UnknownMarkdownError: { title: "Unknown Markdown Error.", code: 6e3 }, MarkdownFrontmatterParseError: { title: "Failed to parse Markdown frontmatter.", code: 6001 }, InvalidFrontmatterInjectionError: { title: "Invalid frontmatter injection.", code: 6003, message: 'A remark or rehype plugin attempted to inject invalid frontmatter. Ensure "astro.frontmatter" is set to a valid JSON object that is not `null` or `undefined`.', hint: "See the frontmatter injection docs https://docs.astro.build/en/guides/markdown-content/#modifying-frontmatter-programmatically for more information." }, MdxIntegrationMissingError: { title: "MDX integration missing.", code: 6004, message: (e) => `Unable to render ${e}. Ensure that the \`@astrojs/mdx\` integration is installed.`, hint: "See the MDX integration docs for installation and usage instructions: https://docs.astro.build/en/guides/integrations-guide/mdx/" }, UnknownConfigError: { title: "Unknown configuration error.", code: 7e3 }, ConfigNotFound: { title: "Specified configuration file not found.", code: 7001, message: (e) => `Unable to resolve \`--config "${e}"\`. Does the file exist?` }, ConfigLegacyKey: { title: "Legacy configuration detected.", code: 7002, message: (e) => `Legacy configuration detected: \`${e}\`.`, hint: "Please update your configuration to the new format.\nSee https://astro.build/config for more information." }, UnknownCLIError: { title: "Unknown CLI Error.", code: 8e3 }, GenerateContentTypesError: { title: "Failed to generate content types.", code: 8001, message: "`astro sync` command failed to generate content collection types.", hint: "Check your `src/content/config.*` file for typos." }, UnknownContentCollectionError: { title: "Unknown Content Collection Error.", code: 9e3 }, InvalidContentEntryFrontmatterError: { title: "Content entry frontmatter does not match schema.", code: 9001, message: (e, t, a) => [`${String(e)} \u2192 ${String(t)} frontmatter does not match collection schema.`, ...a.errors.map((e2) => e2.message)].join("\n"), hint: "See https://docs.astro.build/en/guides/content-collections/ for more information on content schemas." }, InvalidContentEntrySlugError: { title: "Invalid content entry slug.", code: 9002, message: (e, t) => `${String(e)} \u2192 ${String(t)} has an invalid slug. \`slug\` must be a string.`, hint: "See https://docs.astro.build/en/guides/content-collections/ for more on the `slug` field." }, ContentSchemaContainsSlugError: { title: "Content Schema should not contain `slug`.", code: 9003, message: (e) => `A content collection schema should not contain \`slug\` since it is reserved for slug generation. Remove this from your ${e} collection schema.`, hint: "See https://docs.astro.build/en/guides/content-collections/ for more on the `slug` field." }, UnknownError: { title: "Unknown Error.", code: 99999 } };
-function normalizeLF(e) {
-  return e.replace(/\r\n|\r(?!\n)|\n/g, "\n");
+See https://docs.astro.build/en/core-concepts/framework-components/ for more information on how to install and configure integrations.`
+  },
+  NoClientEntrypoint: {
+    title: "No client entrypoint specified in renderer.",
+    code: 3008,
+    message: (componentName, clientDirective, rendererName) => `\`${componentName}\` component has a \`client:${clientDirective}\` directive, but no client entrypoint was provided by \`${rendererName}\`.`,
+    hint: "See https://docs.astro.build/en/reference/integrations-reference/#addrenderer-option for more information on how to configure your renderer."
+  },
+  NoClientOnlyHint: {
+    title: "Missing hint on client:only directive.",
+    code: 3009,
+    message: (componentName) => `Unable to render \`${componentName}\`. When using the \`client:only\` hydration strategy, Astro needs a hint to use the correct renderer.`,
+    hint: (probableRenderers) => `Did you mean to pass \`client:only="${probableRenderers}"\`? See https://docs.astro.build/en/reference/directives-reference/#clientonly for more information on client:only`
+  },
+  InvalidGetStaticPathParam: {
+    title: "Invalid value returned by a `getStaticPaths` path.",
+    code: 3010,
+    message: (paramType) => `Invalid params given to \`getStaticPaths\` path. Expected an \`object\`, got \`${paramType}\``,
+    hint: "See https://docs.astro.build/en/reference/api-reference/#getstaticpaths for more information on getStaticPaths."
+  },
+  InvalidGetStaticPathsReturn: {
+    title: "Invalid value returned by getStaticPaths.",
+    code: 3011,
+    message: (returnType) => `Invalid type returned by \`getStaticPaths\`. Expected an \`array\`, got \`${returnType}\``,
+    hint: "See https://docs.astro.build/en/reference/api-reference/#getstaticpaths for more information on getStaticPaths."
+  },
+  GetStaticPathsRemovedRSSHelper: {
+    title: "getStaticPaths RSS helper is not available anymore.",
+    code: 3012,
+    message: "The RSS helper has been removed from `getStaticPaths`. Try the new @astrojs/rss package instead.",
+    hint: "See https://docs.astro.build/en/guides/rss/ for more information."
+  },
+  GetStaticPathsExpectedParams: {
+    title: "Missing params property on `getStaticPaths` route.",
+    code: 3013,
+    message: "Missing or empty required `params` property on `getStaticPaths` route.",
+    hint: "See https://docs.astro.build/en/reference/api-reference/#getstaticpaths for more information on getStaticPaths."
+  },
+  GetStaticPathsInvalidRouteParam: {
+    title: "Invalid value for `getStaticPaths` route parameter.",
+    code: 3014,
+    message: (key, value, valueType) => `Invalid getStaticPaths route parameter for \`${key}\`. Expected undefined, a string or a number, received \`${valueType}\` (\`${value}\`)`,
+    hint: "See https://docs.astro.build/en/reference/api-reference/#getstaticpaths for more information on getStaticPaths."
+  },
+  GetStaticPathsRequired: {
+    title: "`getStaticPaths()` function required for dynamic routes.",
+    code: 3015,
+    message: "`getStaticPaths()` function is required for dynamic routes. Make sure that you `export` a `getStaticPaths` function from your dynamic route.",
+    hint: `See https://docs.astro.build/en/core-concepts/routing/#dynamic-routes for more information on dynamic routes.
+
+Alternatively, set \`output: "server"\` in your Astro config file to switch to a non-static server build. This error can also occur if using \`export const prerender = true;\`.
+See https://docs.astro.build/en/guides/server-side-rendering/ for more information on non-static rendering.`
+  },
+  ReservedSlotName: {
+    title: "Invalid slot name.",
+    code: 3016,
+    message: (slotName2) => `Unable to create a slot named \`${slotName2}\`. \`${slotName2}\` is a reserved slot name. Please update the name of this slot.`
+  },
+  NoAdapterInstalled: {
+    title: "Cannot use Server-side Rendering without an adapter.",
+    code: 3017,
+    message: `Cannot use \`output: 'server'\` without an adapter. Please install and configure the appropriate server adapter for your final deployment.`,
+    hint: "See https://docs.astro.build/en/guides/server-side-rendering/ for more information."
+  },
+  NoMatchingImport: {
+    title: "No import found for component.",
+    code: 3018,
+    message: (componentName) => `Could not render \`${componentName}\`. No matching import has been found for \`${componentName}\`.`,
+    hint: "Please make sure the component is properly imported."
+  },
+  InvalidPrerenderExport: {
+    title: "Invalid prerender export.",
+    code: 3019,
+    message: (prefix, suffix) => {
+      let msg = `A \`prerender\` export has been detected, but its value cannot be statically analyzed.`;
+      if (prefix !== "const")
+        msg += `
+Expected \`const\` declaration but got \`${prefix}\`.`;
+      if (suffix !== "true")
+        msg += `
+Expected \`true\` value but got \`${suffix}\`.`;
+      return msg;
+    },
+    hint: "Mutable values declared at runtime are not supported. Please make sure to use exactly `export const prerender = true`."
+  },
+  InvalidComponentArgs: {
+    title: "Invalid component arguments.",
+    code: 3020,
+    message: (name) => `Invalid arguments passed to${name ? ` <${name}>` : ""} component.`,
+    hint: "Astro components cannot be rendered directly via function call, such as `Component()` or `{items.map(Component)}`."
+  },
+  PageNumberParamNotFound: {
+    title: "Page number param not found.",
+    code: 3021,
+    message: (paramName) => `[paginate()] page number param \`${paramName}\` not found in your filepath.`,
+    hint: "Rename your file to `[page].astro` or `[...page].astro`."
+  },
+  UnknownViteError: {
+    title: "Unknown Vite Error.",
+    code: 4e3
+  },
+  FailedToLoadModuleSSR: {
+    title: "Could not import file.",
+    code: 4001,
+    message: (importName) => `Could not import \`${importName}\`.`,
+    hint: "This is often caused by a typo in the import path. Please make sure the file exists."
+  },
+  InvalidGlob: {
+    title: "Invalid glob pattern.",
+    code: 4002,
+    message: (globPattern) => `Invalid glob pattern: \`${globPattern}\`. Glob patterns must start with './', '../' or '/'.`,
+    hint: "See https://docs.astro.build/en/guides/imports/#glob-patterns for more information on supported glob patterns."
+  },
+  UnknownCSSError: {
+    title: "Unknown CSS Error.",
+    code: 5e3
+  },
+  CSSSyntaxError: {
+    title: "CSS Syntax Error.",
+    code: 5001
+  },
+  UnknownMarkdownError: {
+    title: "Unknown Markdown Error.",
+    code: 6e3
+  },
+  MarkdownFrontmatterParseError: {
+    title: "Failed to parse Markdown frontmatter.",
+    code: 6001
+  },
+  InvalidFrontmatterInjectionError: {
+    title: "Invalid frontmatter injection.",
+    code: 6003,
+    message: 'A remark or rehype plugin attempted to inject invalid frontmatter. Ensure "astro.frontmatter" is set to a valid JSON object that is not `null` or `undefined`.',
+    hint: "See the frontmatter injection docs https://docs.astro.build/en/guides/markdown-content/#modifying-frontmatter-programmatically for more information."
+  },
+  MdxIntegrationMissingError: {
+    title: "MDX integration missing.",
+    code: 6004,
+    message: (file) => `Unable to render ${file}. Ensure that the \`@astrojs/mdx\` integration is installed.`,
+    hint: "See the MDX integration docs for installation and usage instructions: https://docs.astro.build/en/guides/integrations-guide/mdx/"
+  },
+  UnknownConfigError: {
+    title: "Unknown configuration error.",
+    code: 7e3
+  },
+  ConfigNotFound: {
+    title: "Specified configuration file not found.",
+    code: 7001,
+    message: (configFile) => `Unable to resolve \`--config "${configFile}"\`. Does the file exist?`
+  },
+  ConfigLegacyKey: {
+    title: "Legacy configuration detected.",
+    code: 7002,
+    message: (legacyConfigKey) => `Legacy configuration detected: \`${legacyConfigKey}\`.`,
+    hint: "Please update your configuration to the new format.\nSee https://astro.build/config for more information."
+  },
+  UnknownCLIError: {
+    title: "Unknown CLI Error.",
+    code: 8e3
+  },
+  GenerateContentTypesError: {
+    title: "Failed to generate content types.",
+    code: 8001,
+    message: "`astro sync` command failed to generate content collection types.",
+    hint: "Check your `src/content/config.*` file for typos."
+  },
+  UnknownContentCollectionError: {
+    title: "Unknown Content Collection Error.",
+    code: 9e3
+  },
+  InvalidContentEntryFrontmatterError: {
+    title: "Content entry frontmatter does not match schema.",
+    code: 9001,
+    message: (collection, entryId, error2) => {
+      return [
+        `${String(collection)} \u2192 ${String(entryId)} frontmatter does not match collection schema.`,
+        ...error2.errors.map((zodError) => zodError.message)
+      ].join("\n");
+    },
+    hint: "See https://docs.astro.build/en/guides/content-collections/ for more information on content schemas."
+  },
+  InvalidContentEntrySlugError: {
+    title: "Invalid content entry slug.",
+    code: 9002,
+    message: (collection, entryId) => {
+      return `${String(collection)} \u2192 ${String(
+        entryId
+      )} has an invalid slug. \`slug\` must be a string.`;
+    },
+    hint: "See https://docs.astro.build/en/guides/content-collections/ for more on the `slug` field."
+  },
+  ContentSchemaContainsSlugError: {
+    title: "Content Schema should not contain `slug`.",
+    code: 9003,
+    message: (collection) => {
+      return `A content collection schema should not contain \`slug\` since it is reserved for slug generation. Remove this from your ${collection} collection schema.`;
+    },
+    hint: "See https://docs.astro.build/en/guides/content-collections/ for more on the `slug` field."
+  },
+  UnknownError: {
+    title: "Unknown Error.",
+    code: 99999
+  }
+});
+function normalizeLF(code) {
+  return code.replace(/\r\n|\r(?!\n)|\n/g, "\n");
 }
-function getErrorDataByCode(e) {
-  const t = Object.entries(AstroErrorData).find((t2) => t2[1].code === e);
-  if (t)
-    return { name: t[0], data: t[1] };
+function getErrorDataByCode(code) {
+  const entry = Object.entries(AstroErrorData).find((data) => data[1].code === code);
+  if (entry) {
+    return {
+      name: entry[0],
+      data: entry[1]
+    };
+  }
 }
-function codeFrame(e, t) {
-  if (!t || void 0 === t.line || void 0 === t.column)
+function codeFrame(src, loc) {
+  if (!loc || loc.line === void 0 || loc.column === void 0) {
     return "";
-  const a = normalizeLF(e).split("\n").map((e2) => e2.replace(/\t/g, "  ")), n = [];
-  for (let e2 = -2; e2 <= 2; e2++)
-    a[t.line + e2] && n.push(t.line + e2);
-  let i = 0;
-  for (const e2 of n) {
-    let t2 = `> ${e2}`;
-    t2.length > i && (i = t2.length);
   }
-  let o = "";
-  for (const e2 of n) {
-    const n2 = e2 === t.line - 1;
-    o += n2 ? "> " : "  ", o += `${e2 + 1} | ${a[e2]}
-`, n2 && (o += `${Array.from({ length: i }).join(" ")}  | ${Array.from({ length: t.column }).join(" ")}^
-`);
+  const lines = normalizeLF(src).split("\n").map((ln) => ln.replace(/\t/g, "  "));
+  const visibleLines = [];
+  for (let n = -2; n <= 2; n++) {
+    if (lines[loc.line + n])
+      visibleLines.push(loc.line + n);
   }
-  return o;
+  let gutterWidth = 0;
+  for (const lineNo of visibleLines) {
+    let w = `> ${lineNo}`;
+    if (w.length > gutterWidth)
+      gutterWidth = w.length;
+  }
+  let output = "";
+  for (const lineNo of visibleLines) {
+    const isFocusedLine = lineNo === loc.line - 1;
+    output += isFocusedLine ? "> " : "  ";
+    output += `${lineNo + 1} | ${lines[lineNo]}
+`;
+    if (isFocusedLine)
+      output += `${Array.from({ length: gutterWidth }).join(" ")}  | ${Array.from({
+        length: loc.column
+      }).join(" ")}^
+`;
+  }
+  return output;
 }
 var AstroError = class extends Error {
-  constructor(e, ...t) {
-    var a;
-    super(...t), this.type = "AstroError";
-    const { code: n, name: i, title: o, message: r, stack: s, location: p, hint: l, frame: c } = e;
-    this.errorCode = n, this.name = i && "Error" !== i ? i : (null == (a = getErrorDataByCode(this.errorCode)) ? void 0 : a.name) ?? "UnknownError", this.title = o, r && (this.message = r), this.stack = s || this.stack, this.loc = p, this.hint = l, this.frame = c;
+  constructor(props, ...params) {
+    var _a2;
+    super(...params);
+    this.type = "AstroError";
+    const { code, name, title, message, stack, location, hint, frame } = props;
+    this.errorCode = code;
+    if (name && name !== "Error") {
+      this.name = name;
+    } else {
+      this.name = ((_a2 = getErrorDataByCode(this.errorCode)) == null ? void 0 : _a2.name) ?? "UnknownError";
+    }
+    this.title = title;
+    if (message)
+      this.message = message;
+    this.stack = stack ? stack : this.stack;
+    this.loc = location;
+    this.hint = hint;
+    this.frame = frame;
   }
-  setErrorCode(e) {
-    this.errorCode = e;
+  setErrorCode(errorCode) {
+    this.errorCode = errorCode;
   }
-  setLocation(e) {
-    this.loc = e;
+  setLocation(location) {
+    this.loc = location;
   }
-  setName(e) {
-    this.name = e;
+  setName(name) {
+    this.name = name;
   }
-  setMessage(e) {
-    this.message = e;
+  setMessage(message) {
+    this.message = message;
   }
-  setHint(e) {
-    this.hint = e;
+  setHint(hint) {
+    this.hint = hint;
   }
-  setFrame(e, t) {
-    this.frame = codeFrame(e, t);
+  setFrame(source, location) {
+    this.frame = codeFrame(source, location);
   }
-  static is(e) {
-    return "AstroError" === e.type;
+  static is(err) {
+    return err.type === "AstroError";
   }
 };
-function validateArgs(e) {
-  return 3 === e.length && !(!e[0] || "object" != typeof e[0]);
+function validateArgs(args) {
+  if (args.length !== 3)
+    return false;
+  if (!args[0] || typeof args[0] !== "object")
+    return false;
+  return true;
 }
-function baseCreateComponent(e, t) {
-  var a;
-  const n = (null == (a = null == t ? void 0 : t.split("/").pop()) ? void 0 : a.replace(".astro", "")) ?? "", i = (...t2) => {
-    if (!validateArgs(t2))
-      throw new AstroError({ ...AstroErrorData.InvalidComponentArgs, message: AstroErrorData.InvalidComponentArgs.message(n) });
-    return e(...t2);
+function baseCreateComponent(cb, moduleId) {
+  var _a2;
+  const name = ((_a2 = moduleId == null ? void 0 : moduleId.split("/").pop()) == null ? void 0 : _a2.replace(".astro", "")) ?? "";
+  const fn = (...args) => {
+    if (!validateArgs(args)) {
+      throw new AstroError({
+        ...AstroErrorData.InvalidComponentArgs,
+        message: AstroErrorData.InvalidComponentArgs.message(name)
+      });
+    }
+    return cb(...args);
   };
-  return Object.defineProperty(i, "name", { value: n, writable: false }), i.isAstroComponentFactory = true, i.moduleId = t, i;
+  Object.defineProperty(fn, "name", { value: name, writable: false });
+  fn.isAstroComponentFactory = true;
+  fn.moduleId = moduleId;
+  return fn;
 }
-function createComponentWithOptions(e) {
-  const t = baseCreateComponent(e.factory, e.moduleId);
-  return t.propagation = e.propagation, t;
+function createComponentWithOptions(opts) {
+  const cb = baseCreateComponent(opts.factory, opts.moduleId);
+  cb.propagation = opts.propagation;
+  return cb;
 }
-function createComponent(e, t) {
-  return "function" == typeof e ? baseCreateComponent(e, t) : createComponentWithOptions(e);
-}
-var ASTRO_VERSION = "2.0.6";
-function createAstroGlobFn() {
-  return (e, t) => {
-    let a = [...Object.values(e)];
-    if (0 === a.length)
-      throw new Error(`Astro.glob(${JSON.stringify(t())}) - no matches found.`);
-    return Promise.all(a.map((e2) => e2()));
-  };
-}
-function createAstro(e) {
-  return { site: e ? new URL(e) : void 0, generator: `Astro v${ASTRO_VERSION}`, glob: createAstroGlobFn() };
-}
-function getHandlerFromModule(e, t) {
-  return e[t] ? e[t] : "delete" === t && e.del ? e.del : e.all ? e.all : void 0;
-}
-async function renderEndpoint(e, t, a) {
-  var n;
-  const { request: i, params: o } = t, r = null == (n = i.method) ? void 0 : n.toLowerCase(), s = getHandlerFromModule(e, r);
-  if (!a && false === a && r && "get" !== r && console.warn(`
-${r} requests are not available when building a static site. Update your config to output: 'server' to handle ${r} requests.`), !s || "function" != typeof s) {
-    return new Response(null, { status: 404, headers: { "X-Astro-Response": "Not-Found" } });
+function createComponent(arg1, moduleId) {
+  if (typeof arg1 === "function") {
+    return baseCreateComponent(arg1, moduleId);
+  } else {
+    return createComponentWithOptions(arg1);
   }
-  s.length > 1 && console.warn("\nAPI routes with 2 arguments have been deprecated. Instead they take a single argument in the form of:\n\nexport function get({ params, request }) {\n	//...\n}\n\nUpdate your code to remove this warning.");
-  const p = new Proxy(t, { get: (e2, t2) => t2 in e2 ? Reflect.get(e2, t2) : t2 in o ? (console.warn("\nAPI routes no longer pass params as the first argument. Instead an object containing a params property is provided in the form of:\n\nexport function get({ params }) {\n	// ...\n}\n\nUpdate your code to remove this warning."), Reflect.get(o, t2)) : void 0 });
-  return s.call(e, p, i);
+}
+var ASTRO_VERSION = "2.0.8";
+function createAstroGlobFn() {
+  const globHandler = (importMetaGlobResult, globValue) => {
+    let allEntries = [...Object.values(importMetaGlobResult)];
+    if (allEntries.length === 0) {
+      throw new Error(`Astro.glob(${JSON.stringify(globValue())}) - no matches found.`);
+    }
+    return Promise.all(allEntries.map((fn) => fn()));
+  };
+  return globHandler;
+}
+function createAstro(site) {
+  return {
+    site: site ? new URL(site) : void 0,
+    generator: `Astro v${ASTRO_VERSION}`,
+    glob: createAstroGlobFn()
+  };
+}
+function getHandlerFromModule(mod, method) {
+  if (mod[method]) {
+    return mod[method];
+  }
+  if (method === "delete" && mod["del"]) {
+    return mod["del"];
+  }
+  if (mod["all"]) {
+    return mod["all"];
+  }
+  return void 0;
+}
+async function renderEndpoint(mod, context, ssr) {
+  var _a2;
+  const { request, params } = context;
+  const chosenMethod = (_a2 = request.method) == null ? void 0 : _a2.toLowerCase();
+  const handler = getHandlerFromModule(mod, chosenMethod);
+  if (!ssr && ssr === false && chosenMethod && chosenMethod !== "get") {
+    console.warn(`
+${chosenMethod} requests are not available when building a static site. Update your config to output: 'server' to handle ${chosenMethod} requests.`);
+  }
+  if (!handler || typeof handler !== "function") {
+    let response = new Response(null, {
+      status: 404,
+      headers: {
+        "X-Astro-Response": "Not-Found"
+      }
+    });
+    return response;
+  }
+  if (handler.length > 1) {
+    console.warn(`
+API routes with 2 arguments have been deprecated. Instead they take a single argument in the form of:
+
+export function get({ params, request }) {
+	//...
+}
+
+Update your code to remove this warning.`);
+  }
+  const proxy = new Proxy(context, {
+    get(target, prop) {
+      if (prop in target) {
+        return Reflect.get(target, prop);
+      } else if (prop in params) {
+        console.warn(`
+API routes no longer pass params as the first argument. Instead an object containing a params property is provided in the form of:
+
+export function get({ params }) {
+	// ...
+}
+
+Update your code to remove this warning.`);
+        return Reflect.get(params, prop);
+      } else {
+        return void 0;
+      }
+    }
+  });
+  return handler.call(mod, proxy, request);
 }
 var { replace } = "";
 var ca = /[&<>'"]/g;
-var esca = { "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" };
-var pe = (e) => esca[e];
-var escape = (e) => replace.call(e, ca, pe);
-function serializeListValue(e) {
-  const t = {};
-  return function e2(a) {
-    a && "function" == typeof a.forEach ? a.forEach(e2) : a === Object(a) ? Object.keys(a).forEach((t2) => {
-      a[t2] && e2(t2);
-    }) : (a = false === a || null == a ? "" : String(a).trim()) && a.split(/\s+/).forEach((e3) => {
-      t[e3] = true;
-    });
-  }(e), Object.keys(t).join(" ");
+var esca = {
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  "'": "&#39;",
+  '"': "&quot;"
+};
+var pe = (m) => esca[m];
+var escape = (es) => replace.call(es, ca, pe);
+function serializeListValue(value) {
+  const hash = {};
+  push(value);
+  return Object.keys(hash).join(" ");
+  function push(item) {
+    if (item && typeof item.forEach === "function")
+      item.forEach(push);
+    else if (item === Object(item))
+      Object.keys(item).forEach((name) => {
+        if (item[name])
+          push(name);
+      });
+    else {
+      item = item === false || item == null ? "" : String(item).trim();
+      if (item) {
+        item.split(/\s+/).forEach((name) => {
+          hash[name] = true;
+        });
+      }
+    }
+  }
 }
-function isPromise(e) {
-  return !!e && "object" == typeof e && "function" == typeof e.then;
+function isPromise(value) {
+  return !!value && typeof value === "object" && typeof value.then === "function";
 }
-async function* streamAsyncIterator(e) {
-  const t = e.getReader();
+async function* streamAsyncIterator(stream) {
+  const reader = stream.getReader();
   try {
-    for (; ; ) {
-      const { done: e2, value: a } = await t.read();
-      if (e2)
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done)
         return;
-      yield a;
+      yield value;
     }
   } finally {
-    t.releaseLock();
+    reader.releaseLock();
   }
 }
 var escapeHTML = escape;
@@ -398,81 +880,132 @@ var HTMLString = class extends String {
     return "HTMLString";
   }
 };
-var markHTMLString = (e) => e instanceof HTMLString ? e : "string" == typeof e ? new HTMLString(e) : e;
-function isHTMLString(e) {
-  return "[object HTMLString]" === Object.prototype.toString.call(e);
+var markHTMLString = (value) => {
+  if (value instanceof HTMLString) {
+    return value;
+  }
+  if (typeof value === "string") {
+    return new HTMLString(value);
+  }
+  return value;
+};
+function isHTMLString(value) {
+  return Object.prototype.toString.call(value) === "[object HTMLString]";
 }
 var AstroJSX = "astro:jsx";
 var Empty = Symbol("empty");
-var toSlotName = (e) => e;
-function isVNode(e) {
-  return e && "object" == typeof e && e[AstroJSX];
+var toSlotName = (slotAttr) => slotAttr;
+function isVNode(vnode) {
+  return vnode && typeof vnode === "object" && vnode[AstroJSX];
 }
-function transformSlots(e) {
-  if ("string" == typeof e.type)
-    return e;
-  const t = {};
-  if (isVNode(e.props.children)) {
-    const a = e.props.children;
-    if (!isVNode(a))
+function transformSlots(vnode) {
+  if (typeof vnode.type === "string")
+    return vnode;
+  const slots = {};
+  if (isVNode(vnode.props.children)) {
+    const child = vnode.props.children;
+    if (!isVNode(child))
       return;
-    if (!("slot" in a.props))
+    if (!("slot" in child.props))
       return;
-    const n = toSlotName(a.props.slot);
-    t[n] = [a], t[n].$$slot = true, delete a.props.slot, delete e.props.children;
+    const name = toSlotName(child.props.slot);
+    slots[name] = [child];
+    slots[name]["$$slot"] = true;
+    delete child.props.slot;
+    delete vnode.props.children;
   }
-  Array.isArray(e.props.children) && (e.props.children = e.props.children.map((e2) => {
-    if (!isVNode(e2))
-      return e2;
-    if (!("slot" in e2.props))
-      return e2;
-    const a = toSlotName(e2.props.slot);
-    return Array.isArray(t[a]) ? t[a].push(e2) : (t[a] = [e2], t[a].$$slot = true), delete e2.props.slot, Empty;
-  }).filter((e2) => e2 !== Empty)), Object.assign(e.props, t);
+  if (Array.isArray(vnode.props.children)) {
+    vnode.props.children = vnode.props.children.map((child) => {
+      if (!isVNode(child))
+        return child;
+      if (!("slot" in child.props))
+        return child;
+      const name = toSlotName(child.props.slot);
+      if (Array.isArray(slots[name])) {
+        slots[name].push(child);
+      } else {
+        slots[name] = [child];
+        slots[name]["$$slot"] = true;
+      }
+      delete child.props.slot;
+      return Empty;
+    }).filter((v) => v !== Empty);
+  }
+  Object.assign(vnode.props, slots);
 }
-function markRawChildren(e) {
-  return "string" == typeof e ? markHTMLString(e) : Array.isArray(e) ? e.map((e2) => markRawChildren(e2)) : e;
+function markRawChildren(child) {
+  if (typeof child === "string")
+    return markHTMLString(child);
+  if (Array.isArray(child))
+    return child.map((c) => markRawChildren(c));
+  return child;
 }
-function transformSetDirectives(e) {
-  if ("set:html" in e.props || "set:text" in e.props) {
-    if ("set:html" in e.props) {
-      const t = markRawChildren(e.props["set:html"]);
-      return delete e.props["set:html"], void Object.assign(e.props, { children: t });
-    }
-    if ("set:text" in e.props) {
-      const t = e.props["set:text"];
-      return delete e.props["set:text"], void Object.assign(e.props, { children: t });
-    }
+function transformSetDirectives(vnode) {
+  if (!("set:html" in vnode.props || "set:text" in vnode.props))
+    return;
+  if ("set:html" in vnode.props) {
+    const children = markRawChildren(vnode.props["set:html"]);
+    delete vnode.props["set:html"];
+    Object.assign(vnode.props, { children });
+    return;
+  }
+  if ("set:text" in vnode.props) {
+    const children = vnode.props["set:text"];
+    delete vnode.props["set:text"];
+    Object.assign(vnode.props, { children });
+    return;
   }
 }
-function createVNode(e, t) {
-  const a = { [Renderer]: "astro:jsx", [AstroJSX]: true, type: e, props: t ?? {} };
-  return transformSetDirectives(a), transformSlots(a), a;
+function createVNode(type, props) {
+  const vnode = {
+    [Renderer]: "astro:jsx",
+    [AstroJSX]: true,
+    type,
+    props: props ?? {}
+  };
+  transformSetDirectives(vnode);
+  transformSlots(vnode);
+  return vnode;
 }
-var idle_prebuilt_default = '(self.Astro=self.Astro||{}).idle=t=>{const e=async()=>{await(await t())()};"requestIdleCallback"in window?window.requestIdleCallback(e):setTimeout(e,200)},window.dispatchEvent(new Event("astro:idle"));';
-var load_prebuilt_default = '(self.Astro=self.Astro||{}).load=a=>{(async()=>await(await a())())()},window.dispatchEvent(new Event("astro:load"));';
-var media_prebuilt_default = '(self.Astro=self.Astro||{}).media=(s,a)=>{const t=async()=>{await(await s())()};if(a.value){const e=matchMedia(a.value);e.matches?t():e.addEventListener("change",t,{once:!0})}},window.dispatchEvent(new Event("astro:media"));';
-var only_prebuilt_default = '(self.Astro=self.Astro||{}).only=t=>{(async()=>await(await t())())()},window.dispatchEvent(new Event("astro:only"));';
-var visible_prebuilt_default = '(self.Astro=self.Astro||{}).visible=(s,c,n)=>{const r=async()=>{await(await s())()};let i=new IntersectionObserver(e=>{for(const t of e)if(!!t.isIntersecting){i.disconnect(),r();break}});for(let e=0;e<n.children.length;e++){const t=n.children[e];i.observe(t)}},window.dispatchEvent(new Event("astro:visible"));';
-var astro_island_prebuilt_default = 'var l;{const c={0:t=>t,1:t=>JSON.parse(t,o),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(JSON.parse(t,o)),5:t=>new Set(JSON.parse(t,o)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(JSON.parse(t)),9:t=>new Uint16Array(JSON.parse(t)),10:t=>new Uint32Array(JSON.parse(t))},o=(t,s)=>{if(t===""||!Array.isArray(s))return s;const[e,n]=s;return e in c?c[e](n):void 0};customElements.get("astro-island")||customElements.define("astro-island",(l=class extends HTMLElement{constructor(){super(...arguments);this.hydrate=()=>{if(!this.hydrator||this.parentElement&&this.parentElement.closest("astro-island[ssr]"))return;const s=this.querySelectorAll("astro-slot"),e={},n=this.querySelectorAll("template[data-astro-template]");for(const r of n){const i=r.closest(this.tagName);!i||!i.isSameNode(this)||(e[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(const r of s){const i=r.closest(this.tagName);!i||!i.isSameNode(this)||(e[r.getAttribute("name")||"default"]=r.innerHTML)}const a=this.hasAttribute("props")?JSON.parse(this.getAttribute("props"),o):{};this.hydrator(this)(this.Component,a,e,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),window.removeEventListener("astro:hydrate",this.hydrate),window.dispatchEvent(new CustomEvent("astro:hydrate"))}}connectedCallback(){!this.hasAttribute("await-children")||this.firstChild?this.childrenConnectedCallback():new MutationObserver((s,e)=>{e.disconnect(),this.childrenConnectedCallback()}).observe(this,{childList:!0})}async childrenConnectedCallback(){window.addEventListener("astro:hydrate",this.hydrate);let s=this.getAttribute("before-hydration-url");s&&await import(s),this.start()}start(){const s=JSON.parse(this.getAttribute("opts")),e=this.getAttribute("client");if(Astro[e]===void 0){window.addEventListener(`astro:${e}`,()=>this.start(),{once:!0});return}Astro[e](async()=>{const n=this.getAttribute("renderer-url"),[a,{default:r}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),i=this.getAttribute("component-export")||"default";if(!i.includes("."))this.Component=a[i];else{this.Component=a;for(const d of i.split("."))this.Component=this.Component[d]}return this.hydrator=r,this.hydrate},s,this)}attributeChangedCallback(){this.hydrator&&this.hydrate()}},l.observedAttributes=["props"],l))}';
-function determineIfNeedsHydrationScript(e) {
-  return !e._metadata.hasHydrationScript && (e._metadata.hasHydrationScript = true);
+var idle_prebuilt_default = `(self.Astro=self.Astro||{}).idle=t=>{const e=async()=>{await(await t())()};"requestIdleCallback"in window?window.requestIdleCallback(e):setTimeout(e,200)},window.dispatchEvent(new Event("astro:idle"));`;
+var load_prebuilt_default = `(self.Astro=self.Astro||{}).load=a=>{(async()=>await(await a())())()},window.dispatchEvent(new Event("astro:load"));`;
+var media_prebuilt_default = `(self.Astro=self.Astro||{}).media=(s,a)=>{const t=async()=>{await(await s())()};if(a.value){const e=matchMedia(a.value);e.matches?t():e.addEventListener("change",t,{once:!0})}},window.dispatchEvent(new Event("astro:media"));`;
+var only_prebuilt_default = `(self.Astro=self.Astro||{}).only=t=>{(async()=>await(await t())())()},window.dispatchEvent(new Event("astro:only"));`;
+var visible_prebuilt_default = `(self.Astro=self.Astro||{}).visible=(s,c,n)=>{const r=async()=>{await(await s())()};let i=new IntersectionObserver(e=>{for(const t of e)if(!!t.isIntersecting){i.disconnect(),r();break}});for(let e=0;e<n.children.length;e++){const t=n.children[e];i.observe(t)}},window.dispatchEvent(new Event("astro:visible"));`;
+var astro_island_prebuilt_default = `var l;{const c={0:t=>t,1:t=>JSON.parse(t,o),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(JSON.parse(t,o)),5:t=>new Set(JSON.parse(t,o)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(JSON.parse(t)),9:t=>new Uint16Array(JSON.parse(t)),10:t=>new Uint32Array(JSON.parse(t))},o=(t,s)=>{if(t===""||!Array.isArray(s))return s;const[e,n]=s;return e in c?c[e](n):void 0};customElements.get("astro-island")||customElements.define("astro-island",(l=class extends HTMLElement{constructor(){super(...arguments);this.hydrate=()=>{if(!this.hydrator||this.parentElement&&this.parentElement.closest("astro-island[ssr]"))return;const s=this.querySelectorAll("astro-slot"),e={},n=this.querySelectorAll("template[data-astro-template]");for(const r of n){const i=r.closest(this.tagName);!i||!i.isSameNode(this)||(e[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(const r of s){const i=r.closest(this.tagName);!i||!i.isSameNode(this)||(e[r.getAttribute("name")||"default"]=r.innerHTML)}const a=this.hasAttribute("props")?JSON.parse(this.getAttribute("props"),o):{};this.hydrator(this)(this.Component,a,e,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),window.removeEventListener("astro:hydrate",this.hydrate),window.dispatchEvent(new CustomEvent("astro:hydrate"))}}connectedCallback(){!this.hasAttribute("await-children")||this.firstChild?this.childrenConnectedCallback():new MutationObserver((s,e)=>{e.disconnect(),this.childrenConnectedCallback()}).observe(this,{childList:!0})}async childrenConnectedCallback(){window.addEventListener("astro:hydrate",this.hydrate);let s=this.getAttribute("before-hydration-url");s&&await import(s),this.start()}start(){const s=JSON.parse(this.getAttribute("opts")),e=this.getAttribute("client");if(Astro[e]===void 0){window.addEventListener(\`astro:\${e}\`,()=>this.start(),{once:!0});return}Astro[e](async()=>{const n=this.getAttribute("renderer-url"),[a,{default:r}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),i=this.getAttribute("component-export")||"default";if(!i.includes("."))this.Component=a[i];else{this.Component=a;for(const d of i.split("."))this.Component=this.Component[d]}return this.hydrator=r,this.hydrate},s,this)}attributeChangedCallback(){this.hydrator&&this.hydrate()}},l.observedAttributes=["props"],l))}`;
+function determineIfNeedsHydrationScript(result) {
+  if (result._metadata.hasHydrationScript) {
+    return false;
+  }
+  return result._metadata.hasHydrationScript = true;
 }
-var hydrationScripts = { idle: idle_prebuilt_default, load: load_prebuilt_default, only: only_prebuilt_default, media: media_prebuilt_default, visible: visible_prebuilt_default };
-function determinesIfNeedsDirectiveScript(e, t) {
-  return !e._metadata.hasDirectives.has(t) && (e._metadata.hasDirectives.add(t), true);
+var hydrationScripts = {
+  idle: idle_prebuilt_default,
+  load: load_prebuilt_default,
+  only: only_prebuilt_default,
+  media: media_prebuilt_default,
+  visible: visible_prebuilt_default
+};
+function determinesIfNeedsDirectiveScript(result, directive) {
+  if (result._metadata.hasDirectives.has(directive)) {
+    return false;
+  }
+  result._metadata.hasDirectives.add(directive);
+  return true;
 }
-function getDirectiveScriptText(e) {
-  if (!(e in hydrationScripts))
-    throw new Error(`Unknown directive: ${e}`);
-  return hydrationScripts[e];
+function getDirectiveScriptText(directive) {
+  if (!(directive in hydrationScripts)) {
+    throw new Error(`Unknown directive: ${directive}`);
+  }
+  const directiveScriptText = hydrationScripts[directive];
+  return directiveScriptText;
 }
-function getPrescripts(e, t) {
-  switch (e) {
+function getPrescripts(type, directive) {
+  switch (type) {
     case "both":
-      return `<style>astro-island,astro-slot{display:contents}</style><script>${getDirectiveScriptText(t) + astro_island_prebuilt_default}<\/script>`;
+      return `<style>astro-island,astro-slot{display:contents}</style><script>${getDirectiveScriptText(directive) + astro_island_prebuilt_default}<\/script>`;
     case "directive":
-      return `<script>${getDirectiveScriptText(t)}<\/script>`;
+      return `<script>${getDirectiveScriptText(directive)}<\/script>`;
   }
   return "";
 }
@@ -481,317 +1014,633 @@ var htmlBooleanAttributes = /^(allowfullscreen|async|autofocus|autoplay|controls
 var htmlEnumAttributes = /^(contenteditable|draggable|spellcheck|value)$/i;
 var svgEnumAttributes = /^(autoReverse|externalResourcesRequired|focusable|preserveAlpha)$/i;
 var STATIC_DIRECTIVES = /* @__PURE__ */ new Set(["set:html", "set:text"]);
-var toIdent = (e) => e.trim().replace(/(?:(?!^)\b\w|\s+|[^\w]+)/g, (e2, t) => /[^\w]|\s/.test(e2) ? "" : 0 === t ? e2 : e2.toUpperCase());
-var toAttributeString = (e, t = true) => t ? String(e).replace(/&/g, "&#38;").replace(/"/g, "&#34;") : e;
-var kebab = (e) => e.toLowerCase() === e ? e : e.replace(/[A-Z]/g, (e2) => `-${e2.toLowerCase()}`);
-var toStyleString = (e) => Object.entries(e).map(([e2, t]) => `${kebab(e2)}:${t}`).join(";");
-function defineScriptVars(e) {
-  let t = "";
-  for (const [a, n] of Object.entries(e))
-    t += `const ${toIdent(a)} = ${JSON.stringify(n)};
-`;
-  return markHTMLString(t);
-}
-function formatList(e) {
-  return 1 === e.length ? e[0] : `${e.slice(0, -1).join(", ")} or ${e[e.length - 1]}`;
-}
-function addAttribute(e, t, a = true) {
-  if (null == e)
+var toIdent = (k) => k.trim().replace(/(?:(?!^)\b\w|\s+|[^\w]+)/g, (match, index) => {
+  if (/[^\w]|\s/.test(match))
     return "";
-  if (false === e)
-    return htmlEnumAttributes.test(t) || svgEnumAttributes.test(t) ? markHTMLString(` ${t}="false"`) : "";
-  if (STATIC_DIRECTIVES.has(t))
-    return console.warn(`[astro] The "${t}" directive cannot be applied dynamically at runtime. It will not be rendered as an attribute.
-
-Make sure to use the static attribute syntax (\`${t}={value}\`) instead of the dynamic spread syntax (\`{...{ "${t}": value }}\`).`), "";
-  if ("class:list" === t) {
-    const n = toAttributeString(serializeListValue(e), a);
-    return "" === n ? "" : markHTMLString(` ${t.slice(0, -5)}="${n}"`);
+  return index === 0 ? match : match.toUpperCase();
+});
+var toAttributeString = (value, shouldEscape = true) => shouldEscape ? String(value).replace(/&/g, "&#38;").replace(/"/g, "&#34;") : value;
+var kebab = (k) => k.toLowerCase() === k ? k : k.replace(/[A-Z]/g, (match) => `-${match.toLowerCase()}`);
+var toStyleString = (obj) => Object.entries(obj).map(([k, v]) => `${kebab(k)}:${v}`).join(";");
+function defineScriptVars(vars) {
+  let output = "";
+  for (const [key, value] of Object.entries(vars)) {
+    output += `const ${toIdent(key)} = ${JSON.stringify(value)};
+`;
   }
-  return "style" !== t || e instanceof HTMLString || "object" != typeof e ? "className" === t ? markHTMLString(` class="${toAttributeString(e, a)}"`) : true === e && (t.startsWith("data-") || htmlBooleanAttributes.test(t)) ? markHTMLString(` ${t}`) : markHTMLString(` ${t}="${toAttributeString(e, a)}"`) : markHTMLString(` ${t}="${toAttributeString(toStyleString(e), a)}"`);
+  return markHTMLString(output);
 }
-function internalSpreadAttributes(e, t = true) {
-  let a = "";
-  for (const [n, i] of Object.entries(e))
-    a += addAttribute(i, n, t);
-  return markHTMLString(a);
+function formatList(values) {
+  if (values.length === 1) {
+    return values[0];
+  }
+  return `${values.slice(0, -1).join(", ")} or ${values[values.length - 1]}`;
 }
-function renderElement$1(e, { props: t, children: a = "" }, n = true) {
-  const { lang: i, "data-astro-id": o, "define:vars": r, ...s } = t;
-  return r && ("style" === e && (delete s["is:global"], delete s["is:scoped"]), "script" === e && (delete s.hoist, a = defineScriptVars(r) + "\n" + a)), null != a && "" != a || !voidElementNames.test(e) ? `<${e}${internalSpreadAttributes(s, n)}>${a}</${e}>` : `<${e}${internalSpreadAttributes(s, n)} />`;
+function addAttribute(value, key, shouldEscape = true) {
+  if (value == null) {
+    return "";
+  }
+  if (value === false) {
+    if (htmlEnumAttributes.test(key) || svgEnumAttributes.test(key)) {
+      return markHTMLString(` ${key}="false"`);
+    }
+    return "";
+  }
+  if (STATIC_DIRECTIVES.has(key)) {
+    console.warn(`[astro] The "${key}" directive cannot be applied dynamically at runtime. It will not be rendered as an attribute.
+
+Make sure to use the static attribute syntax (\`${key}={value}\`) instead of the dynamic spread syntax (\`{...{ "${key}": value }}\`).`);
+    return "";
+  }
+  if (key === "class:list") {
+    const listValue = toAttributeString(serializeListValue(value), shouldEscape);
+    if (listValue === "") {
+      return "";
+    }
+    return markHTMLString(` ${key.slice(0, -5)}="${listValue}"`);
+  }
+  if (key === "style" && !(value instanceof HTMLString) && typeof value === "object") {
+    return markHTMLString(` ${key}="${toAttributeString(toStyleString(value), shouldEscape)}"`);
+  }
+  if (key === "className") {
+    return markHTMLString(` class="${toAttributeString(value, shouldEscape)}"`);
+  }
+  if (value === true && (key.startsWith("data-") || htmlBooleanAttributes.test(key))) {
+    return markHTMLString(` ${key}`);
+  } else {
+    return markHTMLString(` ${key}="${toAttributeString(value, shouldEscape)}"`);
+  }
 }
-var ScopeFlags = { Astro: 1, JSX: 2, Slot: 4 };
-var uniqueElements = (e, t, a) => {
-  const n = JSON.stringify(e.props), i = e.children;
-  return t === a.findIndex((e2) => JSON.stringify(e2.props) === n && e2.children == i);
+function internalSpreadAttributes(values, shouldEscape = true) {
+  let output = "";
+  for (const [key, value] of Object.entries(values)) {
+    output += addAttribute(value, key, shouldEscape);
+  }
+  return markHTMLString(output);
+}
+function renderElement$1(name, { props: _props, children = "" }, shouldEscape = true) {
+  const { lang: _, "data-astro-id": astroId, "define:vars": defineVars, ...props } = _props;
+  if (defineVars) {
+    if (name === "style") {
+      delete props["is:global"];
+      delete props["is:scoped"];
+    }
+    if (name === "script") {
+      delete props.hoist;
+      children = defineScriptVars(defineVars) + "\n" + children;
+    }
+  }
+  if ((children == null || children == "") && voidElementNames.test(name)) {
+    return `<${name}${internalSpreadAttributes(props, shouldEscape)} />`;
+  }
+  return `<${name}${internalSpreadAttributes(props, shouldEscape)}>${children}</${name}>`;
+}
+var uniqueElements = (item, index, all) => {
+  const props = JSON.stringify(item.props);
+  const children = item.children;
+  return index === all.findIndex((i) => JSON.stringify(i.props) === props && i.children == children);
 };
-function renderAllHeadContent(e) {
-  e._metadata.hasRenderedHead = true;
-  const t = Array.from(e.styles).filter(uniqueElements).map((e2) => renderElement$1("style", e2));
-  e.styles.clear();
-  const a = Array.from(e.scripts).filter(uniqueElements).map((e2, t2) => renderElement$1("script", e2, false));
-  let n = Array.from(e.links).filter(uniqueElements).map((e2) => renderElement$1("link", e2, false)).join("\n") + t.join("\n") + a.join("\n");
-  if (e.extraHead.length > 0)
-    for (const t2 of e.extraHead)
-      n += t2;
-  return markHTMLString(n);
+function renderAllHeadContent(result) {
+  result._metadata.hasRenderedHead = true;
+  const styles = Array.from(result.styles).filter(uniqueElements).map((style) => renderElement$1("style", style));
+  result.styles.clear();
+  const scripts = Array.from(result.scripts).filter(uniqueElements).map((script, i) => {
+    return renderElement$1("script", script, false);
+  });
+  const links = Array.from(result.links).filter(uniqueElements).map((link) => renderElement$1("link", link, false));
+  let content = links.join("\n") + styles.join("\n") + scripts.join("\n");
+  if (result.extraHead.length > 0) {
+    for (const part of result.extraHead) {
+      content += part;
+    }
+  }
+  return markHTMLString(content);
 }
-function* renderHead(e) {
-  yield { type: "head", result: e };
+function* renderHead(result) {
+  yield { type: "head", result };
 }
-function* maybeRenderHead(e) {
-  e._metadata.hasRenderedHead || e.scope !== (ScopeFlags.JSX | ScopeFlags.Slot | ScopeFlags.Astro) && (yield { type: "head", result: e });
+function* maybeRenderHead(result) {
+  if (result._metadata.hasRenderedHead) {
+    return;
+  }
+  yield { type: "maybe-head", result, scope: result.scope };
+}
+var ScopeFlags = {
+  Astro: 1 << 0,
+  JSX: 1 << 1,
+  Slot: 1 << 2,
+  HeadBuffer: 1 << 3,
+  RenderSlot: 1 << 4
+};
+function addScopeFlag(result, flag) {
+  result.scope |= flag;
+}
+function createScopedResult(result, flag) {
+  const scopedResult = Object.create(result, {
+    scope: {
+      writable: true,
+      value: result.scope
+    }
+  });
+  if (flag != null) {
+    addScopeFlag(scopedResult, flag);
+  }
+  return scopedResult;
 }
 var headAndContentSym = Symbol.for("astro.headAndContent");
-function isHeadAndContent(e) {
-  return "object" == typeof e && !!e[headAndContentSym];
+function isHeadAndContent(obj) {
+  return typeof obj === "object" && !!obj[headAndContentSym];
 }
 var _a$1;
 var renderTemplateResultSym = Symbol.for("astro.renderTemplateResult");
 var RenderTemplateResult = class {
-  constructor(e, t) {
-    this[_a$1] = true, this.htmlParts = e, this.error = void 0, this.expressions = t.map((e2) => isPromise(e2) ? Promise.resolve(e2).catch((e3) => {
-      if (!this.error)
-        throw this.error = e3, e3;
-    }) : e2);
+  constructor(htmlParts, expressions) {
+    this[_a$1] = true;
+    this.htmlParts = htmlParts;
+    this.error = void 0;
+    this.expressions = expressions.map((expression) => {
+      if (isPromise(expression)) {
+        return Promise.resolve(expression).catch((err) => {
+          if (!this.error) {
+            this.error = err;
+            throw err;
+          }
+        });
+      }
+      return expression;
+    });
   }
   async *[(_a$1 = renderTemplateResultSym, Symbol.asyncIterator)]() {
-    const { htmlParts: e, expressions: t } = this;
-    for (let a = 0; a < e.length; a++) {
-      const n = e[a], i = t[a];
-      yield markHTMLString(n), yield* renderChild(i);
+    const { htmlParts, expressions } = this;
+    for (let i = 0; i < htmlParts.length; i++) {
+      const html = htmlParts[i];
+      const expression = expressions[i];
+      yield markHTMLString(html);
+      yield* renderChild(expression);
     }
   }
 };
-function isRenderTemplateResult(e) {
-  return "object" == typeof e && !!e[renderTemplateResultSym];
+function isRenderTemplateResult(obj) {
+  return typeof obj === "object" && !!obj[renderTemplateResultSym];
 }
-async function* renderAstroTemplateResult(e) {
-  for await (const t of e)
-    if (t || 0 === t)
-      for await (const e2 of renderChild(t))
-        if ("directive" === e2.type)
-          yield e2;
-        else
-          yield markHTMLString(e2);
-}
-function renderTemplate(e, ...t) {
-  return new RenderTemplateResult(e, t);
-}
-function isAstroComponentFactory(e) {
-  return null != e && true === e.isAstroComponentFactory;
-}
-async function renderToString(e, t, a, n) {
-  e.scope |= ScopeFlags.Astro;
-  const i = await t(e, a, n);
-  if (i instanceof Response) {
-    throw i;
-  }
-  let o = new HTMLParts();
-  const r = isHeadAndContent(i) ? i.content : i;
-  for await (const t2 of renderAstroTemplateResult(r))
-    o.append(t2, e);
-  return o.toString();
-}
-function isAPropagatingComponent(e, t) {
-  let a = t.propagation || "none";
-  return t.moduleId && e.propagation.has(t.moduleId) && "none" === a && (a = e.propagation.get(t.moduleId)), "in-tree" === a || "self" === a;
-}
-var PROP_TYPE = { Value: 0, JSON: 1, RegExp: 2, Date: 3, Map: 4, Set: 5, BigInt: 6, URL: 7, Uint8Array: 8, Uint16Array: 9, Uint32Array: 10 };
-function serializeArray(e, t = {}, a = /* @__PURE__ */ new WeakSet()) {
-  if (a.has(e))
-    throw new Error(`Cyclic reference detected while serializing props for <${t.displayName} client:${t.hydrate}>!
-
-Cyclic references cannot be safely serialized for client-side usage. Please remove the cyclic reference.`);
-  a.add(e);
-  const n = e.map((e2) => convertToSerializedForm(e2, t, a));
-  return a.delete(e), n;
-}
-function serializeObject(e, t = {}, a = /* @__PURE__ */ new WeakSet()) {
-  if (a.has(e))
-    throw new Error(`Cyclic reference detected while serializing props for <${t.displayName} client:${t.hydrate}>!
-
-Cyclic references cannot be safely serialized for client-side usage. Please remove the cyclic reference.`);
-  a.add(e);
-  const n = Object.fromEntries(Object.entries(e).map(([e2, n2]) => [e2, convertToSerializedForm(n2, t, a)]));
-  return a.delete(e), n;
-}
-function convertToSerializedForm(e, t = {}, a = /* @__PURE__ */ new WeakSet()) {
-  switch (Object.prototype.toString.call(e)) {
-    case "[object Date]":
-      return [PROP_TYPE.Date, e.toISOString()];
-    case "[object RegExp]":
-      return [PROP_TYPE.RegExp, e.source];
-    case "[object Map]":
-      return [PROP_TYPE.Map, JSON.stringify(serializeArray(Array.from(e), t, a))];
-    case "[object Set]":
-      return [PROP_TYPE.Set, JSON.stringify(serializeArray(Array.from(e), t, a))];
-    case "[object BigInt]":
-      return [PROP_TYPE.BigInt, e.toString()];
-    case "[object URL]":
-      return [PROP_TYPE.URL, e.toString()];
-    case "[object Array]":
-      return [PROP_TYPE.JSON, JSON.stringify(serializeArray(e, t, a))];
-    case "[object Uint8Array]":
-      return [PROP_TYPE.Uint8Array, JSON.stringify(Array.from(e))];
-    case "[object Uint16Array]":
-      return [PROP_TYPE.Uint16Array, JSON.stringify(Array.from(e))];
-    case "[object Uint32Array]":
-      return [PROP_TYPE.Uint32Array, JSON.stringify(Array.from(e))];
-    default:
-      return null !== e && "object" == typeof e ? [PROP_TYPE.Value, serializeObject(e, t, a)] : [PROP_TYPE.Value, e];
+async function* renderAstroTemplateResult(component) {
+  for await (const value of component) {
+    if (value || value === 0) {
+      for await (const chunk of renderChild(value)) {
+        switch (chunk.type) {
+          case "directive": {
+            yield chunk;
+            break;
+          }
+          default: {
+            yield markHTMLString(chunk);
+            break;
+          }
+        }
+      }
+    }
   }
 }
-function serializeProps(e, t) {
-  return JSON.stringify(serializeObject(e, t));
+function renderTemplate(htmlParts, ...expressions) {
+  return new RenderTemplateResult(htmlParts, expressions);
+}
+function isAstroComponentFactory(obj) {
+  return obj == null ? false : obj.isAstroComponentFactory === true;
+}
+async function renderToString(result, componentFactory, props, children) {
+  const scoped = createScopedResult(result, ScopeFlags.Astro);
+  const factoryResult = await componentFactory(scoped, props, children);
+  if (factoryResult instanceof Response) {
+    const response = factoryResult;
+    throw response;
+  }
+  let parts = new HTMLParts();
+  const templateResult = isHeadAndContent(factoryResult) ? factoryResult.content : factoryResult;
+  for await (const chunk of renderAstroTemplateResult(templateResult)) {
+    parts.append(chunk, result);
+  }
+  return parts.toString();
+}
+function isAPropagatingComponent(result, factory) {
+  let hint = factory.propagation || "none";
+  if (factory.moduleId && result.propagation.has(factory.moduleId) && hint === "none") {
+    hint = result.propagation.get(factory.moduleId);
+  }
+  return hint === "in-tree" || hint === "self";
+}
+var PROP_TYPE = {
+  Value: 0,
+  JSON: 1,
+  RegExp: 2,
+  Date: 3,
+  Map: 4,
+  Set: 5,
+  BigInt: 6,
+  URL: 7,
+  Uint8Array: 8,
+  Uint16Array: 9,
+  Uint32Array: 10
+};
+function serializeArray(value, metadata = {}, parents = /* @__PURE__ */ new WeakSet()) {
+  if (parents.has(value)) {
+    throw new Error(`Cyclic reference detected while serializing props for <${metadata.displayName} client:${metadata.hydrate}>!
+
+Cyclic references cannot be safely serialized for client-side usage. Please remove the cyclic reference.`);
+  }
+  parents.add(value);
+  const serialized = value.map((v) => {
+    return convertToSerializedForm(v, metadata, parents);
+  });
+  parents.delete(value);
+  return serialized;
+}
+function serializeObject(value, metadata = {}, parents = /* @__PURE__ */ new WeakSet()) {
+  if (parents.has(value)) {
+    throw new Error(`Cyclic reference detected while serializing props for <${metadata.displayName} client:${metadata.hydrate}>!
+
+Cyclic references cannot be safely serialized for client-side usage. Please remove the cyclic reference.`);
+  }
+  parents.add(value);
+  const serialized = Object.fromEntries(
+    Object.entries(value).map(([k, v]) => {
+      return [k, convertToSerializedForm(v, metadata, parents)];
+    })
+  );
+  parents.delete(value);
+  return serialized;
+}
+function convertToSerializedForm(value, metadata = {}, parents = /* @__PURE__ */ new WeakSet()) {
+  const tag = Object.prototype.toString.call(value);
+  switch (tag) {
+    case "[object Date]": {
+      return [PROP_TYPE.Date, value.toISOString()];
+    }
+    case "[object RegExp]": {
+      return [PROP_TYPE.RegExp, value.source];
+    }
+    case "[object Map]": {
+      return [
+        PROP_TYPE.Map,
+        JSON.stringify(serializeArray(Array.from(value), metadata, parents))
+      ];
+    }
+    case "[object Set]": {
+      return [
+        PROP_TYPE.Set,
+        JSON.stringify(serializeArray(Array.from(value), metadata, parents))
+      ];
+    }
+    case "[object BigInt]": {
+      return [PROP_TYPE.BigInt, value.toString()];
+    }
+    case "[object URL]": {
+      return [PROP_TYPE.URL, value.toString()];
+    }
+    case "[object Array]": {
+      return [PROP_TYPE.JSON, JSON.stringify(serializeArray(value, metadata, parents))];
+    }
+    case "[object Uint8Array]": {
+      return [PROP_TYPE.Uint8Array, JSON.stringify(Array.from(value))];
+    }
+    case "[object Uint16Array]": {
+      return [PROP_TYPE.Uint16Array, JSON.stringify(Array.from(value))];
+    }
+    case "[object Uint32Array]": {
+      return [PROP_TYPE.Uint32Array, JSON.stringify(Array.from(value))];
+    }
+    default: {
+      if (value !== null && typeof value === "object") {
+        return [PROP_TYPE.Value, serializeObject(value, metadata, parents)];
+      } else {
+        return [PROP_TYPE.Value, value];
+      }
+    }
+  }
+}
+function serializeProps(props, metadata) {
+  const serialized = JSON.stringify(serializeObject(props, metadata));
+  return serialized;
 }
 var HydrationDirectivesRaw = ["load", "idle", "media", "visible", "only"];
 var HydrationDirectives = new Set(HydrationDirectivesRaw);
-var HydrationDirectiveProps = new Set(HydrationDirectivesRaw.map((e) => `client:${e}`));
-function extractDirectives(e, t) {
-  let a = { isPage: false, hydration: null, props: {} };
-  for (const [e2, n] of Object.entries(t))
-    if (e2.startsWith("server:") && "server:root" === e2 && (a.isPage = true), e2.startsWith("client:"))
-      switch (a.hydration || (a.hydration = { directive: "", value: "", componentUrl: "", componentExport: { value: "" } }), e2) {
-        case "client:component-path":
-          a.hydration.componentUrl = n;
-          break;
-        case "client:component-export":
-          a.hydration.componentExport.value = n;
-          break;
-        case "client:component-hydration":
-        case "client:display-name":
-          break;
-        default:
-          if (a.hydration.directive = e2.split(":")[1], a.hydration.value = n, !HydrationDirectives.has(a.hydration.directive))
-            throw new Error(`Error: invalid hydration directive "${e2}". Supported hydration methods: ${Array.from(HydrationDirectiveProps).join(", ")}`);
-          if ("media" === a.hydration.directive && "string" != typeof a.hydration.value)
-            throw new AstroError(AstroErrorData.MissingMediaQueryDirective);
+var HydrationDirectiveProps = new Set(HydrationDirectivesRaw.map((n) => `client:${n}`));
+function extractDirectives(displayName, inputProps) {
+  let extracted = {
+    isPage: false,
+    hydration: null,
+    props: {}
+  };
+  for (const [key, value] of Object.entries(inputProps)) {
+    if (key.startsWith("server:")) {
+      if (key === "server:root") {
+        extracted.isPage = true;
       }
-    else
-      "class:list" === e2 ? n && (a.props[e2.slice(0, -5)] = serializeListValue(n)) : a.props[e2] = n;
-  for (const e2 of Object.getOwnPropertySymbols(t))
-    a.props[e2] = t[e2];
-  return a;
+    }
+    if (key.startsWith("client:")) {
+      if (!extracted.hydration) {
+        extracted.hydration = {
+          directive: "",
+          value: "",
+          componentUrl: "",
+          componentExport: { value: "" }
+        };
+      }
+      switch (key) {
+        case "client:component-path": {
+          extracted.hydration.componentUrl = value;
+          break;
+        }
+        case "client:component-export": {
+          extracted.hydration.componentExport.value = value;
+          break;
+        }
+        case "client:component-hydration": {
+          break;
+        }
+        case "client:display-name": {
+          break;
+        }
+        default: {
+          extracted.hydration.directive = key.split(":")[1];
+          extracted.hydration.value = value;
+          if (!HydrationDirectives.has(extracted.hydration.directive)) {
+            throw new Error(
+              `Error: invalid hydration directive "${key}". Supported hydration methods: ${Array.from(
+                HydrationDirectiveProps
+              ).join(", ")}`
+            );
+          }
+          if (extracted.hydration.directive === "media" && typeof extracted.hydration.value !== "string") {
+            throw new AstroError(AstroErrorData.MissingMediaQueryDirective);
+          }
+          break;
+        }
+      }
+    } else if (key === "class:list") {
+      if (value) {
+        extracted.props[key.slice(0, -5)] = serializeListValue(value);
+      }
+    } else {
+      extracted.props[key] = value;
+    }
+  }
+  for (const sym of Object.getOwnPropertySymbols(inputProps)) {
+    extracted.props[sym] = inputProps[sym];
+  }
+  return extracted;
 }
-async function generateHydrateScript(e, t) {
-  const { renderer: a, result: n, astroId: i, props: o, attrs: r } = e, { hydrate: s, componentUrl: p, componentExport: l } = t;
-  if (!l.value)
-    throw new Error(`Unable to resolve a valid export for "${t.displayName}"! Please open an issue at https://astro.build/issues!`);
-  const c = { children: "", props: { uid: i } };
-  if (r)
-    for (const [e2, t2] of Object.entries(r))
-      c.props[e2] = escapeHTML(t2);
-  c.props["component-url"] = await n.resolve(decodeURI(p)), a.clientEntrypoint && (c.props["component-export"] = l.value, c.props["renderer-url"] = await n.resolve(decodeURI(a.clientEntrypoint)), c.props.props = escapeHTML(serializeProps(o, t))), c.props.ssr = "", c.props.client = s;
-  let d = await n.resolve("astro:scripts/before-hydration.js");
-  return d.length && (c.props["before-hydration-url"] = d), c.props.opts = escapeHTML(JSON.stringify({ name: t.displayName, value: t.hydrateArgs || "" })), c;
+async function generateHydrateScript(scriptOptions, metadata) {
+  const { renderer, result, astroId, props, attrs } = scriptOptions;
+  const { hydrate, componentUrl, componentExport } = metadata;
+  if (!componentExport.value) {
+    throw new Error(
+      `Unable to resolve a valid export for "${metadata.displayName}"! Please open an issue at https://astro.build/issues!`
+    );
+  }
+  const island = {
+    children: "",
+    props: {
+      uid: astroId
+    }
+  };
+  if (attrs) {
+    for (const [key, value] of Object.entries(attrs)) {
+      island.props[key] = escapeHTML(value);
+    }
+  }
+  island.props["component-url"] = await result.resolve(decodeURI(componentUrl));
+  if (renderer.clientEntrypoint) {
+    island.props["component-export"] = componentExport.value;
+    island.props["renderer-url"] = await result.resolve(decodeURI(renderer.clientEntrypoint));
+    island.props["props"] = escapeHTML(serializeProps(props, metadata));
+  }
+  island.props["ssr"] = "";
+  island.props["client"] = hydrate;
+  let beforeHydrationUrl = await result.resolve("astro:scripts/before-hydration.js");
+  if (beforeHydrationUrl.length) {
+    island.props["before-hydration-url"] = beforeHydrationUrl;
+  }
+  island.props["opts"] = escapeHTML(
+    JSON.stringify({
+      name: metadata.displayName,
+      value: metadata.hydrateArgs || ""
+    })
+  );
+  return island;
 }
 var _a;
 var astroComponentInstanceSym = Symbol.for("astro.componentInstance");
 var AstroComponentInstance = class {
-  constructor(e, t, a, n) {
-    this[_a] = true, this.result = e, this.props = t, this.factory = n, this.slotValues = {};
-    for (const e2 in a)
-      this.slotValues[e2] = a[e2]();
+  constructor(result, props, slots, factory) {
+    this[_a] = true;
+    this.result = result;
+    this.props = props;
+    this.factory = factory;
+    this.slotValues = {};
+    const scoped = createScopedResult(result, ScopeFlags.Slot);
+    for (const name in slots) {
+      const value = slots[name](scoped);
+      this.slotValues[name] = () => value;
+    }
   }
-  async init() {
-    return this.returnValue = this.factory(this.result, this.props, this.slotValues), this.returnValue;
+  async init(result) {
+    this.returnValue = this.factory(result, this.props, this.slotValues);
+    return this.returnValue;
   }
   async *render() {
-    void 0 === this.returnValue && await this.init();
-    let e = this.returnValue;
-    isPromise(e) && (e = await e), isHeadAndContent(e) ? yield* e.content : yield* renderChild(e);
+    if (this.returnValue === void 0) {
+      await this.init(this.result);
+    }
+    let value = this.returnValue;
+    if (isPromise(value)) {
+      value = await value;
+    }
+    if (isHeadAndContent(value)) {
+      yield* value.content;
+    } else {
+      yield* renderChild(value);
+    }
   }
 };
-function validateComponentProps(e, t) {
-  if (null != e)
-    for (const a of Object.keys(e))
-      HydrationDirectiveProps.has(a) && console.warn(`You are attempting to render <${t} ${a} />, but ${t} is an Astro component. Astro components do not render in the client and should not have a hydration directive. Please use a framework component for client rendering.`);
-}
-function createAstroComponentInstance(e, t, a, n, i = {}) {
-  validateComponentProps(n, t);
-  const o = new AstroComponentInstance(e, n, i, a);
-  return isAPropagatingComponent(e, a) && !e.propagators.has(a) && e.propagators.set(a, o), o;
-}
-function isAstroComponentInstance(e) {
-  return "object" == typeof e && !!e[astroComponentInstanceSym];
-}
-async function* renderChild(e) {
-  if ((e = await e) instanceof SlotString)
-    e.instructions && (yield* e.instructions), yield e;
-  else if (isHTMLString(e))
-    yield e;
-  else if (Array.isArray(e))
-    for (const t of e)
-      yield markHTMLString(await renderChild(t));
-  else
-    "function" == typeof e ? yield* renderChild(e()) : "string" == typeof e ? yield markHTMLString(escapeHTML(e)) : (e || 0 === e) && (isRenderTemplateResult(e) ? yield* renderAstroTemplateResult(e) : isAstroComponentInstance(e) ? yield* e.render() : ArrayBuffer.isView(e) ? yield e : "object" == typeof e && (Symbol.asyncIterator in e || Symbol.iterator in e) ? yield* e : yield e);
-}
 _a = astroComponentInstanceSym;
+function validateComponentProps(props, displayName) {
+  if (props != null) {
+    for (const prop of Object.keys(props)) {
+      if (HydrationDirectiveProps.has(prop)) {
+        console.warn(
+          `You are attempting to render <${displayName} ${prop} />, but ${displayName} is an Astro component. Astro components do not render in the client and should not have a hydration directive. Please use a framework component for client rendering.`
+        );
+      }
+    }
+  }
+}
+function createAstroComponentInstance(result, displayName, factory, props, slots = {}) {
+  validateComponentProps(props, displayName);
+  const instance = new AstroComponentInstance(result, props, slots, factory);
+  if (isAPropagatingComponent(result, factory) && !result.propagators.has(factory)) {
+    result.propagators.set(factory, instance);
+  }
+  return instance;
+}
+function isAstroComponentInstance(obj) {
+  return typeof obj === "object" && !!obj[astroComponentInstanceSym];
+}
+async function* renderChild(child) {
+  child = await child;
+  if (child instanceof SlotString) {
+    if (child.instructions) {
+      yield* child.instructions;
+    }
+    yield child;
+  } else if (isHTMLString(child)) {
+    yield child;
+  } else if (Array.isArray(child)) {
+    for (const value of child) {
+      yield markHTMLString(await renderChild(value));
+    }
+  } else if (typeof child === "function") {
+    yield* renderChild(child());
+  } else if (typeof child === "string") {
+    yield markHTMLString(escapeHTML(child));
+  } else if (!child && child !== 0)
+    ;
+  else if (isRenderTemplateResult(child)) {
+    yield* renderAstroTemplateResult(child);
+  } else if (isAstroComponentInstance(child)) {
+    yield* child.render();
+  } else if (ArrayBuffer.isView(child)) {
+    yield child;
+  } else if (typeof child === "object" && (Symbol.asyncIterator in child || Symbol.iterator in child)) {
+    yield* child;
+  } else {
+    yield child;
+  }
+}
 var slotString = Symbol.for("astro:slot-string");
 var SlotString = class extends HTMLString {
-  constructor(e, t) {
-    super(e), this.instructions = t, this[slotString] = true;
+  constructor(content, instructions) {
+    super(content);
+    this.instructions = instructions;
+    this[slotString] = true;
   }
 };
-function isSlotString(e) {
-  return !!e[slotString];
+function isSlotString(str) {
+  return !!str[slotString];
 }
-async function renderSlot(e, t, a) {
-  if (t) {
-    e.scope |= ScopeFlags.Slot;
-    let a2 = renderChild(t), n = "", i = null;
-    for await (const e2 of a2)
-      "string" == typeof e2.type ? (null === i && (i = []), i.push(e2)) : n += e2;
-    return e.scope &= ~ScopeFlags.Slot, markHTMLString(new SlotString(n, i));
+async function renderSlot(result, slotted, fallback) {
+  if (slotted) {
+    const scoped = createScopedResult(result, ScopeFlags.Slot);
+    let iterator = renderChild(typeof slotted === "function" ? slotted(scoped) : slotted);
+    let content = "";
+    let instructions = null;
+    for await (const chunk of iterator) {
+      if (typeof chunk.type === "string") {
+        if (instructions === null) {
+          instructions = [];
+        }
+        instructions.push(chunk);
+      } else {
+        content += chunk;
+      }
+    }
+    return markHTMLString(new SlotString(content, instructions));
   }
-  return a;
+  if (fallback) {
+    return renderSlot(result, fallback);
+  }
+  return "";
 }
-async function renderSlots(e, t = {}) {
-  let a = null, n = {};
-  return t && await Promise.all(Object.entries(t).map(([t2, i]) => renderSlot(e, i).then((e2) => {
-    e2.instructions && (null === a && (a = []), a.push(...e2.instructions)), n[t2] = e2;
-  }))), { slotInstructions: a, children: n };
+async function renderSlots(result, slots = {}) {
+  let slotInstructions = null;
+  let children = {};
+  if (slots) {
+    await Promise.all(
+      Object.entries(slots).map(
+        ([key, value]) => renderSlot(result, value).then((output) => {
+          if (output.instructions) {
+            if (slotInstructions === null) {
+              slotInstructions = [];
+            }
+            slotInstructions.push(...output.instructions);
+          }
+          children[key] = output;
+        })
+      )
+    );
+  }
+  return { slotInstructions, children };
 }
 var Fragment = Symbol.for("astro:fragment");
 var Renderer = Symbol.for("astro:renderer");
 var encoder = new TextEncoder();
 var decoder = new TextDecoder();
-function stringifyChunk(e, t) {
-  if ("string" != typeof t.type) {
-    if (isSlotString(t)) {
-      let a = "";
-      const n = t;
-      if (n.instructions)
-        for (const t2 of n.instructions)
-          a += stringifyChunk(e, t2);
-      return a += t.toString(), a;
-    }
-    return t.toString();
-  }
-  {
-    const a = t;
-    switch (a.type) {
+function stringifyChunk(result, chunk) {
+  if (typeof chunk.type === "string") {
+    const instruction = chunk;
+    switch (instruction.type) {
       case "directive": {
-        const { hydration: t2 } = a;
-        let n = t2 && determineIfNeedsHydrationScript(e), i = t2 && determinesIfNeedsDirectiveScript(e, t2.directive), o = n ? "both" : i ? "directive" : null;
-        if (o) {
-          let e2 = getPrescripts(o, t2.directive);
-          return markHTMLString(e2);
+        const { hydration } = instruction;
+        let needsHydrationScript = hydration && determineIfNeedsHydrationScript(result);
+        let needsDirectiveScript = hydration && determinesIfNeedsDirectiveScript(result, hydration.directive);
+        let prescriptType = needsHydrationScript ? "both" : needsDirectiveScript ? "directive" : null;
+        if (prescriptType) {
+          let prescripts = getPrescripts(prescriptType, hydration.directive);
+          return markHTMLString(prescripts);
+        } else {
+          return "";
         }
-        return "";
       }
-      case "head":
-        return e._metadata.hasRenderedHead ? "" : renderAllHeadContent(e);
+      case "head": {
+        if (result._metadata.hasRenderedHead) {
+          return "";
+        }
+        return renderAllHeadContent(result);
+      }
+      case "maybe-head": {
+        if (result._metadata.hasRenderedHead) {
+          return "";
+        }
+        const scope = instruction.scope;
+        switch (scope) {
+          case ScopeFlags.JSX | ScopeFlags.Slot | ScopeFlags.Astro:
+          case ScopeFlags.JSX | ScopeFlags.Astro | ScopeFlags.HeadBuffer:
+          case ScopeFlags.JSX | ScopeFlags.Slot | ScopeFlags.Astro | ScopeFlags.HeadBuffer: {
+            return "";
+          }
+          case ScopeFlags.RenderSlot | ScopeFlags.Astro:
+          case ScopeFlags.RenderSlot | ScopeFlags.Astro | ScopeFlags.JSX:
+          case ScopeFlags.RenderSlot | ScopeFlags.Astro | ScopeFlags.JSX | ScopeFlags.HeadBuffer: {
+            return "";
+          }
+        }
+        return renderAllHeadContent(result);
+      }
     }
+  } else {
+    if (isSlotString(chunk)) {
+      let out = "";
+      const c = chunk;
+      if (c.instructions) {
+        for (const instr of c.instructions) {
+          out += stringifyChunk(result, instr);
+        }
+      }
+      out += chunk.toString();
+      return out;
+    }
+    return chunk.toString();
   }
 }
 var HTMLParts = class {
   constructor() {
     this.parts = "";
   }
-  append(e, t) {
-    ArrayBuffer.isView(e) ? this.parts += decoder.decode(e) : this.parts += stringifyChunk(t, e);
+  append(part, result) {
+    if (ArrayBuffer.isView(part)) {
+      this.parts += decoder.decode(part);
+    } else {
+      this.parts += stringifyChunk(result, part);
+    }
   }
   toString() {
     return this.parts;
@@ -800,172 +1649,274 @@ var HTMLParts = class {
     return encoder.encode(this.parts);
   }
 };
-function chunkToByteArray(e, t) {
-  if (t instanceof Uint8Array)
-    return t;
-  let a = stringifyChunk(e, t);
-  return encoder.encode(a.toString());
+function chunkToByteArray(result, chunk) {
+  if (chunk instanceof Uint8Array) {
+    return chunk;
+  }
+  let stringified = stringifyChunk(result, chunk);
+  return encoder.encode(stringified.toString());
 }
 var ClientOnlyPlaceholder = "astro-client-only";
 var Skip = class {
-  constructor(e) {
-    this.vnode = e, this.count = 0;
+  constructor(vnode) {
+    this.vnode = vnode;
+    this.count = 0;
   }
   increment() {
     this.count++;
   }
   haveNoTried() {
-    return 0 === this.count;
+    return this.count === 0;
   }
   isCompleted() {
     return this.count > 2;
   }
 };
-var originalConsoleError;
 Skip.symbol = Symbol("astro:jsx:skip");
+var originalConsoleError;
 var consoleFilterRefs = 0;
-async function renderJSX(e, t) {
+async function renderJSX(result, vnode) {
   switch (true) {
-    case t instanceof HTMLString:
-      return "" === t.toString().trim() ? "" : t;
-    case "string" == typeof t:
-      return markHTMLString(escapeHTML(t));
-    case "function" == typeof t:
-      return t;
-    case (!t && 0 !== t):
-      return "";
-    case Array.isArray(t):
-      return markHTMLString((await Promise.all(t.map((t2) => renderJSX(e, t2)))).join(""));
-  }
-  let a;
-  return a = t.props && t.props[Skip.symbol] ? t.props[Skip.symbol] : new Skip(t), renderJSXVNode(e, t, a);
-}
-async function renderJSXVNode(e, t, a) {
-  if (isVNode(t)) {
-    switch (true) {
-      case !t.type:
-        throw new Error(`Unable to render ${e._metadata.pathname} because it contains an undefined Component!
-Did you forget to import the component or is it possible there is a typo?`);
-      case t.type === Symbol.for("astro:fragment"):
-        return renderJSX(e, t.props.children);
-      case t.type.isAstroComponentFactory: {
-        let a2 = {}, n = {};
-        for (const [i, o] of Object.entries(t.props ?? {}))
-          "children" === i || o && "object" == typeof o && o.$$slot ? n["children" === i ? "default" : i] = () => renderJSX(e, o) : a2[i] = o;
-        return e.scope |= ScopeFlags.JSX, markHTMLString(await renderToString(e, t.type, a2, n));
-      }
-      case (!t.type && 0 !== t.type):
+    case vnode instanceof HTMLString:
+      if (vnode.toString().trim() === "") {
         return "";
-      case ("string" == typeof t.type && t.type !== ClientOnlyPlaceholder):
-        return markHTMLString(await renderElement(e, t.type, t.props ?? {}));
-    }
-    if (t.type) {
-      let n = function(e2) {
-        return Array.isArray(e2) ? e2.map((e3) => n(e3)) : isVNode(e2) && "slot" in e2.props ? (r[e2.props.slot] = [...r[e2.props.slot] ?? [], e2], void delete e2.props.slot) : void r.default.push(e2);
-      };
-      if ("function" == typeof t.type && t.type["astro:renderer"] && a.increment(), "function" == typeof t.type && t.props["server:root"]) {
-        const a2 = await t.type(t.props ?? {});
-        return await renderJSX(e, a2);
       }
-      if ("function" == typeof t.type)
-        if (a.haveNoTried() || a.isCompleted()) {
+      return vnode;
+    case typeof vnode === "string":
+      return markHTMLString(escapeHTML(vnode));
+    case typeof vnode === "function":
+      return vnode;
+    case (!vnode && vnode !== 0):
+      return "";
+    case Array.isArray(vnode):
+      return markHTMLString(
+        (await Promise.all(vnode.map((v) => renderJSX(result, v)))).join("")
+      );
+  }
+  let skip;
+  if (vnode.props) {
+    if (vnode.props[Skip.symbol]) {
+      skip = vnode.props[Skip.symbol];
+    } else {
+      skip = new Skip(vnode);
+    }
+  } else {
+    skip = new Skip(vnode);
+  }
+  return renderJSXVNode(result, vnode, skip);
+}
+async function renderJSXVNode(result, vnode, skip) {
+  if (isVNode(vnode)) {
+    switch (true) {
+      case !vnode.type: {
+        throw new Error(`Unable to render ${result._metadata.pathname} because it contains an undefined Component!
+Did you forget to import the component or is it possible there is a typo?`);
+      }
+      case vnode.type === Symbol.for("astro:fragment"):
+        return renderJSX(result, vnode.props.children);
+      case vnode.type.isAstroComponentFactory: {
+        let props = {};
+        let slots = {};
+        for (const [key, value] of Object.entries(vnode.props ?? {})) {
+          if (key === "children" || value && typeof value === "object" && value["$$slot"]) {
+            slots[key === "children" ? "default" : key] = () => renderJSX(result, value);
+          } else {
+            props[key] = value;
+          }
+        }
+        const scoped = createScopedResult(result, ScopeFlags.JSX);
+        const html = markHTMLString(await renderToString(scoped, vnode.type, props, slots));
+        return html;
+      }
+      case (!vnode.type && vnode.type !== 0):
+        return "";
+      case (typeof vnode.type === "string" && vnode.type !== ClientOnlyPlaceholder):
+        return markHTMLString(await renderElement(result, vnode.type, vnode.props ?? {}));
+    }
+    if (vnode.type) {
+      let extractSlots2 = function(child) {
+        if (Array.isArray(child)) {
+          return child.map((c) => extractSlots2(c));
+        }
+        if (!isVNode(child)) {
+          _slots2.default.push(child);
+          return;
+        }
+        if ("slot" in child.props) {
+          _slots2[child.props.slot] = [..._slots2[child.props.slot] ?? [], child];
+          delete child.props.slot;
+          return;
+        }
+        _slots2.default.push(child);
+      };
+      if (typeof vnode.type === "function" && vnode.type["astro:renderer"]) {
+        skip.increment();
+      }
+      if (typeof vnode.type === "function" && vnode.props["server:root"]) {
+        const output2 = await vnode.type(vnode.props ?? {});
+        return await renderJSX(result, output2);
+      }
+      if (typeof vnode.type === "function") {
+        if (skip.haveNoTried() || skip.isCompleted()) {
           useConsoleFilter();
           try {
-            const n2 = await t.type(t.props ?? {});
-            let i2;
-            if (n2 && n2[AstroJSX])
-              return i2 = await renderJSXVNode(e, n2, a), i2;
-            if (!n2)
-              return i2 = await renderJSXVNode(e, n2, a), i2;
-          } catch (e2) {
-            if (a.isCompleted())
-              throw e2;
-            a.increment();
+            const output2 = await vnode.type(vnode.props ?? {});
+            let renderResult;
+            if (output2 && output2[AstroJSX]) {
+              renderResult = await renderJSXVNode(result, output2, skip);
+              return renderResult;
+            } else if (!output2) {
+              renderResult = await renderJSXVNode(result, output2, skip);
+              return renderResult;
+            }
+          } catch (e) {
+            if (skip.isCompleted()) {
+              throw e;
+            }
+            skip.increment();
           } finally {
             finishUsingConsoleFilter();
           }
-        } else
-          a.increment();
-      const { children: i = null, ...o } = t.props ?? {}, r = { default: [] };
-      n(i);
-      for (const [e2, t2] of Object.entries(o))
-        t2.$$slot && (r[e2] = t2, delete o[e2]);
-      const s = [], p = {};
-      for (const [t2, a2] of Object.entries(r))
-        s.push(renderJSX(e, a2).then((e2) => {
-          0 !== e2.toString().trim().length && (p[t2] = () => e2);
-        }));
-      let l;
-      if (await Promise.all(s), o[Skip.symbol] = a, l = t.type === ClientOnlyPlaceholder && t.props["client:only"] ? await renderComponentToIterable(e, t.props["client:display-name"] ?? "", null, o, p) : await renderComponentToIterable(e, "function" == typeof t.type ? t.type.name : t.type, t.type, o, p), "string" != typeof l && Symbol.asyncIterator in l) {
-        let t2 = new HTMLParts();
-        for await (const a2 of l)
-          t2.append(a2, e);
-        return markHTMLString(t2.toString());
+        } else {
+          skip.increment();
+        }
       }
-      return markHTMLString(l);
+      const { children = null, ...props } = vnode.props ?? {};
+      const _slots2 = {
+        default: []
+      };
+      extractSlots2(children);
+      for (const [key, value] of Object.entries(props)) {
+        if (value["$$slot"]) {
+          _slots2[key] = value;
+          delete props[key];
+        }
+      }
+      const slotPromises = [];
+      const slots = {};
+      for (const [key, value] of Object.entries(_slots2)) {
+        slotPromises.push(
+          renderJSX(result, value).then((output2) => {
+            if (output2.toString().trim().length === 0)
+              return;
+            slots[key] = () => output2;
+          })
+        );
+      }
+      await Promise.all(slotPromises);
+      props[Skip.symbol] = skip;
+      let output;
+      if (vnode.type === ClientOnlyPlaceholder && vnode.props["client:only"]) {
+        output = await renderComponentToIterable(
+          result,
+          vnode.props["client:display-name"] ?? "",
+          null,
+          props,
+          slots
+        );
+      } else {
+        output = await renderComponentToIterable(
+          result,
+          typeof vnode.type === "function" ? vnode.type.name : vnode.type,
+          vnode.type,
+          props,
+          slots
+        );
+      }
+      if (typeof output !== "string" && Symbol.asyncIterator in output) {
+        let parts = new HTMLParts();
+        for await (const chunk of output) {
+          parts.append(chunk, result);
+        }
+        return markHTMLString(parts.toString());
+      } else {
+        return markHTMLString(output);
+      }
     }
   }
-  return markHTMLString(`${t}`);
+  return markHTMLString(`${vnode}`);
 }
-async function renderElement(e, t, { children: a, ...n }) {
-  return markHTMLString(`<${t}${spreadAttributes(n)}${markHTMLString(null != a && "" != a || !voidElementNames.test(t) ? `>${null == a ? "" : await renderJSX(e, a)}</${t}>` : "/>")}`);
+async function renderElement(result, tag, { children, ...props }) {
+  return markHTMLString(
+    `<${tag}${spreadAttributes(props)}${markHTMLString(
+      (children == null || children == "") && voidElementNames.test(tag) ? `/>` : `>${children == null ? "" : await renderJSX(result, children)}</${tag}>`
+    )}`
+  );
 }
 function useConsoleFilter() {
-  if (consoleFilterRefs++, !originalConsoleError) {
+  consoleFilterRefs++;
+  if (!originalConsoleError) {
     originalConsoleError = console.error;
     try {
       console.error = filteredConsoleError;
-    } catch (e) {
+    } catch (error2) {
     }
   }
 }
 function finishUsingConsoleFilter() {
   consoleFilterRefs--;
 }
-function filteredConsoleError(e, ...t) {
-  if (consoleFilterRefs > 0 && "string" == typeof e) {
-    if (e.includes("Warning: Invalid hook call.") && e.includes("https://reactjs.org/link/invalid-hook-call"))
+function filteredConsoleError(msg, ...rest) {
+  if (consoleFilterRefs > 0 && typeof msg === "string") {
+    const isKnownReactHookError = msg.includes("Warning: Invalid hook call.") && msg.includes("https://reactjs.org/link/invalid-hook-call");
+    if (isKnownReactHookError)
       return;
   }
-  originalConsoleError(e, ...t);
+  originalConsoleError(msg, ...rest);
 }
 var dictionary = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXY";
 var binary = dictionary.length;
-function bitwise(e) {
-  let t = 0;
-  if (0 === e.length)
-    return t;
-  for (let a = 0; a < e.length; a++) {
-    t = (t << 5) - t + e.charCodeAt(a), t &= t;
+function bitwise(str) {
+  let hash = 0;
+  if (str.length === 0)
+    return hash;
+  for (let i = 0; i < str.length; i++) {
+    const ch = str.charCodeAt(i);
+    hash = (hash << 5) - hash + ch;
+    hash = hash & hash;
   }
-  return t;
+  return hash;
 }
-function shorthash(e) {
-  let t, a = "", n = bitwise(e);
-  const i = n < 0 ? "Z" : "";
-  for (n = Math.abs(n); n >= binary; )
-    t = n % binary, n = Math.floor(n / binary), a = dictionary[t] + a;
-  return n > 0 && (a = dictionary[n] + a), i + a;
+function shorthash(text) {
+  let num;
+  let result = "";
+  let integer = bitwise(text);
+  const sign = integer < 0 ? "Z" : "";
+  integer = Math.abs(integer);
+  while (integer >= binary) {
+    num = integer % binary;
+    integer = Math.floor(integer / binary);
+    result = dictionary[num] + result;
+  }
+  if (integer > 0) {
+    result = dictionary[integer] + result;
+  }
+  return sign + result;
 }
-function componentIsHTMLElement(e) {
-  return "undefined" != typeof HTMLElement && HTMLElement.isPrototypeOf(e);
+function componentIsHTMLElement(Component) {
+  return typeof HTMLElement !== "undefined" && HTMLElement.isPrototypeOf(Component);
 }
-async function renderHTMLElement(e, t, a, n) {
-  const i = getHTMLElementName(t);
-  let o = "";
-  for (const e2 in a)
-    o += ` ${e2}="${toAttributeString(await a[e2])}"`;
-  return markHTMLString(`<${i}${o}>${await renderSlot(e, null == n ? void 0 : n.default)}</${i}>`);
+async function renderHTMLElement(result, constructor, props, slots) {
+  const name = getHTMLElementName(constructor);
+  let attrHTML = "";
+  for (const attr in props) {
+    attrHTML += ` ${attr}="${toAttributeString(await props[attr])}"`;
+  }
+  return markHTMLString(
+    `<${name}${attrHTML}>${await renderSlot(result, slots == null ? void 0 : slots.default)}</${name}>`
+  );
 }
-function getHTMLElementName(e) {
-  const t = customElements.getName(e);
-  if (t)
-    return t;
-  return e.name.replace(/^HTML|Element$/g, "").replace(/[A-Z]/g, "-$&").toLowerCase().replace(/^-/, "html-");
+function getHTMLElementName(constructor) {
+  const definedName = customElements.getName(constructor);
+  if (definedName)
+    return definedName;
+  const assignedName = constructor.name.replace(/^HTML|Element$/g, "").replace(/[A-Z]/g, "-$&").toLowerCase().replace(/^-/, "html-");
+  return assignedName;
 }
 var rendererAliases = /* @__PURE__ */ new Map([["solid", "solid-js"]]);
-function guessRenderers(e) {
-  switch (null == e ? void 0 : e.split(".").pop()) {
+function guessRenderers(componentUrl) {
+  const extname = componentUrl == null ? void 0 : componentUrl.split(".").pop();
+  switch (extname) {
     case "svelte":
       return ["@astrojs/svelte"];
     case "vue":
@@ -974,259 +1925,525 @@ function guessRenderers(e) {
     case "tsx":
       return ["@astrojs/react", "@astrojs/preact", "@astrojs/solid-js", "@astrojs/vue (jsx)"];
     default:
-      return ["@astrojs/react", "@astrojs/preact", "@astrojs/solid-js", "@astrojs/vue", "@astrojs/svelte"];
+      return [
+        "@astrojs/react",
+        "@astrojs/preact",
+        "@astrojs/solid-js",
+        "@astrojs/vue",
+        "@astrojs/svelte",
+        "@astrojs/lit"
+      ];
   }
 }
-function isFragmentComponent(e) {
-  return e === Fragment;
+function isFragmentComponent(Component) {
+  return Component === Fragment;
 }
-function isHTMLComponent(e) {
-  return e && "object" == typeof e && e["astro:html"];
+function isHTMLComponent(Component) {
+  return Component && typeof Component === "object" && Component["astro:html"];
 }
-async function renderFrameworkComponent(e, t, a, n, i = {}) {
-  var o, r;
-  if (!a && !n["client:only"])
-    throw new Error(`Unable to render ${t} because it is ${a}!
-Did you forget to import the component or is it possible there is a typo?`);
-  const { renderers: s } = e._metadata, p = { displayName: t }, { hydration: l, isPage: c, props: d } = extractDirectives(t, n);
-  let m, u = "";
-  l && (p.hydrate = l.directive, p.hydrateArgs = l.value, p.componentExport = l.componentExport, p.componentUrl = l.componentUrl);
-  const f = guessRenderers(p.componentUrl), v = s.filter((e2) => "astro:jsx" !== e2.name), { children: g, slotInstructions: h } = await renderSlots(e, i);
-  let x;
-  if ("only" !== p.hydrate) {
-    let t2 = false;
+async function renderFrameworkComponent(result, displayName, Component, _props, slots = {}) {
+  var _a2, _b;
+  if (!Component && !_props["client:only"]) {
+    throw new Error(
+      `Unable to render ${displayName} because it is ${Component}!
+Did you forget to import the component or is it possible there is a typo?`
+    );
+  }
+  const { renderers: renderers2 } = result._metadata;
+  const metadata = { displayName };
+  const { hydration, isPage, props } = extractDirectives(displayName, _props);
+  let html = "";
+  let attrs = void 0;
+  if (hydration) {
+    metadata.hydrate = hydration.directive;
+    metadata.hydrateArgs = hydration.value;
+    metadata.componentExport = hydration.componentExport;
+    metadata.componentUrl = hydration.componentUrl;
+  }
+  const probableRendererNames = guessRenderers(metadata.componentUrl);
+  const validRenderers = renderers2.filter((r) => r.name !== "astro:jsx");
+  const { children, slotInstructions } = await renderSlots(result, slots);
+  let renderer;
+  if (metadata.hydrate !== "only") {
+    let isTagged = false;
     try {
-      t2 = a && a[Renderer];
+      isTagged = Component && Component[Renderer];
     } catch {
     }
-    if (t2) {
-      const e2 = a[Renderer];
-      x = s.find(({ name: t3 }) => t3 === e2);
+    if (isTagged) {
+      const rendererName = Component[Renderer];
+      renderer = renderers2.find(({ name }) => name === rendererName);
     }
-    if (!x) {
-      let t3;
-      for (const n2 of s)
+    if (!renderer) {
+      let error2;
+      for (const r of renderers2) {
         try {
-          if (await n2.ssr.check.call({ result: e }, a, d, g)) {
-            x = n2;
+          if (await r.ssr.check.call({ result }, Component, props, children)) {
+            renderer = r;
             break;
           }
-        } catch (e2) {
-          t3 ?? (t3 = e2);
+        } catch (e) {
+          error2 ?? (error2 = e);
         }
-      if (!x && t3)
-        throw t3;
+      }
+      if (!renderer && error2) {
+        throw error2;
+      }
     }
-    if (!x && "function" == typeof HTMLElement && componentIsHTMLElement(a)) {
-      return renderHTMLElement(e, a, n, i);
+    if (!renderer && typeof HTMLElement === "function" && componentIsHTMLElement(Component)) {
+      const output = renderHTMLElement(result, Component, _props, slots);
+      return output;
     }
   } else {
-    if (p.hydrateArgs) {
-      const e2 = p.hydrateArgs, t2 = rendererAliases.has(e2) ? rendererAliases.get(e2) : e2;
-      x = s.find(({ name: e3 }) => e3 === `@astrojs/${t2}` || e3 === t2);
+    if (metadata.hydrateArgs) {
+      const passedName = metadata.hydrateArgs;
+      const rendererName = rendererAliases.has(passedName) ? rendererAliases.get(passedName) : passedName;
+      renderer = renderers2.find(
+        ({ name }) => name === `@astrojs/${rendererName}` || name === rendererName
+      );
     }
-    if (x || 1 !== v.length || (x = v[0]), !x) {
-      const e2 = null == (o = p.componentUrl) ? void 0 : o.split(".").pop();
-      x = s.filter(({ name: t2 }) => t2 === `@astrojs/${e2}` || t2 === e2)[0];
+    if (!renderer && validRenderers.length === 1) {
+      renderer = validRenderers[0];
+    }
+    if (!renderer) {
+      const extname = (_a2 = metadata.componentUrl) == null ? void 0 : _a2.split(".").pop();
+      renderer = renderers2.filter(
+        ({ name }) => name === `@astrojs/${extname}` || name === extname
+      )[0];
     }
   }
-  if (x)
-    "only" === p.hydrate ? u = await renderSlot(e, null == i ? void 0 : i.fallback) : { html: u, attrs: m } = await x.ssr.renderToStaticMarkup.call({ result: e }, a, d, g, p);
-  else {
-    if ("only" === p.hydrate)
-      throw new AstroError({ ...AstroErrorData.NoClientOnlyHint, message: AstroErrorData.NoClientOnlyHint.message(p.displayName), hint: AstroErrorData.NoClientOnlyHint.hint(f.map((e2) => e2.replace("@astrojs/", "")).join("|")) });
-    if ("string" != typeof a) {
-      const t2 = v.filter((e2) => f.includes(e2.name)), n2 = v.length > 1;
-      if (0 === t2.length)
-        throw new AstroError({ ...AstroErrorData.NoMatchingRenderer, message: AstroErrorData.NoMatchingRenderer.message(p.displayName, null == (r = null == p ? void 0 : p.componentUrl) ? void 0 : r.split(".").pop(), n2, v.length), hint: AstroErrorData.NoMatchingRenderer.hint(formatList(f.map((e2) => "`" + e2 + "`"))) });
-      if (1 !== t2.length)
-        throw new Error(`Unable to render ${p.displayName}!
+  if (!renderer) {
+    if (metadata.hydrate === "only") {
+      throw new AstroError({
+        ...AstroErrorData.NoClientOnlyHint,
+        message: AstroErrorData.NoClientOnlyHint.message(metadata.displayName),
+        hint: AstroErrorData.NoClientOnlyHint.hint(
+          probableRendererNames.map((r) => r.replace("@astrojs/", "")).join("|")
+        )
+      });
+    } else if (typeof Component !== "string") {
+      const matchingRenderers = validRenderers.filter(
+        (r) => probableRendererNames.includes(r.name)
+      );
+      const plural = validRenderers.length > 1;
+      if (matchingRenderers.length === 0) {
+        throw new AstroError({
+          ...AstroErrorData.NoMatchingRenderer,
+          message: AstroErrorData.NoMatchingRenderer.message(
+            metadata.displayName,
+            (_b = metadata == null ? void 0 : metadata.componentUrl) == null ? void 0 : _b.split(".").pop(),
+            plural,
+            validRenderers.length
+          ),
+          hint: AstroErrorData.NoMatchingRenderer.hint(
+            formatList(probableRendererNames.map((r) => "`" + r + "`"))
+          )
+        });
+      } else if (matchingRenderers.length === 1) {
+        renderer = matchingRenderers[0];
+        ({ html, attrs } = await renderer.ssr.renderToStaticMarkup.call(
+          { result },
+          Component,
+          props,
+          children,
+          metadata
+        ));
+      } else {
+        throw new Error(`Unable to render ${metadata.displayName}!
 
-This component likely uses ${formatList(f)},
+This component likely uses ${formatList(probableRendererNames)},
 but Astro encountered an error during server-side rendering.
 
-Please ensure that ${p.displayName}:
+Please ensure that ${metadata.displayName}:
 1. Does not unconditionally access browser-specific globals like \`window\` or \`document\`.
    If this is unavoidable, use the \`client:only\` hydration directive.
 2. Does not conditionally return \`null\` or \`undefined\` when rendered on the server.
 
 If you're still stuck, please open an issue on GitHub or join us at https://astro.build/chat.`);
-      x = t2[0], { html: u, attrs: m } = await x.ssr.renderToStaticMarkup.call({ result: e }, a, d, g, p);
+      }
+    }
+  } else {
+    if (metadata.hydrate === "only") {
+      html = await renderSlot(result, slots == null ? void 0 : slots.fallback);
+    } else {
+      ({ html, attrs } = await renderer.ssr.renderToStaticMarkup.call(
+        { result },
+        Component,
+        props,
+        children,
+        metadata
+      ));
     }
   }
-  if (x && !x.clientEntrypoint && "@astrojs/lit" !== x.name && p.hydrate)
-    throw new AstroError({ ...AstroErrorData.NoClientEntrypoint, message: AstroErrorData.NoClientEntrypoint.message(t, p.hydrate, x.name) });
-  if (!u && "string" == typeof a) {
-    const e2 = sanitizeElementName(a), t2 = Object.values(g).join(""), n2 = renderAstroTemplateResult(await renderTemplate`<${e2}${internalSpreadAttributes(d)}${markHTMLString("" === t2 && voidElementNames.test(e2) ? "/>" : `>${t2}</${e2}>`)}`);
-    u = "";
-    for await (const e3 of n2)
-      u += e3;
+  if (renderer && !renderer.clientEntrypoint && renderer.name !== "@astrojs/lit" && metadata.hydrate) {
+    throw new AstroError({
+      ...AstroErrorData.NoClientEntrypoint,
+      message: AstroErrorData.NoClientEntrypoint.message(
+        displayName,
+        metadata.hydrate,
+        renderer.name
+      )
+    });
   }
-  if (!l)
+  if (!html && typeof Component === "string") {
+    const Tag = sanitizeElementName(Component);
+    const childSlots = Object.values(children).join("");
+    const iterable = renderAstroTemplateResult(
+      await renderTemplate`<${Tag}${internalSpreadAttributes(props)}${markHTMLString(
+        childSlots === "" && voidElementNames.test(Tag) ? `/>` : `>${childSlots}</${Tag}>`
+      )}`
+    );
+    html = "";
+    for await (const chunk of iterable) {
+      html += chunk;
+    }
+  }
+  if (!hydration) {
     return async function* () {
-      h && (yield* h), c || "astro:jsx" === (null == x ? void 0 : x.name) ? yield u : u && u.length > 0 ? yield markHTMLString(u.replace(/\<\/?astro-slot\>/g, "")) : yield "";
+      if (slotInstructions) {
+        yield* slotInstructions;
+      }
+      if (isPage || (renderer == null ? void 0 : renderer.name) === "astro:jsx") {
+        yield html;
+      } else if (html && html.length > 0) {
+        yield markHTMLString(html.replace(/\<\/?astro-slot\>/g, ""));
+      } else {
+        yield "";
+      }
     }();
-  const y = shorthash(`<!--${p.componentExport.value}:${p.componentUrl}-->
-${u}
-${serializeProps(d, p)}`), b = await generateHydrateScript({ renderer: x, result: e, astroId: y, props: d, attrs: m }, p);
-  let w = [];
-  if (u) {
-    if (Object.keys(g).length > 0)
-      for (const e2 of Object.keys(g))
-        u.includes("default" === e2 ? "<astro-slot>" : `<astro-slot name="${e2}">`) || w.push(e2);
-  } else
-    w = Object.keys(g);
-  const S = w.length > 0 ? w.map((e2) => `<template data-astro-template${"default" !== e2 ? `="${e2}"` : ""}>${g[e2]}</template>`).join("") : "";
-  return b.children = `${u ?? ""}${S}`, b.children && (b.props["await-children"] = ""), async function* () {
-    h && (yield* h), yield { type: "directive", hydration: l, result: e }, yield markHTMLString(renderElement$1("astro-island", b, false));
-  }();
+  }
+  const astroId = shorthash(
+    `<!--${metadata.componentExport.value}:${metadata.componentUrl}-->
+${html}
+${serializeProps(
+      props,
+      metadata
+    )}`
+  );
+  const island = await generateHydrateScript(
+    { renderer, result, astroId, props, attrs },
+    metadata
+  );
+  let unrenderedSlots = [];
+  if (html) {
+    if (Object.keys(children).length > 0) {
+      for (const key of Object.keys(children)) {
+        if (!html.includes(key === "default" ? `<astro-slot>` : `<astro-slot name="${key}">`)) {
+          unrenderedSlots.push(key);
+        }
+      }
+    }
+  } else {
+    unrenderedSlots = Object.keys(children);
+  }
+  const template = unrenderedSlots.length > 0 ? unrenderedSlots.map(
+    (key) => `<template data-astro-template${key !== "default" ? `="${key}"` : ""}>${children[key]}</template>`
+  ).join("") : "";
+  island.children = `${html ?? ""}${template}`;
+  if (island.children) {
+    island.props["await-children"] = "";
+  }
+  async function* renderAll() {
+    if (slotInstructions) {
+      yield* slotInstructions;
+    }
+    yield { type: "directive", hydration, result };
+    yield markHTMLString(renderElement$1("astro-island", island, false));
+  }
+  return renderAll();
 }
-function sanitizeElementName(e) {
-  const t = /[&<>'"\s]+/g;
-  return t.test(e) ? e.trim().split(t)[0].trim() : e;
+function sanitizeElementName(tag) {
+  const unsafe = /[&<>'"\s]+/g;
+  if (!unsafe.test(tag))
+    return tag;
+  return tag.trim().split(unsafe)[0].trim();
 }
-async function renderFragmentComponent(e, t = {}) {
-  const a = await renderSlot(e, null == t ? void 0 : t.default);
-  return null == a ? a : markHTMLString(a);
+async function renderFragmentComponent(result, slots = {}) {
+  const children = await renderSlot(result, slots == null ? void 0 : slots.default);
+  if (children == null) {
+    return children;
+  }
+  return markHTMLString(children);
 }
-async function renderHTMLComponent(e, t, a, n = {}) {
-  const { slotInstructions: i, children: o } = await renderSlots(e, n), r = t.render({ slots: o }), s = i ? i.map((t2) => stringifyChunk(e, t2)).join("") : "";
-  return markHTMLString(s + r);
+async function renderHTMLComponent(result, Component, _props, slots = {}) {
+  const { slotInstructions, children } = await renderSlots(result, slots);
+  const html = Component.render({ slots: children });
+  const hydrationHtml = slotInstructions ? slotInstructions.map((instr) => stringifyChunk(result, instr)).join("") : "";
+  return markHTMLString(hydrationHtml + html);
 }
-function renderComponent(e, t, a, n, i = {}) {
-  return isPromise(a) ? Promise.resolve(a).then((a2) => renderComponent(e, t, a2, n, i)) : isFragmentComponent(a) ? renderFragmentComponent(e, i) : isHTMLComponent(a) ? renderHTMLComponent(e, a, n, i) : isAstroComponentFactory(a) ? createAstroComponentInstance(e, t, a, n, i) : renderFrameworkComponent(e, t, a, n, i);
+function renderComponent(result, displayName, Component, props, slots = {}) {
+  if (isPromise(Component)) {
+    return Promise.resolve(Component).then((Unwrapped) => {
+      return renderComponent(result, displayName, Unwrapped, props, slots);
+    });
+  }
+  if (isFragmentComponent(Component)) {
+    return renderFragmentComponent(result, slots);
+  }
+  if (isHTMLComponent(Component)) {
+    return renderHTMLComponent(result, Component, props, slots);
+  }
+  if (isAstroComponentFactory(Component)) {
+    return createAstroComponentInstance(result, displayName, Component, props, slots);
+  }
+  return renderFrameworkComponent(result, displayName, Component, props, slots);
 }
-function renderComponentToIterable(e, t, a, n, i = {}) {
-  const o = renderComponent(e, t, a, n, i);
-  return isAstroComponentInstance(o) ? o.render() : o;
+function renderComponentToIterable(result, displayName, Component, props, slots = {}) {
+  const renderResult = renderComponent(result, displayName, Component, props, slots);
+  if (isAstroComponentInstance(renderResult)) {
+    return renderResult.render();
+  }
+  return renderResult;
 }
-var __accessCheck$2 = (e, t, a) => {
-  if (!t.has(e))
-    throw TypeError("Cannot " + a);
+var __accessCheck$2 = (obj, member, msg) => {
+  if (!member.has(obj))
+    throw TypeError("Cannot " + msg);
 };
-var __privateGet$2 = (e, t, a) => (__accessCheck$2(e, t, "read from private field"), a ? a.call(e) : t.get(e));
-var __privateAdd$2 = (e, t, a) => {
-  if (t.has(e))
+var __privateGet$2 = (obj, member, getter) => {
+  __accessCheck$2(obj, member, "read from private field");
+  return getter ? getter.call(obj) : member.get(obj);
+};
+var __privateAdd$2 = (obj, member, value) => {
+  if (member.has(obj))
     throw TypeError("Cannot add the same private member more than once");
-  t instanceof WeakSet ? t.add(e) : t.set(e, a);
+  member instanceof WeakSet ? member.add(obj) : member.set(obj, value);
 };
-var __privateSet$2 = (e, t, a, n) => (__accessCheck$2(e, t, "write to private field"), n ? n.call(e, a) : t.set(e, a), a);
-var isNodeJS = "object" == typeof process && "[object process]" === Object.prototype.toString.call(process);
+var __privateSet$2 = (obj, member, value, setter) => {
+  __accessCheck$2(obj, member, "write to private field");
+  setter ? setter.call(obj, value) : member.set(obj, value);
+  return value;
+};
+var isNodeJS = typeof process === "object" && Object.prototype.toString.call(process) === "[object process]";
 var StreamingCompatibleResponse;
 function createResponseClass() {
-  var e, t, a;
-  return a = class extends Response {
-    constructor(a2, n) {
-      let i = a2 instanceof ReadableStream;
-      super(i ? null : a2, n), __privateAdd$2(this, e, void 0), __privateAdd$2(this, t, void 0), __privateSet$2(this, e, i), __privateSet$2(this, t, a2);
+  var _isStream, _body, _a2;
+  StreamingCompatibleResponse = (_a2 = class extends Response {
+    constructor(body, init2) {
+      let isStream = body instanceof ReadableStream;
+      super(isStream ? null : body, init2);
+      __privateAdd$2(this, _isStream, void 0);
+      __privateAdd$2(this, _body, void 0);
+      __privateSet$2(this, _isStream, isStream);
+      __privateSet$2(this, _body, body);
     }
     get body() {
-      return __privateGet$2(this, t);
+      return __privateGet$2(this, _body);
     }
     async text() {
-      if (__privateGet$2(this, e) && isNodeJS) {
-        let e2 = new TextDecoder(), a2 = __privateGet$2(this, t), n = "";
-        for await (let t2 of streamAsyncIterator(a2))
-          n += e2.decode(t2);
-        return n;
+      if (__privateGet$2(this, _isStream) && isNodeJS) {
+        let decoder2 = new TextDecoder();
+        let body = __privateGet$2(this, _body);
+        let out = "";
+        for await (let chunk of streamAsyncIterator(body)) {
+          out += decoder2.decode(chunk);
+        }
+        return out;
       }
       return super.text();
     }
     async arrayBuffer() {
-      if (__privateGet$2(this, e) && isNodeJS) {
-        let e2 = __privateGet$2(this, t), a2 = [], n = 0;
-        for await (let t2 of streamAsyncIterator(e2))
-          a2.push(t2), n += t2.length;
-        let i = new Uint8Array(n), o = 0;
-        for (const e3 of a2)
-          i.set(e3, o), o += e3.length;
-        return i;
+      if (__privateGet$2(this, _isStream) && isNodeJS) {
+        let body = __privateGet$2(this, _body);
+        let chunks = [];
+        let len = 0;
+        for await (let chunk of streamAsyncIterator(body)) {
+          chunks.push(chunk);
+          len += chunk.length;
+        }
+        let ab = new Uint8Array(len);
+        let offset = 0;
+        for (const chunk of chunks) {
+          ab.set(chunk, offset);
+          offset += chunk.length;
+        }
+        return ab;
       }
       return super.arrayBuffer();
     }
-  }, e = /* @__PURE__ */ new WeakMap(), t = /* @__PURE__ */ new WeakMap(), StreamingCompatibleResponse = a, StreamingCompatibleResponse;
+  }, _isStream = /* @__PURE__ */ new WeakMap(), _body = /* @__PURE__ */ new WeakMap(), _a2);
+  return StreamingCompatibleResponse;
 }
-var createResponse = isNodeJS ? (e, t) => "string" == typeof e || ArrayBuffer.isView(e) ? new Response(e, t) : void 0 === StreamingCompatibleResponse ? new (createResponseClass())(e, t) : new StreamingCompatibleResponse(e, t) : (e, t) => new Response(e, t);
+var createResponse = isNodeJS ? (body, init2) => {
+  if (typeof body === "string" || ArrayBuffer.isView(body)) {
+    return new Response(body, init2);
+  }
+  if (typeof StreamingCompatibleResponse === "undefined") {
+    return new (createResponseClass())(body, init2);
+  }
+  return new StreamingCompatibleResponse(body, init2);
+} : (body, init2) => new Response(body, init2);
 var needsHeadRenderingSymbol = Symbol.for("astro.needsHeadRendering");
-function nonAstroPageNeedsHeadInjection(e) {
-  return needsHeadRenderingSymbol in e && !!e[needsHeadRenderingSymbol];
+function nonAstroPageNeedsHeadInjection(pageComponent) {
+  return needsHeadRenderingSymbol in pageComponent && !!pageComponent[needsHeadRenderingSymbol];
 }
-async function iterableToHTMLBytes(e, t, a) {
-  const n = new HTMLParts();
+async function iterableToHTMLBytes(result, iterable, onDocTypeInjection) {
+  const parts = new HTMLParts();
   let i = 0;
-  for await (const o of t)
-    isHTMLString(o) && 0 === i && (i++, /<!doctype html/i.test(String(o)) || (n.append("<!DOCTYPE html>\n", e), a && await a(n))), n.append(o, e);
-  return n.toArrayBuffer();
-}
-async function bufferHeadContent(e) {
-  const t = e.propagators.values();
-  for (; ; ) {
-    const { value: a, done: n } = t.next();
-    if (n)
-      break;
-    const i = await a.init();
-    isHeadAndContent(i) && e.extraHead.push(i.head);
-  }
-}
-async function renderPage$1(e, t, a, n, i, o) {
-  if (!isAstroComponentFactory(t)) {
-    const n2 = { ...a ?? {}, "server:root": true };
-    let i2;
-    try {
-      const a2 = await renderComponent(e, t.name, t, n2, null);
-      i2 = isAstroComponentInstance(a2) ? a2.render() : a2;
-    } catch (e2) {
-      throw AstroError.is(e2) && !e2.loc && e2.setLocation({ file: null == o ? void 0 : o.component }), e2;
-    }
-    const r2 = await iterableToHTMLBytes(e, i2, async (a2) => {
-      if (nonAstroPageNeedsHeadInjection(t))
-        for await (let t2 of maybeRenderHead(e))
-          a2.append(t2, e);
-    });
-    return new Response(r2, { headers: new Headers([["Content-Type", "text/html; charset=utf-8"], ["Content-Length", r2.byteLength.toString()]]) });
-  }
-  const r = await t(e, a, n), s = isHeadAndContent(r);
-  if (isRenderTemplateResult(r) || s) {
-    await bufferHeadContent(e);
-    let t2, a2 = renderAstroTemplateResult(s ? r.content : r), n2 = e.response, p = new Headers(n2.headers);
-    return i ? t2 = new ReadableStream({ start(t3) {
-      !async function() {
-        let n3 = 0;
-        try {
-          for await (const i2 of a2) {
-            isHTMLString(i2) && 0 === n3 && (/<!doctype html/i.test(String(i2)) || t3.enqueue(encoder.encode("<!DOCTYPE html>\n")));
-            const a3 = chunkToByteArray(e, i2);
-            t3.enqueue(a3), n3++;
+  for await (const chunk of iterable) {
+    if (isHTMLString(chunk)) {
+      if (i === 0) {
+        i++;
+        if (!/<!doctype html/i.test(String(chunk))) {
+          parts.append("<!DOCTYPE html>\n", result);
+          if (onDocTypeInjection) {
+            await onDocTypeInjection(parts);
           }
-          t3.close();
-        } catch (e2) {
-          AstroError.is(e2) && !e2.loc && e2.setLocation({ file: null == o ? void 0 : o.component }), t3.error(e2);
         }
-      }();
-    } }) : (t2 = await iterableToHTMLBytes(e, a2), p.set("Content-Length", t2.byteLength.toString())), createResponse(t2, { ...n2, headers: p });
+      }
+    }
+    parts.append(chunk, result);
   }
-  if (!(r instanceof Response))
-    throw new AstroError({ ...AstroErrorData.OnlyResponseCanBeReturned, message: AstroErrorData.OnlyResponseCanBeReturned.message(null == o ? void 0 : o.route, typeof r), location: { file: null == o ? void 0 : o.component } });
-  return r;
+  return parts.toArrayBuffer();
 }
-function spreadAttributes(e, t, { class: a } = {}) {
-  let n = "";
-  a && (void 0 !== e.class ? e.class += ` ${a}` : void 0 !== e["class:list"] ? e["class:list"] = [e["class:list"], a] : e.class = a);
-  for (const [t2, a2] of Object.entries(e))
-    n += addAttribute(a2, t2, true);
-  return markHTMLString(n);
+async function bufferHeadContent(result) {
+  const iterator = result.propagators.values();
+  const scoped = createScopedResult(result, ScopeFlags.HeadBuffer);
+  while (true) {
+    const { value, done } = iterator.next();
+    if (done) {
+      break;
+    }
+    const returnValue = await value.init(scoped);
+    if (isHeadAndContent(returnValue)) {
+      result.extraHead.push(returnValue.head);
+    }
+  }
+}
+async function renderPage$1(result, componentFactory, props, children, streaming, route) {
+  if (!isAstroComponentFactory(componentFactory)) {
+    const pageProps = { ...props ?? {}, "server:root": true };
+    let output;
+    try {
+      const renderResult = await renderComponent(
+        result,
+        componentFactory.name,
+        componentFactory,
+        pageProps,
+        null
+      );
+      if (isAstroComponentInstance(renderResult)) {
+        output = renderResult.render();
+      } else {
+        output = renderResult;
+      }
+    } catch (e) {
+      if (AstroError.is(e) && !e.loc) {
+        e.setLocation({
+          file: route == null ? void 0 : route.component
+        });
+      }
+      throw e;
+    }
+    const bytes = await iterableToHTMLBytes(result, output, async (parts) => {
+      if (nonAstroPageNeedsHeadInjection(componentFactory)) {
+        for await (let chunk of maybeRenderHead(result)) {
+          parts.append(chunk, result);
+        }
+      }
+    });
+    return new Response(bytes, {
+      headers: new Headers([
+        ["Content-Type", "text/html; charset=utf-8"],
+        ["Content-Length", bytes.byteLength.toString()]
+      ])
+    });
+  }
+  const factoryReturnValue = await componentFactory(result, props, children);
+  const factoryIsHeadAndContent = isHeadAndContent(factoryReturnValue);
+  if (isRenderTemplateResult(factoryReturnValue) || factoryIsHeadAndContent) {
+    await bufferHeadContent(result);
+    const templateResult = factoryIsHeadAndContent ? factoryReturnValue.content : factoryReturnValue;
+    let iterable = renderAstroTemplateResult(templateResult);
+    let init2 = result.response;
+    let headers = new Headers(init2.headers);
+    let body;
+    if (streaming) {
+      body = new ReadableStream({
+        start(controller) {
+          async function read() {
+            let i = 0;
+            try {
+              for await (const chunk of iterable) {
+                if (isHTMLString(chunk)) {
+                  if (i === 0) {
+                    if (!/<!doctype html/i.test(String(chunk))) {
+                      controller.enqueue(encoder.encode("<!DOCTYPE html>\n"));
+                    }
+                  }
+                }
+                const bytes = chunkToByteArray(result, chunk);
+                controller.enqueue(bytes);
+                i++;
+              }
+              controller.close();
+            } catch (e) {
+              if (AstroError.is(e) && !e.loc) {
+                e.setLocation({
+                  file: route == null ? void 0 : route.component
+                });
+              }
+              controller.error(e);
+            }
+          }
+          read();
+        }
+      });
+    } else {
+      body = await iterableToHTMLBytes(result, iterable);
+      headers.set("Content-Length", body.byteLength.toString());
+    }
+    let response = createResponse(body, { ...init2, headers });
+    return response;
+  }
+  if (!(factoryReturnValue instanceof Response)) {
+    throw new AstroError({
+      ...AstroErrorData.OnlyResponseCanBeReturned,
+      message: AstroErrorData.OnlyResponseCanBeReturned.message(
+        route == null ? void 0 : route.route,
+        typeof factoryReturnValue
+      ),
+      location: {
+        file: route == null ? void 0 : route.component
+      }
+    });
+  }
+  return factoryReturnValue;
+}
+function spreadAttributes(values, _name, { class: scopedClassName } = {}) {
+  let output = "";
+  if (scopedClassName) {
+    if (typeof values.class !== "undefined") {
+      values.class += ` ${scopedClassName}`;
+    } else if (typeof values["class:list"] !== "undefined") {
+      values["class:list"] = [values["class:list"], scopedClassName];
+    } else {
+      values.class = scopedClassName;
+    }
+  }
+  for (const [key, value] of Object.entries(values)) {
+    output += addAttribute(value, key, true);
+  }
+  return markHTMLString(output);
 }
 var FORCE_COLOR;
 var NODE_DISABLE_COLORS;
 var NO_COLOR;
 var TERM;
 var isTTY = true;
-"undefined" != typeof process && ({ FORCE_COLOR, NODE_DISABLE_COLORS, NO_COLOR, TERM } = process.env || {}, isTTY = process.stdout && process.stdout.isTTY);
-var $ = { enabled: !NODE_DISABLE_COLORS && null == NO_COLOR && "dumb" !== TERM && (null != FORCE_COLOR && "0" !== FORCE_COLOR || isTTY) };
-function init(e, t) {
-  let a = new RegExp(`\\x1b\\[${t}m`, "g"), n = `\x1B[${e}m`, i = `\x1B[${t}m`;
-  return function(e2) {
-    return $.enabled && null != e2 ? n + (~("" + e2).indexOf(i) ? e2.replace(a, i + n) : e2) + i : e2;
+if (typeof process !== "undefined") {
+  ({ FORCE_COLOR, NODE_DISABLE_COLORS, NO_COLOR, TERM } = process.env || {});
+  isTTY = process.stdout && process.stdout.isTTY;
+}
+var $ = {
+  enabled: !NODE_DISABLE_COLORS && NO_COLOR == null && TERM !== "dumb" && (FORCE_COLOR != null && FORCE_COLOR !== "0" || isTTY)
+};
+function init(x, y) {
+  let rgx = new RegExp(`\\x1b\\[${y}m`, "g");
+  let open = `\x1B[${x}m`, close = `\x1B[${y}m`;
+  return function(txt) {
+    if (!$.enabled || txt == null)
+      return txt;
+    return open + (!!~("" + txt).indexOf(close) ? txt.replace(rgx, close + open) : txt) + close;
   };
 }
 var reset = init(0, 0);
@@ -1236,521 +2453,1157 @@ var red = init(31, 39);
 var yellow = init(33, 39);
 var cyan = init(36, 39);
 var eastasianwidthExports = {};
-var eastasianwidth = { get exports() {
-  return eastasianwidthExports;
-}, set exports(e) {
-  eastasianwidthExports = e;
-} };
-!function(e) {
-  var t = {};
-  function a(e2) {
-    return e2.match(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[^\uD800-\uDFFF]/g) || [];
+var eastasianwidth = {
+  get exports() {
+    return eastasianwidthExports;
+  },
+  set exports(v) {
+    eastasianwidthExports = v;
   }
-  eastasianwidth.exports = t, t.eastAsianWidth = function(e2) {
-    var t2 = e2.charCodeAt(0), a2 = 2 == e2.length ? e2.charCodeAt(1) : 0, n = t2;
-    return 55296 <= t2 && t2 <= 56319 && 56320 <= a2 && a2 <= 57343 && (n = (t2 &= 1023) << 10 | (a2 &= 1023), n += 65536), 12288 == n || 65281 <= n && n <= 65376 || 65504 <= n && n <= 65510 ? "F" : 8361 == n || 65377 <= n && n <= 65470 || 65474 <= n && n <= 65479 || 65482 <= n && n <= 65487 || 65490 <= n && n <= 65495 || 65498 <= n && n <= 65500 || 65512 <= n && n <= 65518 ? "H" : 4352 <= n && n <= 4447 || 4515 <= n && n <= 4519 || 4602 <= n && n <= 4607 || 9001 <= n && n <= 9002 || 11904 <= n && n <= 11929 || 11931 <= n && n <= 12019 || 12032 <= n && n <= 12245 || 12272 <= n && n <= 12283 || 12289 <= n && n <= 12350 || 12353 <= n && n <= 12438 || 12441 <= n && n <= 12543 || 12549 <= n && n <= 12589 || 12593 <= n && n <= 12686 || 12688 <= n && n <= 12730 || 12736 <= n && n <= 12771 || 12784 <= n && n <= 12830 || 12832 <= n && n <= 12871 || 12880 <= n && n <= 13054 || 13056 <= n && n <= 19903 || 19968 <= n && n <= 42124 || 42128 <= n && n <= 42182 || 43360 <= n && n <= 43388 || 44032 <= n && n <= 55203 || 55216 <= n && n <= 55238 || 55243 <= n && n <= 55291 || 63744 <= n && n <= 64255 || 65040 <= n && n <= 65049 || 65072 <= n && n <= 65106 || 65108 <= n && n <= 65126 || 65128 <= n && n <= 65131 || 110592 <= n && n <= 110593 || 127488 <= n && n <= 127490 || 127504 <= n && n <= 127546 || 127552 <= n && n <= 127560 || 127568 <= n && n <= 127569 || 131072 <= n && n <= 194367 || 177984 <= n && n <= 196605 || 196608 <= n && n <= 262141 ? "W" : 32 <= n && n <= 126 || 162 <= n && n <= 163 || 165 <= n && n <= 166 || 172 == n || 175 == n || 10214 <= n && n <= 10221 || 10629 <= n && n <= 10630 ? "Na" : 161 == n || 164 == n || 167 <= n && n <= 168 || 170 == n || 173 <= n && n <= 174 || 176 <= n && n <= 180 || 182 <= n && n <= 186 || 188 <= n && n <= 191 || 198 == n || 208 == n || 215 <= n && n <= 216 || 222 <= n && n <= 225 || 230 == n || 232 <= n && n <= 234 || 236 <= n && n <= 237 || 240 == n || 242 <= n && n <= 243 || 247 <= n && n <= 250 || 252 == n || 254 == n || 257 == n || 273 == n || 275 == n || 283 == n || 294 <= n && n <= 295 || 299 == n || 305 <= n && n <= 307 || 312 == n || 319 <= n && n <= 322 || 324 == n || 328 <= n && n <= 331 || 333 == n || 338 <= n && n <= 339 || 358 <= n && n <= 359 || 363 == n || 462 == n || 464 == n || 466 == n || 468 == n || 470 == n || 472 == n || 474 == n || 476 == n || 593 == n || 609 == n || 708 == n || 711 == n || 713 <= n && n <= 715 || 717 == n || 720 == n || 728 <= n && n <= 731 || 733 == n || 735 == n || 768 <= n && n <= 879 || 913 <= n && n <= 929 || 931 <= n && n <= 937 || 945 <= n && n <= 961 || 963 <= n && n <= 969 || 1025 == n || 1040 <= n && n <= 1103 || 1105 == n || 8208 == n || 8211 <= n && n <= 8214 || 8216 <= n && n <= 8217 || 8220 <= n && n <= 8221 || 8224 <= n && n <= 8226 || 8228 <= n && n <= 8231 || 8240 == n || 8242 <= n && n <= 8243 || 8245 == n || 8251 == n || 8254 == n || 8308 == n || 8319 == n || 8321 <= n && n <= 8324 || 8364 == n || 8451 == n || 8453 == n || 8457 == n || 8467 == n || 8470 == n || 8481 <= n && n <= 8482 || 8486 == n || 8491 == n || 8531 <= n && n <= 8532 || 8539 <= n && n <= 8542 || 8544 <= n && n <= 8555 || 8560 <= n && n <= 8569 || 8585 == n || 8592 <= n && n <= 8601 || 8632 <= n && n <= 8633 || 8658 == n || 8660 == n || 8679 == n || 8704 == n || 8706 <= n && n <= 8707 || 8711 <= n && n <= 8712 || 8715 == n || 8719 == n || 8721 == n || 8725 == n || 8730 == n || 8733 <= n && n <= 8736 || 8739 == n || 8741 == n || 8743 <= n && n <= 8748 || 8750 == n || 8756 <= n && n <= 8759 || 8764 <= n && n <= 8765 || 8776 == n || 8780 == n || 8786 == n || 8800 <= n && n <= 8801 || 8804 <= n && n <= 8807 || 8810 <= n && n <= 8811 || 8814 <= n && n <= 8815 || 8834 <= n && n <= 8835 || 8838 <= n && n <= 8839 || 8853 == n || 8857 == n || 8869 == n || 8895 == n || 8978 == n || 9312 <= n && n <= 9449 || 9451 <= n && n <= 9547 || 9552 <= n && n <= 9587 || 9600 <= n && n <= 9615 || 9618 <= n && n <= 9621 || 9632 <= n && n <= 9633 || 9635 <= n && n <= 9641 || 9650 <= n && n <= 9651 || 9654 <= n && n <= 9655 || 9660 <= n && n <= 9661 || 9664 <= n && n <= 9665 || 9670 <= n && n <= 9672 || 9675 == n || 9678 <= n && n <= 9681 || 9698 <= n && n <= 9701 || 9711 == n || 9733 <= n && n <= 9734 || 9737 == n || 9742 <= n && n <= 9743 || 9748 <= n && n <= 9749 || 9756 == n || 9758 == n || 9792 == n || 9794 == n || 9824 <= n && n <= 9825 || 9827 <= n && n <= 9829 || 9831 <= n && n <= 9834 || 9836 <= n && n <= 9837 || 9839 == n || 9886 <= n && n <= 9887 || 9918 <= n && n <= 9919 || 9924 <= n && n <= 9933 || 9935 <= n && n <= 9953 || 9955 == n || 9960 <= n && n <= 9983 || 10045 == n || 10071 == n || 10102 <= n && n <= 10111 || 11093 <= n && n <= 11097 || 12872 <= n && n <= 12879 || 57344 <= n && n <= 63743 || 65024 <= n && n <= 65039 || 65533 == n || 127232 <= n && n <= 127242 || 127248 <= n && n <= 127277 || 127280 <= n && n <= 127337 || 127344 <= n && n <= 127386 || 917760 <= n && n <= 917999 || 983040 <= n && n <= 1048573 || 1048576 <= n && n <= 1114109 ? "A" : "N";
-  }, t.characterLength = function(e2) {
-    var t2 = this.eastAsianWidth(e2);
-    return "F" == t2 || "W" == t2 || "A" == t2 ? 2 : 1;
-  }, t.length = function(e2) {
-    for (var t2 = a(e2), n = 0, i = 0; i < t2.length; i++)
-      n += this.characterLength(t2[i]);
-    return n;
-  }, t.slice = function(e2, n, i) {
-    textLen = t.length(e2), i = i || 1, (n = n || 0) < 0 && (n = textLen + n), i < 0 && (i = textLen + i);
-    for (var o = "", r = 0, s = a(e2), p = 0; p < s.length; p++) {
-      var l = s[p], c = t.length(l);
-      if (r >= n - (2 == c ? 1 : 0)) {
-        if (!(r + c <= i))
-          break;
-        o += l;
-      }
-      r += c;
+};
+(function(module) {
+  var eaw = {};
+  {
+    module.exports = eaw;
+  }
+  eaw.eastAsianWidth = function(character) {
+    var x = character.charCodeAt(0);
+    var y = character.length == 2 ? character.charCodeAt(1) : 0;
+    var codePoint = x;
+    if (55296 <= x && x <= 56319 && (56320 <= y && y <= 57343)) {
+      x &= 1023;
+      y &= 1023;
+      codePoint = x << 10 | y;
+      codePoint += 65536;
     }
-    return o;
+    if (12288 == codePoint || 65281 <= codePoint && codePoint <= 65376 || 65504 <= codePoint && codePoint <= 65510) {
+      return "F";
+    }
+    if (8361 == codePoint || 65377 <= codePoint && codePoint <= 65470 || 65474 <= codePoint && codePoint <= 65479 || 65482 <= codePoint && codePoint <= 65487 || 65490 <= codePoint && codePoint <= 65495 || 65498 <= codePoint && codePoint <= 65500 || 65512 <= codePoint && codePoint <= 65518) {
+      return "H";
+    }
+    if (4352 <= codePoint && codePoint <= 4447 || 4515 <= codePoint && codePoint <= 4519 || 4602 <= codePoint && codePoint <= 4607 || 9001 <= codePoint && codePoint <= 9002 || 11904 <= codePoint && codePoint <= 11929 || 11931 <= codePoint && codePoint <= 12019 || 12032 <= codePoint && codePoint <= 12245 || 12272 <= codePoint && codePoint <= 12283 || 12289 <= codePoint && codePoint <= 12350 || 12353 <= codePoint && codePoint <= 12438 || 12441 <= codePoint && codePoint <= 12543 || 12549 <= codePoint && codePoint <= 12589 || 12593 <= codePoint && codePoint <= 12686 || 12688 <= codePoint && codePoint <= 12730 || 12736 <= codePoint && codePoint <= 12771 || 12784 <= codePoint && codePoint <= 12830 || 12832 <= codePoint && codePoint <= 12871 || 12880 <= codePoint && codePoint <= 13054 || 13056 <= codePoint && codePoint <= 19903 || 19968 <= codePoint && codePoint <= 42124 || 42128 <= codePoint && codePoint <= 42182 || 43360 <= codePoint && codePoint <= 43388 || 44032 <= codePoint && codePoint <= 55203 || 55216 <= codePoint && codePoint <= 55238 || 55243 <= codePoint && codePoint <= 55291 || 63744 <= codePoint && codePoint <= 64255 || 65040 <= codePoint && codePoint <= 65049 || 65072 <= codePoint && codePoint <= 65106 || 65108 <= codePoint && codePoint <= 65126 || 65128 <= codePoint && codePoint <= 65131 || 110592 <= codePoint && codePoint <= 110593 || 127488 <= codePoint && codePoint <= 127490 || 127504 <= codePoint && codePoint <= 127546 || 127552 <= codePoint && codePoint <= 127560 || 127568 <= codePoint && codePoint <= 127569 || 131072 <= codePoint && codePoint <= 194367 || 177984 <= codePoint && codePoint <= 196605 || 196608 <= codePoint && codePoint <= 262141) {
+      return "W";
+    }
+    if (32 <= codePoint && codePoint <= 126 || 162 <= codePoint && codePoint <= 163 || 165 <= codePoint && codePoint <= 166 || 172 == codePoint || 175 == codePoint || 10214 <= codePoint && codePoint <= 10221 || 10629 <= codePoint && codePoint <= 10630) {
+      return "Na";
+    }
+    if (161 == codePoint || 164 == codePoint || 167 <= codePoint && codePoint <= 168 || 170 == codePoint || 173 <= codePoint && codePoint <= 174 || 176 <= codePoint && codePoint <= 180 || 182 <= codePoint && codePoint <= 186 || 188 <= codePoint && codePoint <= 191 || 198 == codePoint || 208 == codePoint || 215 <= codePoint && codePoint <= 216 || 222 <= codePoint && codePoint <= 225 || 230 == codePoint || 232 <= codePoint && codePoint <= 234 || 236 <= codePoint && codePoint <= 237 || 240 == codePoint || 242 <= codePoint && codePoint <= 243 || 247 <= codePoint && codePoint <= 250 || 252 == codePoint || 254 == codePoint || 257 == codePoint || 273 == codePoint || 275 == codePoint || 283 == codePoint || 294 <= codePoint && codePoint <= 295 || 299 == codePoint || 305 <= codePoint && codePoint <= 307 || 312 == codePoint || 319 <= codePoint && codePoint <= 322 || 324 == codePoint || 328 <= codePoint && codePoint <= 331 || 333 == codePoint || 338 <= codePoint && codePoint <= 339 || 358 <= codePoint && codePoint <= 359 || 363 == codePoint || 462 == codePoint || 464 == codePoint || 466 == codePoint || 468 == codePoint || 470 == codePoint || 472 == codePoint || 474 == codePoint || 476 == codePoint || 593 == codePoint || 609 == codePoint || 708 == codePoint || 711 == codePoint || 713 <= codePoint && codePoint <= 715 || 717 == codePoint || 720 == codePoint || 728 <= codePoint && codePoint <= 731 || 733 == codePoint || 735 == codePoint || 768 <= codePoint && codePoint <= 879 || 913 <= codePoint && codePoint <= 929 || 931 <= codePoint && codePoint <= 937 || 945 <= codePoint && codePoint <= 961 || 963 <= codePoint && codePoint <= 969 || 1025 == codePoint || 1040 <= codePoint && codePoint <= 1103 || 1105 == codePoint || 8208 == codePoint || 8211 <= codePoint && codePoint <= 8214 || 8216 <= codePoint && codePoint <= 8217 || 8220 <= codePoint && codePoint <= 8221 || 8224 <= codePoint && codePoint <= 8226 || 8228 <= codePoint && codePoint <= 8231 || 8240 == codePoint || 8242 <= codePoint && codePoint <= 8243 || 8245 == codePoint || 8251 == codePoint || 8254 == codePoint || 8308 == codePoint || 8319 == codePoint || 8321 <= codePoint && codePoint <= 8324 || 8364 == codePoint || 8451 == codePoint || 8453 == codePoint || 8457 == codePoint || 8467 == codePoint || 8470 == codePoint || 8481 <= codePoint && codePoint <= 8482 || 8486 == codePoint || 8491 == codePoint || 8531 <= codePoint && codePoint <= 8532 || 8539 <= codePoint && codePoint <= 8542 || 8544 <= codePoint && codePoint <= 8555 || 8560 <= codePoint && codePoint <= 8569 || 8585 == codePoint || 8592 <= codePoint && codePoint <= 8601 || 8632 <= codePoint && codePoint <= 8633 || 8658 == codePoint || 8660 == codePoint || 8679 == codePoint || 8704 == codePoint || 8706 <= codePoint && codePoint <= 8707 || 8711 <= codePoint && codePoint <= 8712 || 8715 == codePoint || 8719 == codePoint || 8721 == codePoint || 8725 == codePoint || 8730 == codePoint || 8733 <= codePoint && codePoint <= 8736 || 8739 == codePoint || 8741 == codePoint || 8743 <= codePoint && codePoint <= 8748 || 8750 == codePoint || 8756 <= codePoint && codePoint <= 8759 || 8764 <= codePoint && codePoint <= 8765 || 8776 == codePoint || 8780 == codePoint || 8786 == codePoint || 8800 <= codePoint && codePoint <= 8801 || 8804 <= codePoint && codePoint <= 8807 || 8810 <= codePoint && codePoint <= 8811 || 8814 <= codePoint && codePoint <= 8815 || 8834 <= codePoint && codePoint <= 8835 || 8838 <= codePoint && codePoint <= 8839 || 8853 == codePoint || 8857 == codePoint || 8869 == codePoint || 8895 == codePoint || 8978 == codePoint || 9312 <= codePoint && codePoint <= 9449 || 9451 <= codePoint && codePoint <= 9547 || 9552 <= codePoint && codePoint <= 9587 || 9600 <= codePoint && codePoint <= 9615 || 9618 <= codePoint && codePoint <= 9621 || 9632 <= codePoint && codePoint <= 9633 || 9635 <= codePoint && codePoint <= 9641 || 9650 <= codePoint && codePoint <= 9651 || 9654 <= codePoint && codePoint <= 9655 || 9660 <= codePoint && codePoint <= 9661 || 9664 <= codePoint && codePoint <= 9665 || 9670 <= codePoint && codePoint <= 9672 || 9675 == codePoint || 9678 <= codePoint && codePoint <= 9681 || 9698 <= codePoint && codePoint <= 9701 || 9711 == codePoint || 9733 <= codePoint && codePoint <= 9734 || 9737 == codePoint || 9742 <= codePoint && codePoint <= 9743 || 9748 <= codePoint && codePoint <= 9749 || 9756 == codePoint || 9758 == codePoint || 9792 == codePoint || 9794 == codePoint || 9824 <= codePoint && codePoint <= 9825 || 9827 <= codePoint && codePoint <= 9829 || 9831 <= codePoint && codePoint <= 9834 || 9836 <= codePoint && codePoint <= 9837 || 9839 == codePoint || 9886 <= codePoint && codePoint <= 9887 || 9918 <= codePoint && codePoint <= 9919 || 9924 <= codePoint && codePoint <= 9933 || 9935 <= codePoint && codePoint <= 9953 || 9955 == codePoint || 9960 <= codePoint && codePoint <= 9983 || 10045 == codePoint || 10071 == codePoint || 10102 <= codePoint && codePoint <= 10111 || 11093 <= codePoint && codePoint <= 11097 || 12872 <= codePoint && codePoint <= 12879 || 57344 <= codePoint && codePoint <= 63743 || 65024 <= codePoint && codePoint <= 65039 || 65533 == codePoint || 127232 <= codePoint && codePoint <= 127242 || 127248 <= codePoint && codePoint <= 127277 || 127280 <= codePoint && codePoint <= 127337 || 127344 <= codePoint && codePoint <= 127386 || 917760 <= codePoint && codePoint <= 917999 || 983040 <= codePoint && codePoint <= 1048573 || 1048576 <= codePoint && codePoint <= 1114109) {
+      return "A";
+    }
+    return "N";
   };
-}();
-var dateTimeFormat = new Intl.DateTimeFormat([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-var levels = { debug: 20, info: 30, warn: 40, error: 50, silent: 90 };
-function log(e, t, a, n) {
-  const i = e.level, o = e.dest, r = { type: a, level: t, message: n };
-  levels[i] > levels[t] || o.write(r);
+  eaw.characterLength = function(character) {
+    var code = this.eastAsianWidth(character);
+    if (code == "F" || code == "W" || code == "A") {
+      return 2;
+    } else {
+      return 1;
+    }
+  };
+  function stringToArray(string) {
+    return string.match(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[^\uD800-\uDFFF]/g) || [];
+  }
+  eaw.length = function(string) {
+    var characters = stringToArray(string);
+    var len = 0;
+    for (var i = 0; i < characters.length; i++) {
+      len = len + this.characterLength(characters[i]);
+    }
+    return len;
+  };
+  eaw.slice = function(text, start2, end) {
+    textLen = eaw.length(text);
+    start2 = start2 ? start2 : 0;
+    end = end ? end : 1;
+    if (start2 < 0) {
+      start2 = textLen + start2;
+    }
+    if (end < 0) {
+      end = textLen + end;
+    }
+    var result = "";
+    var eawLen = 0;
+    var chars = stringToArray(text);
+    for (var i = 0; i < chars.length; i++) {
+      var char = chars[i];
+      var charLen = eaw.length(char);
+      if (eawLen >= start2 - (charLen == 2 ? 1 : 0)) {
+        if (eawLen + charLen <= end) {
+          result += char;
+        } else {
+          break;
+        }
+      }
+      eawLen += charLen;
+    }
+    return result;
+  };
+})(eastasianwidth);
+var dateTimeFormat = new Intl.DateTimeFormat([], {
+  hour: "2-digit",
+  minute: "2-digit",
+  second: "2-digit"
+});
+var levels = {
+  debug: 20,
+  info: 30,
+  warn: 40,
+  error: 50,
+  silent: 90
+};
+function log(opts, level, type, message) {
+  const logLevel = opts.level;
+  const dest = opts.dest;
+  const event = {
+    type,
+    level,
+    message
+  };
+  if (levels[logLevel] > levels[level]) {
+    return;
+  }
+  dest.write(event);
 }
-function warn(e, t, a) {
-  return log(e, "warn", t, a);
+function warn(opts, type, message) {
+  return log(opts, "warn", type, message);
 }
-function error(e, t, a) {
-  return log(e, "error", t, a);
+function error(opts, type, message) {
+  return log(opts, "error", type, message);
 }
-function debug(...e) {
-  "_astroGlobalDebug" in globalThis && globalThis._astroGlobalDebug(...e);
+function debug(...args) {
+  if ("_astroGlobalDebug" in globalThis) {
+    globalThis._astroGlobalDebug(...args);
+  }
 }
-if ("undefined" != typeof process) {
-  let e = process;
-  "argv" in e && Array.isArray(e.argv) && (e.argv.includes("--verbose") || e.argv.includes("--silent"));
+if (typeof process !== "undefined") {
+  let proc = process;
+  if ("argv" in proc && Array.isArray(proc.argv)) {
+    if (proc.argv.includes("--verbose"))
+      ;
+    else if (proc.argv.includes("--silent"))
+      ;
+    else
+      ;
+  }
 }
 var VALID_PARAM_TYPES = ["string", "number", "undefined"];
-function validateGetStaticPathsParameter([e, t], a) {
-  if (!VALID_PARAM_TYPES.includes(typeof t))
-    throw new AstroError({ ...AstroErrorData.GetStaticPathsInvalidRouteParam, message: AstroErrorData.GetStaticPathsInvalidRouteParam.message(e, t, typeof t), location: { file: a } });
+function validateGetStaticPathsParameter([key, value], route) {
+  if (!VALID_PARAM_TYPES.includes(typeof value)) {
+    throw new AstroError({
+      ...AstroErrorData.GetStaticPathsInvalidRouteParam,
+      message: AstroErrorData.GetStaticPathsInvalidRouteParam.message(key, value, typeof value),
+      location: {
+        file: route
+      }
+    });
+  }
 }
-function validateDynamicRouteModule(e, { ssr: t, logging: a, route: n }) {
-  if (t && e.getStaticPaths && !e.prerender && warn(a, "getStaticPaths", 'getStaticPaths() is ignored when "output: server" is set.'), (!t || e.prerender) && !e.getStaticPaths)
-    throw new AstroError({ ...AstroErrorData.GetStaticPathsRequired, location: { file: n.component } });
+function validateDynamicRouteModule(mod, {
+  ssr,
+  logging,
+  route
+}) {
+  if (ssr && mod.getStaticPaths && !mod.prerender) {
+    warn(logging, "getStaticPaths", 'getStaticPaths() is ignored when "output: server" is set.');
+  }
+  if ((!ssr || mod.prerender) && !mod.getStaticPaths) {
+    throw new AstroError({
+      ...AstroErrorData.GetStaticPathsRequired,
+      location: { file: route.component }
+    });
+  }
 }
-function validateGetStaticPathsResult(e, t, a) {
-  if (!Array.isArray(e))
-    throw new AstroError({ ...AstroErrorData.InvalidGetStaticPathsReturn, message: AstroErrorData.InvalidGetStaticPathsReturn.message(typeof e), location: { file: a.component } });
-  e.forEach((e2) => {
-    if (void 0 === e2.params || null === e2.params || e2.params && 0 === Object.keys(e2.params).length)
-      throw new AstroError({ ...AstroErrorData.GetStaticPathsExpectedParams, location: { file: a.component } });
-    if ("object" != typeof e2.params)
-      throw new AstroError({ ...AstroErrorData.InvalidGetStaticPathParam, message: AstroErrorData.InvalidGetStaticPathParam.message(typeof e2.params), location: { file: a.component } });
-    for (const [a2, n] of Object.entries(e2.params))
-      void 0 !== n && "string" != typeof n && "number" != typeof n && warn(t, "getStaticPaths", `invalid path param: ${a2}. A string, number or undefined value was expected, but got \`${JSON.stringify(n)}\`.`), "string" == typeof n && "" === n && warn(t, "getStaticPaths", `invalid path param: ${a2}. \`undefined\` expected for an optional param, but got empty string.`);
+function validateGetStaticPathsResult(result, logging, route) {
+  if (!Array.isArray(result)) {
+    throw new AstroError({
+      ...AstroErrorData.InvalidGetStaticPathsReturn,
+      message: AstroErrorData.InvalidGetStaticPathsReturn.message(typeof result),
+      location: {
+        file: route.component
+      }
+    });
+  }
+  result.forEach((pathObject) => {
+    if (pathObject.params === void 0 || pathObject.params === null || pathObject.params && Object.keys(pathObject.params).length === 0) {
+      throw new AstroError({
+        ...AstroErrorData.GetStaticPathsExpectedParams,
+        location: {
+          file: route.component
+        }
+      });
+    }
+    if (typeof pathObject.params !== "object") {
+      throw new AstroError({
+        ...AstroErrorData.InvalidGetStaticPathParam,
+        message: AstroErrorData.InvalidGetStaticPathParam.message(typeof pathObject.params),
+        location: {
+          file: route.component
+        }
+      });
+    }
+    for (const [key, val] of Object.entries(pathObject.params)) {
+      if (!(typeof val === "undefined" || typeof val === "string" || typeof val === "number")) {
+        warn(
+          logging,
+          "getStaticPaths",
+          `invalid path param: ${key}. A string, number or undefined value was expected, but got \`${JSON.stringify(
+            val
+          )}\`.`
+        );
+      }
+      if (typeof val === "string" && val === "") {
+        warn(
+          logging,
+          "getStaticPaths",
+          `invalid path param: ${key}. \`undefined\` expected for an optional param, but got empty string.`
+        );
+      }
+    }
   });
 }
-function getParams(e) {
-  return (t) => {
-    const a = {};
-    return e.forEach((e2, n) => {
-      e2.startsWith("...") ? a[e2.slice(3)] = t[n + 1] ? decodeURIComponent(t[n + 1]) : void 0 : a[e2] = decodeURIComponent(t[n + 1]);
-    }), a;
+function getParams(array) {
+  const fn = (match) => {
+    const params = {};
+    array.forEach((key, i) => {
+      if (key.startsWith("...")) {
+        params[key.slice(3)] = match[i + 1] ? decodeURIComponent(match[i + 1]) : void 0;
+      } else {
+        params[key] = decodeURIComponent(match[i + 1]);
+      }
+    });
+    return params;
   };
+  return fn;
 }
-function stringifyParams(e, t) {
-  const a = Object.entries(e).reduce((e2, a2) => {
-    validateGetStaticPathsParameter(a2, t);
-    const [n, i] = a2;
-    return e2[n] = null == i ? void 0 : i.toString(), e2;
+function stringifyParams(params, routeComponent) {
+  const validatedParams = Object.entries(params).reduce((acc, next) => {
+    validateGetStaticPathsParameter(next, routeComponent);
+    const [key, value] = next;
+    acc[key] = value == null ? void 0 : value.toString();
+    return acc;
   }, {});
-  return JSON.stringify(a, Object.keys(e).sort());
+  return JSON.stringify(validatedParams, Object.keys(params).sort());
 }
+var __accessCheck$1 = (obj, member, msg) => {
+  if (!member.has(obj))
+    throw TypeError("Cannot " + msg);
+};
+var __privateGet$1 = (obj, member, getter) => {
+  __accessCheck$1(obj, member, "read from private field");
+  return getter ? getter.call(obj) : member.get(obj);
+};
+var __privateAdd$1 = (obj, member, value) => {
+  if (member.has(obj))
+    throw TypeError("Cannot add the same private member more than once");
+  member instanceof WeakSet ? member.add(obj) : member.set(obj, value);
+};
+var __privateSet$1 = (obj, member, value, setter) => {
+  __accessCheck$1(obj, member, "write to private field");
+  setter ? setter.call(obj, value) : member.set(obj, value);
+  return value;
+};
 var _result;
 var _slots;
 var _loggingOpts;
-var __accessCheck$1 = (e, t, a) => {
-  if (!t.has(e))
-    throw TypeError("Cannot " + a);
-};
-var __privateGet$1 = (e, t, a) => (__accessCheck$1(e, t, "read from private field"), a ? a.call(e) : t.get(e));
-var __privateAdd$1 = (e, t, a) => {
-  if (t.has(e))
-    throw TypeError("Cannot add the same private member more than once");
-  t instanceof WeakSet ? t.add(e) : t.set(e, a);
-};
-var __privateSet$1 = (e, t, a, n) => (__accessCheck$1(e, t, "write to private field"), n ? n.call(e, a) : t.set(e, a), a);
 var clientAddressSymbol$1 = Symbol.for("astro.clientAddress");
-function onlyAvailableInSSR(e) {
-  return function() {
-    if ("Astro.redirect" === e)
-      throw new AstroError(AstroErrorData.StaticRedirectNotAvailable);
+function onlyAvailableInSSR(name) {
+  return function _onlyAvailableInSSR() {
+    switch (name) {
+      case "Astro.redirect":
+        throw new AstroError(AstroErrorData.StaticRedirectNotAvailable);
+    }
   };
 }
-function getFunctionExpression(e) {
-  var t;
-  if (e && 1 === (null == (t = e.expressions) ? void 0 : t.length))
-    return e.expressions[0];
+function getFunctionExpression(slot) {
+  var _a2;
+  if (!slot)
+    return;
+  if (((_a2 = slot.expressions) == null ? void 0 : _a2.length) !== 1)
+    return;
+  return slot.expressions[0];
 }
 var Slots = class {
-  constructor(e, t, a) {
-    if (__privateAdd$1(this, _result, void 0), __privateAdd$1(this, _slots, void 0), __privateAdd$1(this, _loggingOpts, void 0), __privateSet$1(this, _result, e), __privateSet$1(this, _slots, t), __privateSet$1(this, _loggingOpts, a), t)
-      for (const e2 of Object.keys(t)) {
-        if (void 0 !== this[e2])
-          throw new AstroError({ ...AstroErrorData.ReservedSlotName, message: AstroErrorData.ReservedSlotName.message(e2) });
-        Object.defineProperty(this, e2, { get: () => true, enumerable: true });
-      }
-  }
-  has(e) {
-    return !!__privateGet$1(this, _slots) && Boolean(__privateGet$1(this, _slots)[e]);
-  }
-  async render(e, t = []) {
-    if (!__privateGet$1(this, _slots) || !this.has(e))
-      return;
-    if (Array.isArray(t)) {
-      if (t.length > 0) {
-        const a2 = __privateGet$1(this, _slots)[e], n = "function" == typeof a2 ? await a2() : await a2, i = getFunctionExpression(n);
-        if (i) {
-          const e2 = i(...t);
-          return await renderSlot(__privateGet$1(this, _result), e2).then((e3) => null != e3 ? String(e3) : e3);
+  constructor(result, slots, logging) {
+    __privateAdd$1(this, _result, void 0);
+    __privateAdd$1(this, _slots, void 0);
+    __privateAdd$1(this, _loggingOpts, void 0);
+    __privateSet$1(this, _result, result);
+    __privateSet$1(this, _slots, slots);
+    __privateSet$1(this, _loggingOpts, logging);
+    if (slots) {
+      for (const key of Object.keys(slots)) {
+        if (this[key] !== void 0) {
+          throw new AstroError({
+            ...AstroErrorData.ReservedSlotName,
+            message: AstroErrorData.ReservedSlotName.message(key)
+          });
         }
-        if ("function" == typeof n)
-          return await renderJSX(__privateGet$1(this, _result), n(...t)).then((e2) => null != e2 ? String(e2) : e2);
+        Object.defineProperty(this, key, {
+          get() {
+            return true;
+          },
+          enumerable: true
+        });
       }
-    } else
-      warn(__privateGet$1(this, _loggingOpts), "Astro.slots.render", `Expected second parameter to be an array, received a ${typeof t}. If you're trying to pass an array as a single argument and getting unexpected results, make sure you're passing your array as a item of an array. Ex: Astro.slots.render('default', [["Hello", "World"]])`);
-    const a = await renderSlot(__privateGet$1(this, _result), __privateGet$1(this, _slots)[e]);
-    return stringifyChunk(__privateGet$1(this, _result), a);
+    }
+  }
+  has(name) {
+    if (!__privateGet$1(this, _slots))
+      return false;
+    return Boolean(__privateGet$1(this, _slots)[name]);
+  }
+  async render(name, args = []) {
+    if (!__privateGet$1(this, _slots) || !this.has(name))
+      return;
+    const scoped = createScopedResult(__privateGet$1(this, _result), ScopeFlags.RenderSlot);
+    if (!Array.isArray(args)) {
+      warn(
+        __privateGet$1(this, _loggingOpts),
+        "Astro.slots.render",
+        `Expected second parameter to be an array, received a ${typeof args}. If you're trying to pass an array as a single argument and getting unexpected results, make sure you're passing your array as a item of an array. Ex: Astro.slots.render('default', [["Hello", "World"]])`
+      );
+    } else if (args.length > 0) {
+      const slotValue = __privateGet$1(this, _slots)[name];
+      const component = typeof slotValue === "function" ? await slotValue(scoped) : await slotValue;
+      const expression = getFunctionExpression(component);
+      if (expression) {
+        const slot = () => expression(...args);
+        return await renderSlot(scoped, slot).then((res) => res != null ? String(res) : res);
+      }
+      if (typeof component === "function") {
+        return await renderJSX(scoped, component(...args)).then(
+          (res) => res != null ? String(res) : res
+        );
+      }
+    }
+    const content = await renderSlot(scoped, __privateGet$1(this, _slots)[name]);
+    const outHTML = stringifyChunk(scoped, content);
+    return outHTML;
   }
 };
-_result = /* @__PURE__ */ new WeakMap(), _slots = /* @__PURE__ */ new WeakMap(), _loggingOpts = /* @__PURE__ */ new WeakMap();
+_result = /* @__PURE__ */ new WeakMap();
+_slots = /* @__PURE__ */ new WeakMap();
+_loggingOpts = /* @__PURE__ */ new WeakMap();
 var renderMarkdown = null;
-function createResult(e) {
-  const { markdown: t, params: a, pathname: n, renderers: i, request: o, resolve: r } = e, s = new URL(o.url), p = new Headers();
-  p.set("Content-Type", "text/html");
-  const l = { status: e.status, statusText: "OK", headers: p };
-  let c;
-  Object.defineProperty(l, "headers", { value: l.headers, enumerable: true, writable: false });
-  const d = { styles: e.styles ?? /* @__PURE__ */ new Set(), scripts: e.scripts ?? /* @__PURE__ */ new Set(), links: e.links ?? /* @__PURE__ */ new Set(), propagation: e.propagation ?? /* @__PURE__ */ new Map(), propagators: /* @__PURE__ */ new Map(), extraHead: [], scope: 0, cookies: c, createAstro(n2, i2, r2) {
-    const p2 = new Slots(d, r2, e.logging), m = { __proto__: n2, get clientAddress() {
-      if (!(clientAddressSymbol$1 in o))
-        throw e.adapterName ? new AstroError({ ...AstroErrorData.ClientAddressNotAvailable, message: AstroErrorData.ClientAddressNotAvailable.message(e.adapterName) }) : new AstroError(AstroErrorData.StaticClientAddressNotAvailable);
-      return Reflect.get(o, clientAddressSymbol$1);
-    }, get cookies() {
-      return c || (c = new AstroCookies(o), d.cookies = c, c);
-    }, params: a, props: i2, request: o, url: s, redirect: e.ssr ? (e2, t2) => new Response(null, { status: t2 || 302, headers: { Location: e2 } }) : onlyAvailableInSSR("Astro.redirect"), response: l, slots: p2 };
-    return Object.defineProperty(m, "__renderMarkdown", { enumerable: false, writable: false, value: async function(e2, a2) {
-      if ("undefined" != typeof Deno)
-        throw new Error("Markdown is not supported in Deno SSR");
-      if (!renderMarkdown) {
-        let e3 = "@astrojs/";
-        e3 += "markdown-remark", renderMarkdown = (await import(e3)).renderMarkdown;
-      }
-      const { code: n3 } = await renderMarkdown(e2, { ...t, ...a2 ?? {} });
-      return n3;
-    } }), m;
-  }, resolve: r, _metadata: { renderers: i, pathname: n, hasHydrationScript: false, hasRenderedHead: false, hasDirectives: /* @__PURE__ */ new Set() }, response: l };
-  return d;
+function createResult(args) {
+  const { markdown, params, pathname, renderers: renderers2, request, resolve } = args;
+  const url = new URL(request.url);
+  const headers = new Headers();
+  headers.set("Content-Type", "text/html");
+  const response = {
+    status: args.status,
+    statusText: "OK",
+    headers
+  };
+  Object.defineProperty(response, "headers", {
+    value: response.headers,
+    enumerable: true,
+    writable: false
+  });
+  let cookies = void 0;
+  const result = {
+    styles: args.styles ?? /* @__PURE__ */ new Set(),
+    scripts: args.scripts ?? /* @__PURE__ */ new Set(),
+    links: args.links ?? /* @__PURE__ */ new Set(),
+    propagation: args.propagation ?? /* @__PURE__ */ new Map(),
+    propagators: /* @__PURE__ */ new Map(),
+    extraHead: [],
+    scope: 0,
+    cookies,
+    createAstro(astroGlobal, props, slots) {
+      const astroSlots = new Slots(result, slots, args.logging);
+      const Astro = {
+        __proto__: astroGlobal,
+        get clientAddress() {
+          if (!(clientAddressSymbol$1 in request)) {
+            if (args.adapterName) {
+              throw new AstroError({
+                ...AstroErrorData.ClientAddressNotAvailable,
+                message: AstroErrorData.ClientAddressNotAvailable.message(args.adapterName)
+              });
+            } else {
+              throw new AstroError(AstroErrorData.StaticClientAddressNotAvailable);
+            }
+          }
+          return Reflect.get(request, clientAddressSymbol$1);
+        },
+        get cookies() {
+          if (cookies) {
+            return cookies;
+          }
+          cookies = new AstroCookies(request);
+          result.cookies = cookies;
+          return cookies;
+        },
+        params,
+        props,
+        request,
+        url,
+        redirect: args.ssr ? (path, status) => {
+          return new Response(null, {
+            status: status || 302,
+            headers: {
+              Location: path
+            }
+          });
+        } : onlyAvailableInSSR("Astro.redirect"),
+        response,
+        slots: astroSlots
+      };
+      Object.defineProperty(Astro, "__renderMarkdown", {
+        enumerable: false,
+        writable: false,
+        value: async function(content, opts) {
+          if (typeof Deno !== "undefined") {
+            throw new Error("Markdown is not supported in Deno SSR");
+          }
+          if (!renderMarkdown) {
+            let astroRemark = "@astrojs/";
+            astroRemark += "markdown-remark";
+            renderMarkdown = (await import(astroRemark)).renderMarkdown;
+          }
+          const { code } = await renderMarkdown(content, { ...markdown, ...opts ?? {} });
+          return code;
+        }
+      });
+      return Astro;
+    },
+    resolve,
+    _metadata: {
+      renderers: renderers2,
+      pathname,
+      hasHydrationScript: false,
+      hasRenderedHead: false,
+      hasDirectives: /* @__PURE__ */ new Set()
+    },
+    response
+  };
+  return result;
 }
-function generatePaginateFunction(e) {
-  return function(t, a = {}) {
-    let { pageSize: n, params: i, props: o } = a;
-    const r = n || 10, s = "page", p = i || {}, l = o || {};
-    let c;
-    if (e.params.includes(`...${s}`))
-      c = false;
-    else {
-      if (!e.params.includes(`${s}`))
-        throw new Error(`[paginate()] page number param \`${s}\` not found in your filepath.
-Rename your file to \`[...page].astro\` or customize the param name via the \`paginate([], {param: '...'}\` option.`);
-      c = true;
+function generatePaginateFunction(routeMatch) {
+  return function paginateUtility(data, args = {}) {
+    let { pageSize: _pageSize, params: _params, props: _props } = args;
+    const pageSize = _pageSize || 10;
+    const paramName = "page";
+    const additionalParams = _params || {};
+    const additionalProps = _props || {};
+    let includesFirstPageNumber;
+    if (routeMatch.params.includes(`...${paramName}`)) {
+      includesFirstPageNumber = false;
+    } else if (routeMatch.params.includes(`${paramName}`)) {
+      includesFirstPageNumber = true;
+    } else {
+      throw new AstroError({
+        ...AstroErrorData.PageNumberParamNotFound,
+        message: AstroErrorData.PageNumberParamNotFound.message(paramName)
+      });
     }
-    const d = Math.max(1, Math.ceil(t.length / r));
-    return [...Array(d).keys()].map((a2) => {
-      const n2 = a2 + 1, i2 = r === 1 / 0 ? 0 : (n2 - 1) * r, o2 = Math.min(i2 + r, t.length), m = { ...p, [s]: c || n2 > 1 ? String(n2) : void 0 };
-      return { params: m, props: { ...l, page: { data: t.slice(i2, o2), start: i2, end: o2 - 1, size: r, total: t.length, currentPage: n2, lastPage: d, url: { current: e.generate({ ...m }), next: n2 === d ? void 0 : e.generate({ ...m, page: String(n2 + 1) }), prev: 1 === n2 ? void 0 : e.generate({ ...m, page: c || n2 - 1 != 1 ? String(n2 - 1) : void 0 }) } } } };
+    const lastPage = Math.max(1, Math.ceil(data.length / pageSize));
+    const result = [...Array(lastPage).keys()].map((num) => {
+      const pageNum = num + 1;
+      const start2 = pageSize === Infinity ? 0 : (pageNum - 1) * pageSize;
+      const end = Math.min(start2 + pageSize, data.length);
+      const params = {
+        ...additionalParams,
+        [paramName]: includesFirstPageNumber || pageNum > 1 ? String(pageNum) : void 0
+      };
+      return {
+        params,
+        props: {
+          ...additionalProps,
+          page: {
+            data: data.slice(start2, end),
+            start: start2,
+            end: end - 1,
+            size: pageSize,
+            total: data.length,
+            currentPage: pageNum,
+            lastPage,
+            url: {
+              current: routeMatch.generate({ ...params }),
+              next: pageNum === lastPage ? void 0 : routeMatch.generate({ ...params, page: String(pageNum + 1) }),
+              prev: pageNum === 1 ? void 0 : routeMatch.generate({
+                ...params,
+                page: !includesFirstPageNumber && pageNum - 1 === 1 ? void 0 : String(pageNum - 1)
+              })
+            }
+          }
+        }
+      };
     });
+    return result;
   };
 }
-async function callGetStaticPaths({ isValidate: e, logging: t, mod: a, route: n, ssr: i }) {
-  if (validateDynamicRouteModule(a, { ssr: i, logging: t, route: n }), i && !a.prerender)
+async function callGetStaticPaths({
+  isValidate,
+  logging,
+  mod,
+  route,
+  ssr
+}) {
+  validateDynamicRouteModule(mod, { ssr, logging, route });
+  if (ssr && !mod.prerender) {
     return { staticPaths: Object.assign([], { keyed: /* @__PURE__ */ new Map() }) };
-  if (!a.getStaticPaths)
-    throw new Error("Unexpected Error.");
-  let o = [];
-  o = await a.getStaticPaths({ paginate: generatePaginateFunction(n), rss() {
-    throw new AstroError(AstroErrorData.GetStaticPathsRemovedRSSHelper);
-  } }), Array.isArray(o) && (o = o.flat()), e && validateGetStaticPathsResult(o, t, n);
-  const r = o;
-  r.keyed = /* @__PURE__ */ new Map();
-  for (const e2 of r) {
-    const t2 = stringifyParams(e2.params, n.component);
-    r.keyed.set(t2, e2);
   }
-  return { staticPaths: r };
+  if (!mod.getStaticPaths) {
+    throw new Error("Unexpected Error.");
+  }
+  let staticPaths = [];
+  staticPaths = await mod.getStaticPaths({
+    paginate: generatePaginateFunction(route),
+    rss() {
+      throw new AstroError(AstroErrorData.GetStaticPathsRemovedRSSHelper);
+    }
+  });
+  if (Array.isArray(staticPaths)) {
+    staticPaths = staticPaths.flat();
+  }
+  if (isValidate) {
+    validateGetStaticPathsResult(staticPaths, logging, route);
+  }
+  const keyedStaticPaths = staticPaths;
+  keyedStaticPaths.keyed = /* @__PURE__ */ new Map();
+  for (const sp of keyedStaticPaths) {
+    const paramsKey = stringifyParams(sp.params, route.component);
+    keyedStaticPaths.keyed.set(paramsKey, sp);
+  }
+  return {
+    staticPaths: keyedStaticPaths
+  };
 }
 var RouteCache = class {
-  constructor(e, t = "production") {
-    this.cache = {}, this.logging = e, this.mode = t;
+  constructor(logging, mode = "production") {
+    this.cache = {};
+    this.logging = logging;
+    this.mode = mode;
   }
   clearAll() {
     this.cache = {};
   }
-  set(e, t) {
-    "production" === this.mode && this.cache[e.component] && warn(this.logging, "routeCache", `Internal Warning: route cache overwritten. (${e.component})`), this.cache[e.component] = t;
+  set(route, entry) {
+    if (this.mode === "production" && this.cache[route.component]) {
+      warn(
+        this.logging,
+        "routeCache",
+        `Internal Warning: route cache overwritten. (${route.component})`
+      );
+    }
+    this.cache[route.component] = entry;
   }
-  get(e) {
-    return this.cache[e.component];
+  get(route) {
+    return this.cache[route.component];
   }
 };
-function findPathItemByKey(e, t, a) {
-  const n = stringifyParams(t, a.component), i = e.keyed.get(n);
-  if (i)
-    return i;
-  debug("findPathItemByKey", `Unexpected cache miss looking for ${n}`);
+function findPathItemByKey(staticPaths, params, route) {
+  const paramsKey = stringifyParams(params, route.component);
+  const matchedStaticPath = staticPaths.keyed.get(paramsKey);
+  if (matchedStaticPath) {
+    return matchedStaticPath;
+  }
+  debug("findPathItemByKey", `Unexpected cache miss looking for ${paramsKey}`);
 }
-var GetParamsAndPropsError = ((e) => (e[e.NoMatchingStaticPath = 0] = "NoMatchingStaticPath", e))(GetParamsAndPropsError || {});
-async function getParamsAndProps(e) {
-  const { logging: t, mod: a, route: n, routeCache: i, pathname: o, ssr: r } = e;
-  let s, p = {};
-  if (n && !n.pathname) {
-    if (n.params.length) {
-      const e3 = n.pattern.exec(o);
-      e3 && (p = getParams(n.params)(e3));
+var GetParamsAndPropsError = /* @__PURE__ */ ((GetParamsAndPropsError2) => {
+  GetParamsAndPropsError2[GetParamsAndPropsError2["NoMatchingStaticPath"] = 0] = "NoMatchingStaticPath";
+  return GetParamsAndPropsError2;
+})(GetParamsAndPropsError || {});
+async function getParamsAndProps(opts) {
+  const { logging, mod, route, routeCache, pathname, ssr } = opts;
+  let params = {};
+  let pageProps;
+  if (route && !route.pathname) {
+    if (route.params.length) {
+      const paramsMatch = route.pattern.exec(pathname);
+      if (paramsMatch) {
+        params = getParams(route.params)(paramsMatch);
+      }
     }
-    let e2 = i.get(n);
-    e2 || (e2 = await callGetStaticPaths({ mod: a, route: n, isValidate: true, logging: t, ssr: r }), i.set(n, e2));
-    const l = findPathItemByKey(e2.staticPaths, p, n);
-    if (!l && (!r || a.prerender))
+    let routeCacheEntry = routeCache.get(route);
+    if (!routeCacheEntry) {
+      routeCacheEntry = await callGetStaticPaths({ mod, route, isValidate: true, logging, ssr });
+      routeCache.set(route, routeCacheEntry);
+    }
+    const matchedStaticPath = findPathItemByKey(routeCacheEntry.staticPaths, params, route);
+    if (!matchedStaticPath && (ssr ? mod.prerender : true)) {
       return 0;
-    s = (null == l ? void 0 : l.props) ? { ...l.props } : {};
-  } else
-    s = {};
-  return [p, s];
+    }
+    pageProps = (matchedStaticPath == null ? void 0 : matchedStaticPath.props) ? { ...matchedStaticPath.props } : {};
+  } else {
+    pageProps = {};
+  }
+  return [params, pageProps];
 }
-async function renderPage(e, t, a) {
-  var n, i;
-  const o = await getParamsAndProps({ logging: a.logging, mod: e, route: t.route, routeCache: a.routeCache, pathname: t.pathname, ssr: a.ssr });
-  if (0 === o)
-    throw new AstroError({ ...AstroErrorData.NoMatchingStaticPathFound, message: AstroErrorData.NoMatchingStaticPathFound.message(t.pathname), hint: (null == (n = t.route) ? void 0 : n.component) ? AstroErrorData.NoMatchingStaticPathFound.hint([null == (i = t.route) ? void 0 : i.component]) : "" });
-  const [r, s] = o, p = e.default;
-  if (!p)
-    throw new Error("Expected an exported Astro component but received typeof " + typeof p);
-  const l = createResult({ adapterName: a.adapterName, links: t.links, styles: t.styles, logging: a.logging, markdown: a.markdown, mode: a.mode, origin: t.origin, params: r, props: s, pathname: t.pathname, propagation: t.propagation, resolve: a.resolve, renderers: a.renderers, request: t.request, site: a.site, scripts: t.scripts, ssr: a.ssr, status: t.status ?? 200 });
-  "object" == typeof e.components && Object.assign(s, { components: e.components });
-  const c = await renderPage$1(l, p, s, null, a.streaming, t.route);
-  return l.cookies && attachToResponse(c, l.cookies), c;
+async function renderPage(mod, ctx, env) {
+  var _a2, _b;
+  const paramsAndPropsRes = await getParamsAndProps({
+    logging: env.logging,
+    mod,
+    route: ctx.route,
+    routeCache: env.routeCache,
+    pathname: ctx.pathname,
+    ssr: env.ssr
+  });
+  if (paramsAndPropsRes === 0) {
+    throw new AstroError({
+      ...AstroErrorData.NoMatchingStaticPathFound,
+      message: AstroErrorData.NoMatchingStaticPathFound.message(ctx.pathname),
+      hint: ((_a2 = ctx.route) == null ? void 0 : _a2.component) ? AstroErrorData.NoMatchingStaticPathFound.hint([(_b = ctx.route) == null ? void 0 : _b.component]) : ""
+    });
+  }
+  const [params, pageProps] = paramsAndPropsRes;
+  const Component = mod.default;
+  if (!Component)
+    throw new Error(`Expected an exported Astro component but received typeof ${typeof Component}`);
+  const result = createResult({
+    adapterName: env.adapterName,
+    links: ctx.links,
+    styles: ctx.styles,
+    logging: env.logging,
+    markdown: env.markdown,
+    mode: env.mode,
+    origin: ctx.origin,
+    params,
+    props: pageProps,
+    pathname: ctx.pathname,
+    propagation: ctx.propagation,
+    resolve: env.resolve,
+    renderers: env.renderers,
+    request: ctx.request,
+    site: env.site,
+    scripts: ctx.scripts,
+    ssr: env.ssr,
+    status: ctx.status ?? 200
+  });
+  if (typeof mod.components === "object") {
+    Object.assign(pageProps, { components: mod.components });
+  }
+  const response = await renderPage$1(
+    result,
+    Component,
+    pageProps,
+    null,
+    env.streaming,
+    ctx.route
+  );
+  if (result.cookies) {
+    attachToResponse(response, result.cookies);
+  }
+  return response;
 }
 var clientAddressSymbol = Symbol.for("astro.clientAddress");
-function createAPIContext({ request: e, params: t, site: a, props: n, adapterName: i }) {
-  return { cookies: new AstroCookies(e), request: e, params: t, site: a ? new URL(a) : void 0, generator: `Astro v${ASTRO_VERSION}`, props: n, redirect: (e2, t2) => new Response(null, { status: t2 || 302, headers: { Location: e2 } }), url: new URL(e.url), get clientAddress() {
-    if (!(clientAddressSymbol in e))
-      throw new AstroError(i ? { ...AstroErrorData.ClientAddressNotAvailable, message: AstroErrorData.ClientAddressNotAvailable.message(i) } : AstroErrorData.StaticClientAddressNotAvailable);
-    return Reflect.get(e, clientAddressSymbol);
-  } };
+function createAPIContext({
+  request,
+  params,
+  site,
+  props,
+  adapterName
+}) {
+  return {
+    cookies: new AstroCookies(request),
+    request,
+    params,
+    site: site ? new URL(site) : void 0,
+    generator: `Astro v${ASTRO_VERSION}`,
+    props,
+    redirect(path, status) {
+      return new Response(null, {
+        status: status || 302,
+        headers: {
+          Location: path
+        }
+      });
+    },
+    url: new URL(request.url),
+    get clientAddress() {
+      if (!(clientAddressSymbol in request)) {
+        if (adapterName) {
+          throw new AstroError({
+            ...AstroErrorData.ClientAddressNotAvailable,
+            message: AstroErrorData.ClientAddressNotAvailable.message(adapterName)
+          });
+        } else {
+          throw new AstroError(AstroErrorData.StaticClientAddressNotAvailable);
+        }
+      }
+      return Reflect.get(request, clientAddressSymbol);
+    }
+  };
 }
-async function call(e, t, a) {
-  var n, i;
-  const o = await getParamsAndProps({ mod: e, route: a.route, routeCache: t.routeCache, pathname: a.pathname, logging: t.logging, ssr: t.ssr });
-  if (o === GetParamsAndPropsError.NoMatchingStaticPath)
-    throw new AstroError({ ...AstroErrorData.NoMatchingStaticPathFound, message: AstroErrorData.NoMatchingStaticPathFound.message(a.pathname), hint: (null == (n = a.route) ? void 0 : n.component) ? AstroErrorData.NoMatchingStaticPathFound.hint([null == (i = a.route) ? void 0 : i.component]) : "" });
-  const [r, s] = o, p = createAPIContext({ request: a.request, params: r, props: s, site: t.site, adapterName: t.adapterName }), l = await renderEndpoint(e, p, t.ssr);
-  return l instanceof Response ? (attachToResponse(l, p.cookies), { type: "response", response: l }) : { type: "simple", body: l.body, encoding: l.encoding, cookies: p.cookies };
+async function call(mod, env, ctx) {
+  var _a2, _b;
+  const paramsAndPropsResp = await getParamsAndProps({
+    mod,
+    route: ctx.route,
+    routeCache: env.routeCache,
+    pathname: ctx.pathname,
+    logging: env.logging,
+    ssr: env.ssr
+  });
+  if (paramsAndPropsResp === GetParamsAndPropsError.NoMatchingStaticPath) {
+    throw new AstroError({
+      ...AstroErrorData.NoMatchingStaticPathFound,
+      message: AstroErrorData.NoMatchingStaticPathFound.message(ctx.pathname),
+      hint: ((_a2 = ctx.route) == null ? void 0 : _a2.component) ? AstroErrorData.NoMatchingStaticPathFound.hint([(_b = ctx.route) == null ? void 0 : _b.component]) : ""
+    });
+  }
+  const [params, props] = paramsAndPropsResp;
+  const context = createAPIContext({
+    request: ctx.request,
+    params,
+    props,
+    site: env.site,
+    adapterName: env.adapterName
+  });
+  const response = await renderEndpoint(mod, context, env.ssr);
+  if (response instanceof Response) {
+    attachToResponse(response, context.cookies);
+    return {
+      type: "response",
+      response
+    };
+  }
+  return {
+    type: "simple",
+    body: response.body,
+    encoding: response.encoding,
+    cookies: context.cookies
+  };
 }
 var lastMessage;
 var lastMessageCount = 1;
-var consoleLogDestination = { write(e) {
-  let t = console.error;
-  levels[e.level] < levels.error && (t = console.log);
-  let a = e.message;
-  a === lastMessage ? (lastMessageCount++, a = `${a} ${yellow(`(x${lastMessageCount})`)}`) : (lastMessage = a, lastMessageCount = 1);
-  return t(function() {
-    let t2 = "", a2 = e.type;
-    return a2 && (t2 += dim(dateTimeFormat.format(new Date()) + " "), "info" === e.level ? a2 = bold(cyan(`[${a2}]`)) : "warn" === e.level ? a2 = bold(yellow(`[${a2}]`)) : "error" === e.level && (a2 = bold(red(`[${a2}]`))), t2 += `${a2} `), reset(t2);
-  }() + a), true;
-} };
-function appendForwardSlash(e) {
-  return e.endsWith("/") ? e : e + "/";
-}
-function prependForwardSlash(e) {
-  return "/" === e[0] ? e : "/" + e;
-}
-function removeTrailingForwardSlash(e) {
-  return e.endsWith("/") ? e.slice(0, e.length - 1) : e;
-}
-function removeLeadingForwardSlash(e) {
-  return e.startsWith("/") ? e.substring(1) : e;
-}
-function trimSlashes(e) {
-  return e.replace(/^\/|\/$/g, "");
-}
-function isString(e) {
-  return "string" == typeof e || e instanceof String;
-}
-function joinPaths(...e) {
-  return e.filter(isString).map(trimSlashes).join("/");
-}
-function createRenderContext(e) {
-  const t = e.request, a = new URL(t.url), n = e.origin ?? a.origin, i = e.pathname ?? a.pathname;
-  return { ...e, origin: n, pathname: i, url: a };
-}
-function createEnvironment(e) {
-  return e;
-}
-function slash(e) {
-  const t = /^\\\\\?\\/.test(e), a = /[^\u0000-\u0080]+/.test(e);
-  return t || a ? e : e.replace(/\\/g, "/");
-}
-function getRootPath(e) {
-  return appendForwardSlash(new URL(e || "/", "http://localhost/").pathname);
-}
-function joinToRoot(e, t) {
-  const a = getRootPath(t), n = slash(e);
-  return appendForwardSlash(a) + removeLeadingForwardSlash(n);
-}
-function createLinkStylesheetElement(e, t) {
-  return { props: { rel: "stylesheet", href: joinToRoot(e, t) }, children: "" };
-}
-function createLinkStylesheetElementSet(e, t) {
-  return new Set(e.map((e2) => createLinkStylesheetElement(e2, t)));
-}
-function createModuleScriptElement(e, t) {
-  return "external" === e.type ? createModuleScriptElementWithSrc(e.value, t) : { props: { type: "module" }, children: e.value };
-}
-function createModuleScriptElementWithSrc(e, t) {
-  return { props: { type: "module", src: joinToRoot(e, t) }, children: "" };
-}
-function matchRoute(e, t) {
-  return t.routes.find((t2) => t2.pattern.test(decodeURI(e)));
-}
-function matchAssets(e, t) {
-  for (const a of t)
-    if (a.endsWith(".html")) {
-      if (e.pattern.test(a))
-        return a;
-      if (e.pattern.test(a.replace(/index\.html$/, "")))
-        return a;
+var consoleLogDestination = {
+  write(event) {
+    let dest = console.error;
+    if (levels[event.level] < levels["error"]) {
+      dest = console.log;
     }
-}
-function lexer(e) {
-  for (var t = [], a = 0; a < e.length; ) {
-    var n = e[a];
-    if ("*" !== n && "+" !== n && "?" !== n)
-      if ("\\" !== n)
-        if ("{" !== n)
-          if ("}" !== n)
-            if (":" !== n)
-              if ("(" !== n)
-                t.push({ type: "CHAR", index: a, value: e[a++] });
-              else {
-                var i = 1, o = "";
-                if ("?" === e[s = a + 1])
-                  throw new TypeError('Pattern cannot start with "?" at '.concat(s));
-                for (; s < e.length; )
-                  if ("\\" !== e[s]) {
-                    if (")" === e[s]) {
-                      if (0 === --i) {
-                        s++;
-                        break;
-                      }
-                    } else if ("(" === e[s] && (i++, "?" !== e[s + 1]))
-                      throw new TypeError("Capturing groups are not allowed at ".concat(s));
-                    o += e[s++];
-                  } else
-                    o += e[s++] + e[s++];
-                if (i)
-                  throw new TypeError("Unbalanced pattern at ".concat(a));
-                if (!o)
-                  throw new TypeError("Missing pattern at ".concat(a));
-                t.push({ type: "PATTERN", index: a, value: o }), a = s;
-              }
-            else {
-              for (var r = "", s = a + 1; s < e.length; ) {
-                var p = e.charCodeAt(s);
-                if (!(p >= 48 && p <= 57 || p >= 65 && p <= 90 || p >= 97 && p <= 122 || 95 === p))
-                  break;
-                r += e[s++];
-              }
-              if (!r)
-                throw new TypeError("Missing parameter name at ".concat(a));
-              t.push({ type: "NAME", index: a, value: r }), a = s;
-            }
-          else
-            t.push({ type: "CLOSE", index: a, value: e[a++] });
-        else
-          t.push({ type: "OPEN", index: a, value: e[a++] });
-      else
-        t.push({ type: "ESCAPED_CHAR", index: a++, value: e[a++] });
-    else
-      t.push({ type: "MODIFIER", index: a, value: e[a++] });
-  }
-  return t.push({ type: "END", index: a, value: "" }), t;
-}
-function parse(e, t) {
-  void 0 === t && (t = {});
-  for (var a = lexer(e), n = t.prefixes, i = void 0 === n ? "./" : n, o = "[^".concat(escapeString(t.delimiter || "/#?"), "]+?"), r = [], s = 0, p = 0, l = "", c = function(e2) {
-    if (p < a.length && a[p].type === e2)
-      return a[p++].value;
-  }, d = function(e2) {
-    var t2 = c(e2);
-    if (void 0 !== t2)
-      return t2;
-    var n2 = a[p], i2 = n2.type, o2 = n2.index;
-    throw new TypeError("Unexpected ".concat(i2, " at ").concat(o2, ", expected ").concat(e2));
-  }, m = function() {
-    for (var e2, t2 = ""; e2 = c("CHAR") || c("ESCAPED_CHAR"); )
-      t2 += e2;
-    return t2;
-  }; p < a.length; ) {
-    var u = c("CHAR"), f = c("NAME"), v = c("PATTERN");
-    if (f || v) {
-      var g = u || "";
-      -1 === i.indexOf(g) && (l += g, g = ""), l && (r.push(l), l = ""), r.push({ name: f || s++, prefix: g, suffix: "", pattern: v || o, modifier: c("MODIFIER") || "" });
-    } else {
-      var h = u || c("ESCAPED_CHAR");
-      if (h)
-        l += h;
-      else if (l && (r.push(l), l = ""), c("OPEN")) {
-        g = m();
-        var x = c("NAME") || "", y = c("PATTERN") || "", b = m();
-        d("CLOSE"), r.push({ name: x || (y ? s++ : ""), pattern: x && !y ? o : y, prefix: g, suffix: b, modifier: c("MODIFIER") || "" });
-      } else
-        d("END");
-    }
-  }
-  return r;
-}
-function compile(e, t) {
-  return tokensToFunction(parse(e, t), t);
-}
-function tokensToFunction(e, t) {
-  void 0 === t && (t = {});
-  var a = flags(t), n = t.encode, i = void 0 === n ? function(e2) {
-    return e2;
-  } : n, o = t.validate, r = void 0 === o || o, s = e.map(function(e2) {
-    if ("object" == typeof e2)
-      return new RegExp("^(?:".concat(e2.pattern, ")$"), a);
-  });
-  return function(t2) {
-    for (var a2 = "", n2 = 0; n2 < e.length; n2++) {
-      var o2 = e[n2];
-      if ("string" != typeof o2) {
-        var p = t2 ? t2[o2.name] : void 0, l = "?" === o2.modifier || "*" === o2.modifier, c = "*" === o2.modifier || "+" === o2.modifier;
-        if (Array.isArray(p)) {
-          if (!c)
-            throw new TypeError('Expected "'.concat(o2.name, '" to not repeat, but got an array'));
-          if (0 === p.length) {
-            if (l)
-              continue;
-            throw new TypeError('Expected "'.concat(o2.name, '" to not be empty'));
-          }
-          for (var d = 0; d < p.length; d++) {
-            var m = i(p[d], o2);
-            if (r && !s[n2].test(m))
-              throw new TypeError('Expected all "'.concat(o2.name, '" to match "').concat(o2.pattern, '", but got "').concat(m, '"'));
-            a2 += o2.prefix + m + o2.suffix;
-          }
-        } else if ("string" != typeof p && "number" != typeof p) {
-          if (!l) {
-            var u = c ? "an array" : "a string";
-            throw new TypeError('Expected "'.concat(o2.name, '" to be ').concat(u));
-          }
-        } else {
-          m = i(String(p), o2);
-          if (r && !s[n2].test(m))
-            throw new TypeError('Expected "'.concat(o2.name, '" to match "').concat(o2.pattern, '", but got "').concat(m, '"'));
-          a2 += o2.prefix + m + o2.suffix;
+    function getPrefix() {
+      let prefix = "";
+      let type = event.type;
+      if (type) {
+        prefix += dim(dateTimeFormat.format(new Date()) + " ");
+        if (event.level === "info") {
+          type = bold(cyan(`[${type}]`));
+        } else if (event.level === "warn") {
+          type = bold(yellow(`[${type}]`));
+        } else if (event.level === "error") {
+          type = bold(red(`[${type}]`));
         }
-      } else
-        a2 += o2;
+        prefix += `${type} `;
+      }
+      return reset(prefix);
     }
-    return a2;
+    let message = event.message;
+    if (message === lastMessage) {
+      lastMessageCount++;
+      message = `${message} ${yellow(`(x${lastMessageCount})`)}`;
+    } else {
+      lastMessage = message;
+      lastMessageCount = 1;
+    }
+    const outMessage = getPrefix() + message;
+    dest(outMessage);
+    return true;
+  }
+};
+function appendForwardSlash(path) {
+  return path.endsWith("/") ? path : path + "/";
+}
+function prependForwardSlash(path) {
+  return path[0] === "/" ? path : "/" + path;
+}
+function removeTrailingForwardSlash(path) {
+  return path.endsWith("/") ? path.slice(0, path.length - 1) : path;
+}
+function removeLeadingForwardSlash(path) {
+  return path.startsWith("/") ? path.substring(1) : path;
+}
+function trimSlashes(path) {
+  return path.replace(/^\/|\/$/g, "");
+}
+function isString(path) {
+  return typeof path === "string" || path instanceof String;
+}
+function joinPaths(...paths) {
+  return paths.filter(isString).map(trimSlashes).join("/");
+}
+function createRenderContext(options) {
+  const request = options.request;
+  const url = new URL(request.url);
+  const origin = options.origin ?? url.origin;
+  const pathname = options.pathname ?? url.pathname;
+  return {
+    ...options,
+    origin,
+    pathname,
+    url
   };
 }
-function escapeString(e) {
-  return e.replace(/([.+*?=^!:${}()[\]|/\\])/g, "\\$1");
+function createEnvironment(options) {
+  return options;
 }
-function flags(e) {
-  return e && e.sensitive ? "" : "i";
-}
-function getRouteGenerator(e, t) {
-  const a = e.map((e2) => "/" + e2.map((e3) => e3.spread ? `:${e3.content.slice(3)}(.*)?` : e3.dynamic ? `:${e3.content}` : e3.content.normalize().replace(/\?/g, "%3F").replace(/#/g, "%23").replace(/%5B/g, "[").replace(/%5D/g, "]").replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("")).join("");
-  let n = "";
-  "always" === t && e.length && (n = "/");
-  return compile(a + n);
-}
-function deserializeRouteData(e) {
-  return { route: e.route, type: e.type, pattern: new RegExp(e.pattern), params: e.params, component: e.component, generate: getRouteGenerator(e.segments, e._meta.trailingSlash), pathname: e.pathname || void 0, segments: e.segments };
-}
-function deserializeManifest(e) {
-  const t = [];
-  for (const a2 of e.routes) {
-    t.push({ ...a2, routeData: deserializeRouteData(a2.routeData) });
-    a2.routeData = deserializeRouteData(a2.routeData);
+function slash(path) {
+  const isExtendedLengthPath = /^\\\\\?\\/.test(path);
+  const hasNonAscii = /[^\u0000-\u0080]+/.test(path);
+  if (isExtendedLengthPath || hasNonAscii) {
+    return path;
   }
-  const a = new Set(e.assets);
-  return { ...e, assets: a, routes: t };
+  return path.replace(/\\/g, "/");
 }
+function getRootPath(base) {
+  return appendForwardSlash(new URL(base || "/", "http://localhost/").pathname);
+}
+function joinToRoot(href, base) {
+  const rootPath = getRootPath(base);
+  const normalizedHref = slash(href);
+  return appendForwardSlash(rootPath) + removeLeadingForwardSlash(normalizedHref);
+}
+function createLinkStylesheetElement(href, base) {
+  return {
+    props: {
+      rel: "stylesheet",
+      href: joinToRoot(href, base)
+    },
+    children: ""
+  };
+}
+function createLinkStylesheetElementSet(hrefs, base) {
+  return new Set(hrefs.map((href) => createLinkStylesheetElement(href, base)));
+}
+function createModuleScriptElement(script, base) {
+  if (script.type === "external") {
+    return createModuleScriptElementWithSrc(script.value, base);
+  } else {
+    return {
+      props: {
+        type: "module"
+      },
+      children: script.value
+    };
+  }
+}
+function createModuleScriptElementWithSrc(src, site) {
+  return {
+    props: {
+      type: "module",
+      src: joinToRoot(src, site)
+    },
+    children: ""
+  };
+}
+function matchRoute(pathname, manifest) {
+  return manifest.routes.find((route) => route.pattern.test(decodeURI(pathname)));
+}
+function matchAssets(route, assets) {
+  for (const asset of assets) {
+    if (!asset.endsWith(".html"))
+      continue;
+    if (route.pattern.test(asset)) {
+      return asset;
+    }
+    if (route.pattern.test(asset.replace(/index\.html$/, ""))) {
+      return asset;
+    }
+  }
+}
+function lexer(str) {
+  var tokens = [];
+  var i = 0;
+  while (i < str.length) {
+    var char = str[i];
+    if (char === "*" || char === "+" || char === "?") {
+      tokens.push({ type: "MODIFIER", index: i, value: str[i++] });
+      continue;
+    }
+    if (char === "\\") {
+      tokens.push({ type: "ESCAPED_CHAR", index: i++, value: str[i++] });
+      continue;
+    }
+    if (char === "{") {
+      tokens.push({ type: "OPEN", index: i, value: str[i++] });
+      continue;
+    }
+    if (char === "}") {
+      tokens.push({ type: "CLOSE", index: i, value: str[i++] });
+      continue;
+    }
+    if (char === ":") {
+      var name = "";
+      var j = i + 1;
+      while (j < str.length) {
+        var code = str.charCodeAt(j);
+        if (code >= 48 && code <= 57 || code >= 65 && code <= 90 || code >= 97 && code <= 122 || code === 95) {
+          name += str[j++];
+          continue;
+        }
+        break;
+      }
+      if (!name)
+        throw new TypeError("Missing parameter name at ".concat(i));
+      tokens.push({ type: "NAME", index: i, value: name });
+      i = j;
+      continue;
+    }
+    if (char === "(") {
+      var count = 1;
+      var pattern = "";
+      var j = i + 1;
+      if (str[j] === "?") {
+        throw new TypeError('Pattern cannot start with "?" at '.concat(j));
+      }
+      while (j < str.length) {
+        if (str[j] === "\\") {
+          pattern += str[j++] + str[j++];
+          continue;
+        }
+        if (str[j] === ")") {
+          count--;
+          if (count === 0) {
+            j++;
+            break;
+          }
+        } else if (str[j] === "(") {
+          count++;
+          if (str[j + 1] !== "?") {
+            throw new TypeError("Capturing groups are not allowed at ".concat(j));
+          }
+        }
+        pattern += str[j++];
+      }
+      if (count)
+        throw new TypeError("Unbalanced pattern at ".concat(i));
+      if (!pattern)
+        throw new TypeError("Missing pattern at ".concat(i));
+      tokens.push({ type: "PATTERN", index: i, value: pattern });
+      i = j;
+      continue;
+    }
+    tokens.push({ type: "CHAR", index: i, value: str[i++] });
+  }
+  tokens.push({ type: "END", index: i, value: "" });
+  return tokens;
+}
+function parse(str, options) {
+  if (options === void 0) {
+    options = {};
+  }
+  var tokens = lexer(str);
+  var _a2 = options.prefixes, prefixes = _a2 === void 0 ? "./" : _a2;
+  var defaultPattern = "[^".concat(escapeString(options.delimiter || "/#?"), "]+?");
+  var result = [];
+  var key = 0;
+  var i = 0;
+  var path = "";
+  var tryConsume = function(type) {
+    if (i < tokens.length && tokens[i].type === type)
+      return tokens[i++].value;
+  };
+  var mustConsume = function(type) {
+    var value2 = tryConsume(type);
+    if (value2 !== void 0)
+      return value2;
+    var _a3 = tokens[i], nextType = _a3.type, index = _a3.index;
+    throw new TypeError("Unexpected ".concat(nextType, " at ").concat(index, ", expected ").concat(type));
+  };
+  var consumeText = function() {
+    var result2 = "";
+    var value2;
+    while (value2 = tryConsume("CHAR") || tryConsume("ESCAPED_CHAR")) {
+      result2 += value2;
+    }
+    return result2;
+  };
+  while (i < tokens.length) {
+    var char = tryConsume("CHAR");
+    var name = tryConsume("NAME");
+    var pattern = tryConsume("PATTERN");
+    if (name || pattern) {
+      var prefix = char || "";
+      if (prefixes.indexOf(prefix) === -1) {
+        path += prefix;
+        prefix = "";
+      }
+      if (path) {
+        result.push(path);
+        path = "";
+      }
+      result.push({
+        name: name || key++,
+        prefix,
+        suffix: "",
+        pattern: pattern || defaultPattern,
+        modifier: tryConsume("MODIFIER") || ""
+      });
+      continue;
+    }
+    var value = char || tryConsume("ESCAPED_CHAR");
+    if (value) {
+      path += value;
+      continue;
+    }
+    if (path) {
+      result.push(path);
+      path = "";
+    }
+    var open = tryConsume("OPEN");
+    if (open) {
+      var prefix = consumeText();
+      var name_1 = tryConsume("NAME") || "";
+      var pattern_1 = tryConsume("PATTERN") || "";
+      var suffix = consumeText();
+      mustConsume("CLOSE");
+      result.push({
+        name: name_1 || (pattern_1 ? key++ : ""),
+        pattern: name_1 && !pattern_1 ? defaultPattern : pattern_1,
+        prefix,
+        suffix,
+        modifier: tryConsume("MODIFIER") || ""
+      });
+      continue;
+    }
+    mustConsume("END");
+  }
+  return result;
+}
+function compile(str, options) {
+  return tokensToFunction(parse(str, options), options);
+}
+function tokensToFunction(tokens, options) {
+  if (options === void 0) {
+    options = {};
+  }
+  var reFlags = flags(options);
+  var _a2 = options.encode, encode2 = _a2 === void 0 ? function(x) {
+    return x;
+  } : _a2, _b = options.validate, validate = _b === void 0 ? true : _b;
+  var matches = tokens.map(function(token) {
+    if (typeof token === "object") {
+      return new RegExp("^(?:".concat(token.pattern, ")$"), reFlags);
+    }
+  });
+  return function(data) {
+    var path = "";
+    for (var i = 0; i < tokens.length; i++) {
+      var token = tokens[i];
+      if (typeof token === "string") {
+        path += token;
+        continue;
+      }
+      var value = data ? data[token.name] : void 0;
+      var optional = token.modifier === "?" || token.modifier === "*";
+      var repeat = token.modifier === "*" || token.modifier === "+";
+      if (Array.isArray(value)) {
+        if (!repeat) {
+          throw new TypeError('Expected "'.concat(token.name, '" to not repeat, but got an array'));
+        }
+        if (value.length === 0) {
+          if (optional)
+            continue;
+          throw new TypeError('Expected "'.concat(token.name, '" to not be empty'));
+        }
+        for (var j = 0; j < value.length; j++) {
+          var segment = encode2(value[j], token);
+          if (validate && !matches[i].test(segment)) {
+            throw new TypeError('Expected all "'.concat(token.name, '" to match "').concat(token.pattern, '", but got "').concat(segment, '"'));
+          }
+          path += token.prefix + segment + token.suffix;
+        }
+        continue;
+      }
+      if (typeof value === "string" || typeof value === "number") {
+        var segment = encode2(String(value), token);
+        if (validate && !matches[i].test(segment)) {
+          throw new TypeError('Expected "'.concat(token.name, '" to match "').concat(token.pattern, '", but got "').concat(segment, '"'));
+        }
+        path += token.prefix + segment + token.suffix;
+        continue;
+      }
+      if (optional)
+        continue;
+      var typeOfMessage = repeat ? "an array" : "a string";
+      throw new TypeError('Expected "'.concat(token.name, '" to be ').concat(typeOfMessage));
+    }
+    return path;
+  };
+}
+function escapeString(str) {
+  return str.replace(/([.+*?=^!:${}()[\]|/\\])/g, "\\$1");
+}
+function flags(options) {
+  return options && options.sensitive ? "" : "i";
+}
+function getRouteGenerator(segments, addTrailingSlash) {
+  const template = segments.map((segment) => {
+    return "/" + segment.map((part) => {
+      if (part.spread) {
+        return `:${part.content.slice(3)}(.*)?`;
+      } else if (part.dynamic) {
+        return `:${part.content}`;
+      } else {
+        return part.content.normalize().replace(/\?/g, "%3F").replace(/#/g, "%23").replace(/%5B/g, "[").replace(/%5D/g, "]").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      }
+    }).join("");
+  }).join("");
+  let trailing = "";
+  if (addTrailingSlash === "always" && segments.length) {
+    trailing = "/";
+  }
+  const toPath = compile(template + trailing);
+  return toPath;
+}
+function deserializeRouteData(rawRouteData) {
+  return {
+    route: rawRouteData.route,
+    type: rawRouteData.type,
+    pattern: new RegExp(rawRouteData.pattern),
+    params: rawRouteData.params,
+    component: rawRouteData.component,
+    generate: getRouteGenerator(rawRouteData.segments, rawRouteData._meta.trailingSlash),
+    pathname: rawRouteData.pathname || void 0,
+    segments: rawRouteData.segments
+  };
+}
+function deserializeManifest(serializedManifest) {
+  const routes = [];
+  for (const serializedRoute of serializedManifest.routes) {
+    routes.push({
+      ...serializedRoute,
+      routeData: deserializeRouteData(serializedRoute.routeData)
+    });
+    const route = serializedRoute;
+    route.routeData = deserializeRouteData(serializedRoute.routeData);
+  }
+  const assets = new Set(serializedManifest.assets);
+  const propagation = new Map(serializedManifest.propagation);
+  return {
+    ...serializedManifest,
+    assets,
+    propagation,
+    routes
+  };
+}
+var __accessCheck = (obj, member, msg) => {
+  if (!member.has(obj))
+    throw TypeError("Cannot " + msg);
+};
+var __privateGet = (obj, member, getter) => {
+  __accessCheck(obj, member, "read from private field");
+  return getter ? getter.call(obj) : member.get(obj);
+};
+var __privateAdd = (obj, member, value) => {
+  if (member.has(obj))
+    throw TypeError("Cannot add the same private member more than once");
+  member instanceof WeakSet ? member.add(obj) : member.set(obj, value);
+};
+var __privateSet = (obj, member, value, setter) => {
+  __accessCheck(obj, member, "write to private field");
+  setter ? setter.call(obj, value) : member.set(obj, value);
+  return value;
+};
+var __privateMethod = (obj, member, method) => {
+  __accessCheck(obj, member, "access private method");
+  return method;
+};
 var _env;
 var _manifest;
 var _manifestData;
@@ -1763,148 +3616,260 @@ var _renderPage;
 var renderPage_fn;
 var _callEndpoint;
 var callEndpoint_fn;
-var __accessCheck = (e, t, a) => {
-  if (!t.has(e))
-    throw TypeError("Cannot " + a);
-};
-var __privateGet = (e, t, a) => (__accessCheck(e, t, "read from private field"), a ? a.call(e) : t.get(e));
-var __privateAdd = (e, t, a) => {
-  if (t.has(e))
-    throw TypeError("Cannot add the same private member more than once");
-  t instanceof WeakSet ? t.add(e) : t.set(e, a);
-};
-var __privateSet = (e, t, a, n) => (__accessCheck(e, t, "write to private field"), n ? n.call(e, a) : t.set(e, a), a);
-var __privateMethod = (e, t, a) => (__accessCheck(e, t, "access private method"), a);
 var App = class {
-  constructor(e, t = true) {
-    __privateAdd(this, _renderPage), __privateAdd(this, _callEndpoint), __privateAdd(this, _env, void 0), __privateAdd(this, _manifest, void 0), __privateAdd(this, _manifestData, void 0), __privateAdd(this, _routeDataToRouteInfo, void 0), __privateAdd(this, _encoder, new TextEncoder()), __privateAdd(this, _logging, { dest: consoleLogDestination, level: "info" }), __privateAdd(this, _base, void 0), __privateAdd(this, _baseWithoutTrailingSlash, void 0), __privateSet(this, _manifest, e), __privateSet(this, _manifestData, { routes: e.routes.map((e2) => e2.routeData) }), __privateSet(this, _routeDataToRouteInfo, new Map(e.routes.map((e2) => [e2.routeData, e2]))), __privateSet(this, _env, createEnvironment({ adapterName: e.adapterName, logging: __privateGet(this, _logging), markdown: e.markdown, mode: "production", renderers: e.renderers, async resolve(t2) {
-      if (!(t2 in e.entryModules))
-        throw new Error(`Unable to resolve [${t2}]`);
-      const a = e.entryModules[t2];
-      switch (true) {
-        case a.startsWith("data:"):
-        case 0 === a.length:
-          return a;
-        default:
-          return prependForwardSlash(joinPaths(e.base, a));
-      }
-    }, routeCache: new RouteCache(__privateGet(this, _logging)), site: __privateGet(this, _manifest).site, ssr: true, streaming: t })), __privateSet(this, _base, __privateGet(this, _manifest).base || "/"), __privateSet(this, _baseWithoutTrailingSlash, removeTrailingForwardSlash(__privateGet(this, _base)));
+  constructor(manifest, streaming = true) {
+    __privateAdd(this, _renderPage);
+    __privateAdd(this, _callEndpoint);
+    __privateAdd(this, _env, void 0);
+    __privateAdd(this, _manifest, void 0);
+    __privateAdd(this, _manifestData, void 0);
+    __privateAdd(this, _routeDataToRouteInfo, void 0);
+    __privateAdd(this, _encoder, new TextEncoder());
+    __privateAdd(this, _logging, {
+      dest: consoleLogDestination,
+      level: "info"
+    });
+    __privateAdd(this, _base, void 0);
+    __privateAdd(this, _baseWithoutTrailingSlash, void 0);
+    __privateSet(this, _manifest, manifest);
+    __privateSet(this, _manifestData, {
+      routes: manifest.routes.map((route) => route.routeData)
+    });
+    __privateSet(this, _routeDataToRouteInfo, new Map(manifest.routes.map((route) => [route.routeData, route])));
+    __privateSet(this, _env, createEnvironment({
+      adapterName: manifest.adapterName,
+      logging: __privateGet(this, _logging),
+      markdown: manifest.markdown,
+      mode: "production",
+      renderers: manifest.renderers,
+      async resolve(specifier) {
+        if (!(specifier in manifest.entryModules)) {
+          throw new Error(`Unable to resolve [${specifier}]`);
+        }
+        const bundlePath = manifest.entryModules[specifier];
+        switch (true) {
+          case bundlePath.startsWith("data:"):
+          case bundlePath.length === 0: {
+            return bundlePath;
+          }
+          default: {
+            return prependForwardSlash(joinPaths(manifest.base, bundlePath));
+          }
+        }
+      },
+      routeCache: new RouteCache(__privateGet(this, _logging)),
+      site: __privateGet(this, _manifest).site,
+      ssr: true,
+      streaming
+    }));
+    __privateSet(this, _base, __privateGet(this, _manifest).base || "/");
+    __privateSet(this, _baseWithoutTrailingSlash, removeTrailingForwardSlash(__privateGet(this, _base)));
   }
-  removeBase(e) {
-    return e.startsWith(__privateGet(this, _base)) ? e.slice(__privateGet(this, _baseWithoutTrailingSlash).length + 1) : e;
-  }
-  match(e, { matchNotFound: t = false } = {}) {
-    const a = new URL(e.url);
-    if (__privateGet(this, _manifest).assets.has(a.pathname))
-      return;
-    let n = matchRoute("/" + this.removeBase(a.pathname), __privateGet(this, _manifestData));
-    if (n) {
-      if (matchAssets(n, __privateGet(this, _manifest).assets))
-        return;
-      return n;
+  removeBase(pathname) {
+    if (pathname.startsWith(__privateGet(this, _base))) {
+      return pathname.slice(__privateGet(this, _baseWithoutTrailingSlash).length + 1);
     }
-    return t ? matchRoute("/404", __privateGet(this, _manifestData)) : void 0;
+    return pathname;
   }
-  async render(e, t) {
-    let a = 200;
-    if (!t && ((t = this.match(e)) || (a = 404, t = this.match(e, { matchNotFound: true })), !t))
-      return new Response(null, { status: 404, statusText: "Not found" });
-    "/404" === t.route && (a = 404);
-    let n = __privateGet(this, _manifest).pageMap.get(t.component);
-    if ("page" === t.type) {
-      let i = await __privateMethod(this, _renderPage, renderPage_fn).call(this, e, t, n, a);
-      if (500 === i.status) {
-        const t2 = matchRoute("/500", __privateGet(this, _manifestData));
-        if (t2) {
-          n = __privateGet(this, _manifest).pageMap.get(t2.component);
+  match(request, { matchNotFound = false } = {}) {
+    const url = new URL(request.url);
+    if (__privateGet(this, _manifest).assets.has(url.pathname)) {
+      return void 0;
+    }
+    let pathname = "/" + this.removeBase(url.pathname);
+    let routeData = matchRoute(pathname, __privateGet(this, _manifestData));
+    if (routeData) {
+      const asset = matchAssets(routeData, __privateGet(this, _manifest).assets);
+      if (asset)
+        return void 0;
+      return routeData;
+    } else if (matchNotFound) {
+      return matchRoute("/404", __privateGet(this, _manifestData));
+    } else {
+      return void 0;
+    }
+  }
+  async render(request, routeData) {
+    let defaultStatus = 200;
+    if (!routeData) {
+      routeData = this.match(request);
+      if (!routeData) {
+        defaultStatus = 404;
+        routeData = this.match(request, { matchNotFound: true });
+      }
+      if (!routeData) {
+        return new Response(null, {
+          status: 404,
+          statusText: "Not found"
+        });
+      }
+    }
+    if (routeData.route === "/404") {
+      defaultStatus = 404;
+    }
+    let mod = __privateGet(this, _manifest).pageMap.get(routeData.component);
+    if (routeData.type === "page") {
+      let response = await __privateMethod(this, _renderPage, renderPage_fn).call(this, request, routeData, mod, defaultStatus);
+      if (response.status === 500) {
+        const fiveHundredRouteData = matchRoute("/500", __privateGet(this, _manifestData));
+        if (fiveHundredRouteData) {
+          mod = __privateGet(this, _manifest).pageMap.get(fiveHundredRouteData.component);
           try {
-            return await __privateMethod(this, _renderPage, renderPage_fn).call(this, e, t2, n, 500);
+            let fiveHundredResponse = await __privateMethod(this, _renderPage, renderPage_fn).call(this, request, fiveHundredRouteData, mod, 500);
+            return fiveHundredResponse;
           } catch {
           }
         }
       }
-      return i;
+      return response;
+    } else if (routeData.type === "endpoint") {
+      return __privateMethod(this, _callEndpoint, callEndpoint_fn).call(this, request, routeData, mod, defaultStatus);
+    } else {
+      throw new Error(`Unsupported route type [${routeData.type}].`);
     }
-    if ("endpoint" === t.type)
-      return __privateMethod(this, _callEndpoint, callEndpoint_fn).call(this, e, t, n, a);
-    throw new Error(`Unsupported route type [${t.type}].`);
   }
-  setCookieHeaders(e) {
-    return getSetCookiesFromResponse(e);
+  setCookieHeaders(response) {
+    return getSetCookiesFromResponse(response);
   }
 };
-_env = /* @__PURE__ */ new WeakMap(), _manifest = /* @__PURE__ */ new WeakMap(), _manifestData = /* @__PURE__ */ new WeakMap(), _routeDataToRouteInfo = /* @__PURE__ */ new WeakMap(), _encoder = /* @__PURE__ */ new WeakMap(), _logging = /* @__PURE__ */ new WeakMap(), _base = /* @__PURE__ */ new WeakMap(), _baseWithoutTrailingSlash = /* @__PURE__ */ new WeakMap(), _renderPage = /* @__PURE__ */ new WeakSet(), renderPage_fn = async function(e, t, a, n = 200) {
-  const i = new URL(e.url), o = "/" + this.removeBase(i.pathname), r = __privateGet(this, _routeDataToRouteInfo).get(t), s = createLinkStylesheetElementSet(r.links);
-  let p = /* @__PURE__ */ new Set();
-  for (const e2 of r.scripts)
-    "stage" in e2 ? "head-inline" === e2.stage && p.add({ props: {}, children: e2.children }) : p.add(createModuleScriptElement(e2));
+_env = /* @__PURE__ */ new WeakMap();
+_manifest = /* @__PURE__ */ new WeakMap();
+_manifestData = /* @__PURE__ */ new WeakMap();
+_routeDataToRouteInfo = /* @__PURE__ */ new WeakMap();
+_encoder = /* @__PURE__ */ new WeakMap();
+_logging = /* @__PURE__ */ new WeakMap();
+_base = /* @__PURE__ */ new WeakMap();
+_baseWithoutTrailingSlash = /* @__PURE__ */ new WeakMap();
+_renderPage = /* @__PURE__ */ new WeakSet();
+renderPage_fn = async function(request, routeData, mod, status = 200) {
+  const url = new URL(request.url);
+  const pathname = "/" + this.removeBase(url.pathname);
+  const info = __privateGet(this, _routeDataToRouteInfo).get(routeData);
+  const links = createLinkStylesheetElementSet(info.links);
+  let scripts = /* @__PURE__ */ new Set();
+  for (const script of info.scripts) {
+    if ("stage" in script) {
+      if (script.stage === "head-inline") {
+        scripts.add({
+          props: {},
+          children: script.children
+        });
+      }
+    } else {
+      scripts.add(createModuleScriptElement(script));
+    }
+  }
   try {
-    const r2 = createRenderContext({ request: e, origin: i.origin, pathname: o, scripts: p, links: s, route: t, status: n });
-    return await renderPage(a, r2, __privateGet(this, _env));
-  } catch (e2) {
-    return error(__privateGet(this, _logging), "ssr", e2.stack || e2.message || String(e2)), new Response(null, { status: 500, statusText: "Internal server error" });
-  }
-}, _callEndpoint = /* @__PURE__ */ new WeakSet(), callEndpoint_fn = async function(e, t, a, n = 200) {
-  const i = new URL(e.url), o = "/" + this.removeBase(i.pathname), r = a, s = createRenderContext({ request: e, origin: i.origin, pathname: o, route: t, status: n }), p = await call(r, __privateGet(this, _env), s);
-  if ("response" === p.type) {
-    if ("Not-Found" === p.response.headers.get("X-Astro-Response")) {
-      const t2 = new Request(new URL("/404", e.url)), a2 = this.match(t2);
-      if (a2)
-        return this.render(t2, a2);
-    }
-    return p.response;
-  }
-  {
-    const e2 = p.body, t2 = new Headers(), a2 = mime.getType(i.pathname);
-    a2 ? t2.set("Content-Type", `${a2};charset=utf-8`) : t2.set("Content-Type", "text/plain;charset=utf-8");
-    const n2 = __privateGet(this, _encoder).encode(e2);
-    t2.set("Content-Length", n2.byteLength.toString());
-    const o2 = new Response(n2, { status: 200, headers: t2 });
-    return attachToResponse(o2, p.cookies), o2;
+    const ctx = createRenderContext({
+      request,
+      origin: url.origin,
+      pathname,
+      propagation: __privateGet(this, _manifest).propagation,
+      scripts,
+      links,
+      route: routeData,
+      status
+    });
+    const response = await renderPage(mod, ctx, __privateGet(this, _env));
+    return response;
+  } catch (err) {
+    error(__privateGet(this, _logging), "ssr", err.stack || err.message || String(err));
+    return new Response(null, {
+      status: 500,
+      statusText: "Internal server error"
+    });
   }
 };
-var slotName = (e) => e.trim().replace(/[-_]([a-z])/g, (e2, t) => t.toUpperCase());
-async function check(e, t, { default: a = null, ...n } = {}) {
-  if ("function" != typeof e)
+_callEndpoint = /* @__PURE__ */ new WeakSet();
+callEndpoint_fn = async function(request, routeData, mod, status = 200) {
+  const url = new URL(request.url);
+  const pathname = "/" + this.removeBase(url.pathname);
+  const handler = mod;
+  const ctx = createRenderContext({
+    request,
+    origin: url.origin,
+    pathname,
+    route: routeData,
+    status
+  });
+  const result = await call(handler, __privateGet(this, _env), ctx);
+  if (result.type === "response") {
+    if (result.response.headers.get("X-Astro-Response") === "Not-Found") {
+      const fourOhFourRequest = new Request(new URL("/404", request.url));
+      const fourOhFourRouteData = this.match(fourOhFourRequest);
+      if (fourOhFourRouteData) {
+        return this.render(fourOhFourRequest, fourOhFourRouteData);
+      }
+    }
+    return result.response;
+  } else {
+    const body = result.body;
+    const headers = new Headers();
+    const mimeType = mime.getType(url.pathname);
+    if (mimeType) {
+      headers.set("Content-Type", `${mimeType};charset=utf-8`);
+    } else {
+      headers.set("Content-Type", "text/plain;charset=utf-8");
+    }
+    const bytes = __privateGet(this, _encoder).encode(body);
+    headers.set("Content-Length", bytes.byteLength.toString());
+    const response = new Response(bytes, {
+      status: 200,
+      headers
+    });
+    attachToResponse(response, result.cookies);
+    return response;
+  }
+};
+var slotName = (str) => str.trim().replace(/[-_]([a-z])/g, (_, w) => w.toUpperCase());
+async function check(Component, props, { default: children = null, ...slotted } = {}) {
+  if (typeof Component !== "function")
     return false;
-  const i = {};
-  for (const [e2, t2] of Object.entries(n)) {
-    i[slotName(e2)] = t2;
+  const slots = {};
+  for (const [key, value] of Object.entries(slotted)) {
+    const name = slotName(key);
+    slots[name] = value;
   }
   try {
-    return (await e({ ...t, ...i, children: a }))[AstroJSX];
-  } catch (e2) {
+    const result = await Component({ ...props, ...slots, children });
+    return result[AstroJSX];
+  } catch (e) {
   }
   return false;
 }
-async function renderToStaticMarkup(e, t = {}, { default: a = null, ...n } = {}) {
-  const i = {};
-  for (const [e2, t2] of Object.entries(n)) {
-    i[slotName(e2)] = t2;
+async function renderToStaticMarkup(Component, props = {}, { default: children = null, ...slotted } = {}) {
+  const slots = {};
+  for (const [key, value] of Object.entries(slotted)) {
+    const name = slotName(key);
+    slots[name] = value;
   }
-  const { result: o } = this;
-  return { html: await renderJSX(o, createVNode(e, { ...t, ...i, children: a })) };
+  const { result } = this;
+  const html = await renderJSX(result, createVNode(Component, { ...props, ...slots, children }));
+  return { html };
 }
-var server_default = { check, renderToStaticMarkup };
+var server_default = {
+  check,
+  renderToStaticMarkup
+};
 
 // dist/server/entry.mjs
 import { Server } from "https://deno.land/std@0.167.0/http/server.ts";
 import { fetch } from "https://deno.land/x/file_fetch/mod.ts";
 
-// dist/server/chunks/pages/all.6a5169b5.mjs
+// dist/server/chunks/pages/all.34cd759a.mjs
 var $$Astro$1 = createAstro("https://astro-deno-deploy.deno.dev/");
-var $$Base = createComponent(async (e, t, o) => {
-  const r = e.createAstro($$Astro$1, t, o);
-  r.self = $$Base;
-  const { title: n = "", description: a = "" } = r.props;
+var $$Base = createComponent(async ($$result, $$props, $$slots) => {
+  const Astro2 = $$result.createAstro($$Astro$1, $$props, $$slots);
+  Astro2.self = $$Base;
+  const { title = "", description = "" } = Astro2.props;
   return renderTemplate`<html lang="en" class="no-js" dir="ltr">
 	<head>
 		
 
 		<!-- Meta -->
-		<title>${n}</title>
+		<title>${title}</title>
 		<meta charset="utf-8">
-		<meta name="description"${addAttribute(a, "content")}>
+		<meta name="description"${addAttribute(description, "content")}>
 		<meta name="viewport" content="width=device-width,initial-scale=1.0">
 		<meta name="theme-color" content="#FF5D01">
 		<meta name="format-detection" content="telephone=no">
@@ -1918,68 +3883,119 @@ var $$Base = createComponent(async (e, t, o) => {
 		
 
 		<!-- Favicon -->
-	${renderHead(e)}</head>
+	${renderHead($$result)}</head>
 
 	<body>
 		<div id="astro-deno-deploy-web">
 			<div class="grow">
-				${renderSlot(e, o.default)}
+				${renderSlot($$result, $$slots["default"])}
 			</div>
 		</div>
 	</body></html>`;
 }, "D:/Developer/app/lightrix/astro-deno-deploy/src/layouts/Base.astro");
 var $$Astro = createAstro("https://astro-deno-deploy.deno.dev/");
-var $$Index = createComponent(async (e, t, o) => (e.createAstro($$Astro, t, o).self = $$Index, renderTemplate`${renderComponent(e, "Base", $$Base, {})}`), "D:/Developer/app/lightrix/astro-deno-deploy/src/pages/index.astro");
+var $$Index = createComponent(async ($$result, $$props, $$slots) => {
+  const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
+  Astro2.self = $$Index;
+  return renderTemplate`${renderComponent($$result, "Base", $$Base, {})}`;
+}, "D:/Developer/app/lightrix/astro-deno-deploy/src/pages/index.astro");
 var $$file = "D:/Developer/app/lightrix/astro-deno-deploy/src/pages/index.astro";
-var _page0 = Object.freeze(Object.defineProperty({ __proto__: null, default: $$Index, file: $$file, url: "" }, Symbol.toStringTag, { value: "Module" }));
+var $$url = "";
+var _page0 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  default: $$Index,
+  file: $$file,
+  url: $$url
+}, Symbol.toStringTag, { value: "Module" }));
 
 // dist/server/entry.mjs
-var _server;
-var _startPromise;
-function start$1(e, r) {
-  if (false === r.start)
+var _server = void 0;
+var _startPromise = void 0;
+function start$1(manifest, options) {
+  if (options.start === false) {
     return;
-  const t = new URL("../client/", import.meta.url), s = new App(e), a = r.port ?? 8085;
-  _server = new Server({ port: a, hostname: r.hostname ?? "0.0.0.0", handler: async (e2, r2) => {
-    var a2;
-    if (s.match(e2)) {
-      let t2 = null == (a2 = null == r2 ? void 0 : r2.remoteAddr) ? void 0 : a2.hostname;
-      Reflect.set(e2, Symbol.for("astro.clientAddress"), t2);
-      const o2 = await s.render(e2);
-      if (s.setCookieHeaders)
-        for (const e3 of s.setCookieHeaders(o2))
-          o2.headers.append("Set-Cookie", e3);
-      return o2;
+  }
+  const clientRoot = new URL("../client/", import.meta.url);
+  const app = new App(manifest);
+  const handler = async (request, connInfo) => {
+    var _a2;
+    if (app.match(request)) {
+      let ip = (_a2 = connInfo == null ? void 0 : connInfo.remoteAddr) == null ? void 0 : _a2.hostname;
+      Reflect.set(request, Symbol.for("astro.clientAddress"), ip);
+      const response = await app.render(request);
+      if (app.setCookieHeaders) {
+        for (const setCookieHeader of app.setCookieHeaders(response)) {
+          response.headers.append("Set-Cookie", setCookieHeader);
+        }
+      }
+      return response;
     }
-    const o = new URL(e2.url), n = new URL("./" + s.removeBase(o.pathname), t), i = await fetch(n.toString());
-    if (404 == i.status) {
-      const r3 = await s.render(e2);
-      if (s.setCookieHeaders)
-        for (const e3 of s.setCookieHeaders(r3))
-          r3.headers.append("Set-Cookie", e3);
-      return r3;
+    const url = new URL(request.url);
+    const localPath = new URL("./" + app.removeBase(url.pathname), clientRoot);
+    const fileResp = await fetch(localPath.toString());
+    if (fileResp.status == 404) {
+      const response = await app.render(request);
+      if (app.setCookieHeaders) {
+        for (const setCookieHeader of app.setCookieHeaders(response)) {
+          response.headers.append("Set-Cookie", setCookieHeader);
+        }
+      }
+      return response;
+    } else {
+      return fileResp;
     }
-    return i;
-  } }), _startPromise = Promise.resolve(_server.listenAndServe()), console.error(`Server running on port ${a}`);
+  };
+  const port = options.port ?? 8085;
+  _server = new Server({
+    port,
+    hostname: options.hostname ?? "0.0.0.0",
+    handler
+  });
+  _startPromise = Promise.resolve(_server.listenAndServe());
+  console.error(`Server running on port ${port}`);
 }
-function createExports(e, r) {
-  const t = new App(e);
-  return { async stop() {
-    _server && (_server.close(), _server = void 0), await Promise.resolve(_startPromise);
-  }, running: () => void 0 !== _server, start: async () => start$1(e, r), handle: async (e2) => t.render(e2) };
+function createExports(manifest, options) {
+  const app = new App(manifest);
+  return {
+    async stop() {
+      if (_server) {
+        _server.close();
+        _server = void 0;
+      }
+      await Promise.resolve(_startPromise);
+    },
+    running() {
+      return _server !== void 0;
+    },
+    async start() {
+      return start$1(manifest, options);
+    },
+    async handle(request) {
+      return app.render(request);
+    }
+  };
 }
-var adapter = Object.freeze(Object.defineProperty({ __proto__: null, createExports, start: start$1 }, Symbol.toStringTag, { value: "Module" }));
+var adapter = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  createExports,
+  start: start$1
+}, Symbol.toStringTag, { value: "Module" }));
 var pageMap = /* @__PURE__ */ new Map([["src/pages/index.astro", _page0]]);
-var renderers = [Object.assign({ name: "astro:jsx", serverEntrypoint: "astro/jsx/server.js", jsxImportSource: "astro" }, { ssr: server_default })];
-var _manifest2 = Object.assign(deserializeManifest({ adapterName: "@astrojs/deno", routes: [{ file: "", links: ["_astro/index.c57ad5eb.css"], scripts: [{ type: "external", value: "_astro/hoisted.b26c3f26.js" }, { type: "external", value: "_astro/page.b7cc8384.js" }], routeData: { route: "/", type: "page", pattern: "^\\/$", segments: [], params: [], component: "src/pages/index.astro", pathname: "/", _meta: { trailingSlash: "ignore" } } }], site: "https://astro-deno-deploy.deno.dev/", base: "/", markdown: { drafts: false, syntaxHighlight: "shiki", shikiConfig: { langs: [], theme: "github-dark", wrap: false }, remarkPlugins: [], rehypePlugins: [], remarkRehype: {}, gfm: true, smartypants: true, contentDir: "file:///D:/Developer/app/lightrix/astro-deno-deploy/src/content/" }, pageMap: null, renderers: [], entryModules: { "\0@astrojs-ssr-virtual-entry": "_@astrojs-ssr-virtual-entry.mjs", "astro:scripts/page.js": "_astro/page.b7cc8384.js", "/astro/hoisted.js?q=0": "_astro/hoisted.b26c3f26.js", "astro:scripts/before-hydration.js": "" }, assets: ["/_astro/index.c57ad5eb.css", "/robots.txt", "/site.webmanifest", "/_astro/hoisted.b26c3f26.js", "/_astro/page.b7cc8384.js", "/_astro/page.b7cc8384.js"] }), { pageMap, renderers });
+var renderers = [Object.assign({ "name": "astro:jsx", "serverEntrypoint": "astro/jsx/server.js", "jsxImportSource": "astro" }, { ssr: server_default })];
+var _manifest2 = Object.assign(deserializeManifest({ "adapterName": "@astrojs/deno", "routes": [{ "file": "", "links": ["_astro/index.c57ad5eb.css"], "scripts": [{ "type": "external", "value": "_astro/hoisted.b26c3f26.js" }, { "type": "external", "value": "_astro/page.b7cc8384.js" }], "routeData": { "route": "/", "type": "page", "pattern": "^\\/$", "segments": [], "params": [], "component": "src/pages/index.astro", "pathname": "/", "_meta": { "trailingSlash": "ignore" } } }], "site": "https://astro-deno-deploy.deno.dev/", "base": "/", "markdown": { "drafts": false, "syntaxHighlight": "shiki", "shikiConfig": { "langs": [], "theme": "github-dark", "wrap": false }, "remarkPlugins": [], "rehypePlugins": [], "remarkRehype": {}, "gfm": true, "smartypants": true, "contentDir": "file:///D:/Developer/app/lightrix/astro-deno-deploy/src/content/" }, "pageMap": null, "propagation": [["D:/Developer/app/lightrix/astro-deno-deploy/src/layouts/Base.astro", "in-tree"], ["D:/Developer/app/lightrix/astro-deno-deploy/src/pages/index.astro", "in-tree"]], "renderers": [], "entryModules": { "\0@astrojs-ssr-virtual-entry": "_@astrojs-ssr-virtual-entry.mjs", "astro:scripts/page.js": "_astro/page.b7cc8384.js", "/astro/hoisted.js?q=0": "_astro/hoisted.b26c3f26.js", "astro:scripts/before-hydration.js": "" }, "assets": ["/_astro/index.c57ad5eb.css", "/robots.txt", "/site.webmanifest", "/_astro/hoisted.b26c3f26.js", "/_astro/page.b7cc8384.js", "/_astro/page.b7cc8384.js"] }), {
+  pageMap,
+  renderers
+});
 var _args = {};
 var _exports = createExports(_manifest2, _args);
-var stop = _exports.stop;
-var handle = _exports.handle;
-var start = _exports.start;
-var running = _exports.running;
+var stop = _exports["stop"];
+var handle = _exports["handle"];
+var start = _exports["start"];
+var running = _exports["running"];
 var _start = "start";
-_start in adapter && adapter[_start](_manifest2, _args);
+if (_start in adapter) {
+  adapter[_start](_manifest2, _args);
+}
 export {
   handle,
   pageMap,
