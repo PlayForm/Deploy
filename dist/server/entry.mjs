@@ -3864,7 +3864,7 @@ var $$Base = createComponent(async ($$result, $$props, $$slots) => {
   const { title = "", description = "" } = Astro2.props;
   return renderTemplate`<html lang="en" class="no-js" dir="ltr">
 	<head>
-		
+
 
 		<!-- Meta -->
 		<title>${title}</title>
@@ -3880,7 +3880,7 @@ var $$Base = createComponent(async ($$result, $$props, $$slots) => {
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link rel="manifest" href="/site.webmanifest" crossorigin="use-credentials">
 
-		
+
 
 		<!-- Favicon -->
 	${renderHead($$result)}</head>
