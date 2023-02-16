@@ -9,7 +9,7 @@ on:
 
 jobs:
     deploy:
-        runs-on: [self-hosted, ubuntu-latest]
+        runs-on: ubuntu-latest
 
         permissions:
             id-token: write
