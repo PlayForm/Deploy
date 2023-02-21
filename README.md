@@ -1,4 +1,4 @@
-# [astro-deno-deploy] 📄
+# [astro-deno-deploy] 🦕
 
 Starter template for AstroJS on Deno Deploy.
 
