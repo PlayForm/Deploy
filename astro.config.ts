@@ -10,7 +10,7 @@ import sitemap from "@astrojs/sitemap";
 import worker from "astrojs-service-worker";
 
 export default defineConfig({
-	site: "https://astro-deno-deploy.deno.dev/",
+	site: "https://astro-deno-deploy.deno.dev",
 	integrations: [
 		worker(),
 		sitemap(),
