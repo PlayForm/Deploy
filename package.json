@@ -19,7 +19,7 @@
 	],
 	"scripts": {
 		"build": "astro check && astro build",
-		"preview": "deno run --allow-net --allow-read --allow-env ./dist/server/entry.mjs",
+		"preview": "deno run --allow-net --allow-read --allow-env ./dist/server/entry.js",
 		"start": "astro dev"
 	},
 	"devDependencies": {
