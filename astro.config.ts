@@ -10,6 +10,9 @@ import worker from "astrojs-service-worker";
 
 export default defineConfig({
 	site: "https://astro-deno-deploy.deno.dev",
+	experimental: {
+		assets: true,
+	},
 	integrations: [
 		import.meta.env.MODE === "production" ? worker() : null,
 		sitemap(),
