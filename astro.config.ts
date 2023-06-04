@@ -23,4 +23,9 @@ export default defineConfig({
 	],
 	output: "server",
 	adapter: deno(),
+	vite: {
+		build: {
+			sourcemap: true
+		}
+	}
 });
