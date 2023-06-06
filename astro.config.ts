@@ -21,11 +21,8 @@ export default defineConfig({
 		rome({ logger: 1 }),
 		compress({ logger: 1 }),
 	],
-<<<<<<< HEAD
 	output: "server",
 	adapter: deno(),
-=======
->>>>>>> upstream/main
 	vite: {
 		build: {
 			sourcemap: true
