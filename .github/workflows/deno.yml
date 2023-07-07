@@ -35,7 +35,7 @@ jobs:
                           --strict-peer-dependencies=false,
                           --unsafe-perm=true
                         ]
-            - uses: actions/setup-node@v3.6.0
+            - uses: actions/setup-node@v3.7.0
               with:
                   node-version: 18
                   cache: "pnpm"
