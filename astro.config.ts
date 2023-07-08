@@ -1,12 +1,12 @@
 // @ts-nocheck
-import deno from "@astrojs/deno";
+import worker from "astrojs-service-worker";
+import { defineConfig } from "astro/config";
 import prefetch from "@astrojs/prefetch";
 import sitemap from "@astrojs/sitemap";
 import compress from "astro-compress";
 import critters from "astro-critters";
+import deno from "@astrojs/deno";
 import rome from "astro-rome";
-import { defineConfig } from "astro/config";
-import worker from "astrojs-service-worker";
 
 export default defineConfig({
 	site: "https://astro-deno-deploy.deno.dev",
@@ -25,7 +25,7 @@ export default defineConfig({
 	adapter: deno(),
 	vite: {
 		build: {
-			sourcemap: true
-		}
-	}
+			sourcemap: true,
+		},
+	},
 });
