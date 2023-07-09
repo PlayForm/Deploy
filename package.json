@@ -12,11 +12,7 @@
 	},
 	"license": "MIT",
 	"private": false,
-<<<<<<< HEAD
 	"keywords": ["astro", "deno", "starter"],
-=======
-	"keywords": ["astro", "starter"],
->>>>>>> upstream/main
 	"scripts": {
 		"build": "astro check && astro build",
 		"preview": "deno run --allow-net --allow-read --allow-env ./dist/server/entry.js",
