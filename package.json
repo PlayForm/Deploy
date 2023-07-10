@@ -10,7 +10,6 @@
 	],
 	"homepage": "https://github.com/Lightrix/astro-deno-deploy#readme",
 	"bugs": {
-<<<<<<< HEAD
 		"url": "https://github.com/Lightrix/astro-deno-deploy/issues"
 	},
 	"repository": {
@@ -22,23 +21,6 @@
 		"build": "astro check && astro build",
 		"preview": "deno run --allow-net --allow-read --allow-env ./dist/server/entry.js",
 		"start": "astro dev"
-=======
-<<<<<<< HEAD
-		"url": "https://github.com/Lightrix/astro-starter-template/issues"
-=======
-		"url": "https://github.com/Playform/blank-web-starter/issues"
-	},
-	"license": "MIT",
-	"private": false,
-	"keywords": [
-		"astro",
-		"starter"
-	],
-	"scripts": {
-		"build": "astro check && astro build",
-		"start": "astro dev"
->>>>>>> upstream/main
->>>>>>> upstream/main
 	},
 	"devDependencies": {
 		"@astrojs/deno": "4.2.0",
