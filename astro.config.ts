@@ -12,6 +12,7 @@ export default defineConfig({
 	site: "https://astro-deno-deploy.deno.dev",
 	experimental: {
 		assets: true,
+		viewTransitions: true,
 	},
 	compressHTML: true,
 	integrations: [
