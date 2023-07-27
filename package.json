@@ -10,7 +10,7 @@
 	],
 	"homepage": "https://github.com/Lightrix/astro-deno-deploy#readme",
 	"bugs": {
-		"url": "git+https://github.com/Lightrix/astro-deno-deploy/issues"
+		"url": "https://github.com/Lightrix/astro-deno-deploy/issues"
 	},
 	"repository": {
 		"type": "git",
