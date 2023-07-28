@@ -47,7 +47,7 @@ jobs:
               working-directory: .
 
             - name: Deploy to Deno Deploy
-              uses: denoland/deployctl@1.7.0
+              uses: denoland/deployctl@1.8.0
               with:
                   project: astro-deno-deploy
                   entrypoint: ./dist/server/entry.js
