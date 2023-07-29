@@ -1,12 +1,13 @@
 // @ts-nocheck
-import deno from "@astrojs/deno";
-import prefetch from "@astrojs/prefetch";
-import sitemap from "@astrojs/sitemap";
 import compress from "astro-compress";
 import critters from "astro-critters";
 import rome from "astro-rome";
 import { defineConfig } from "astro/config";
 import worker from "astrojs-service-worker";
+
+import deno from "@astrojs/deno";
+import prefetch from "@astrojs/prefetch";
+import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
 	site: "https://astro-deno-deploy.deno.dev",
