@@ -10,6 +10,7 @@ import worker from "astrojs-service-worker";
 export default defineConfig({
 	srcDir: "./Source",
 	publicDir: "./Public",
+	outDir: "./Build",
 	site: "https://astro-deno-deploy.deno.dev",
 	experimental: {
 		assets: true,
