@@ -8,6 +8,7 @@ import { defineConfig } from "astro/config";
 import worker from "astrojs-service-worker";
 
 export default defineConfig({
+	srcDir: "./Source",
 	site: "https://astro-deno-deploy.deno.dev",
 	experimental: {
 		assets: true,
