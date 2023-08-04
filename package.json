@@ -2,11 +2,7 @@
 	"name": "astro-deno-deploy",
 	"version": "0.0.1",
 	"private": false,
-<<<<<<< HEAD
 	"description": "📄 Starter template for AstroJS on Deno Deploy.",
-=======
-	"description": "📄 Starter template for AstroJS.",
->>>>>>> upstream/main
 	"keywords": [
 		"astro",
 		"deno",
