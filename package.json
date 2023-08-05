@@ -17,7 +17,6 @@
 		"url": "git+https://github.com/Lightrix/astro-deno-deploy.git"
 	},
 	"license": "MIT",
-	"type": "module",
 	"scripts": {
 		"build": "astro check && astro build",
 		"preview": "deno run --allow-net --allow-read --allow-env ./Target/server/entry.js",
