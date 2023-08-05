@@ -50,4 +50,4 @@ jobs:
               uses: denoland/deployctl@1.8.0
               with:
                   project: astro-deno-deploy
-                  entrypoint: ./dist/server/entry.js
+                  entrypoint: ./Target/server/entry.js
