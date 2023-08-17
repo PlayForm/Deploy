@@ -22,7 +22,6 @@
 		"email": "nikola@nikolahristov.tech",
 		"url": "https://nikolahristov.tech"
 	},
-	"type": "module",
 	"scripts": {
 		"prepublishOnly": "astro check && astro build",
 		"preview": "deno run --allow-net --allow-read --allow-env ./Target/server/entry.js",
