@@ -1,5 +1,5 @@
 import deno from "@astrojs/deno";
-import PreFetch from "@astrojs/prefetch";
+import Prefetch from "@astrojs/prefetch";
 import Sitemap from "@astrojs/sitemap";
 import Compress from "astro-compress";
 import Critters from "astro-critters";
@@ -17,7 +17,7 @@ export default defineConfig({
 		import.meta.env.MODE === "production" ? Worker() : null,
 		Sitemap(),
 		Critters({ Logger: 1 }),
-		PreFetch(),
+		Prefetch(),
 		Rome({ Logger: 1 }),
 		Compress({ Logger: 1 }),
 	],
