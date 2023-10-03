@@ -8,13 +8,13 @@
 		"deno",
 		"starter"
 	],
-	"homepage": "https://github.com/Lightrix/AstroDenoDeploy#readme",
+	"homepage": "https://github.com/Playform/AstroDenoDeploy#readme",
 	"bugs": {
-		"url": "https://github.com/Lightrix/AstroDenoDeploy/issues"
+		"url": "https://github.com/Playform/AstroDenoDeploy/issues"
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/Lightrix/AstroDenoDeploy.git"
+		"url": "git+https://github.com/Playform/AstroDenoDeploy.git"
 	},
 	"license": "MIT",
 	"author": {
