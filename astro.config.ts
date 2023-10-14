@@ -1,5 +1,3 @@
-import deno from "@astrojs/deno";
-
 export default (await import("astro/config")).defineConfig({
 	srcDir: "./Source",
 	publicDir: "./Public",
@@ -17,10 +15,11 @@ export default (await import("astro/config")).defineConfig({
 		(await import("astro-compress")).default({ Logger: 1 }),
 	],
 	output: "server",
-	adapter: deno(),
+	adapter: (await import("@astrojs/deno")).default(),
 	vite: {
 		build: {
 			sourcemap: true,
 		},
 	},
-});
+	// biome-ignore lint/suspicious/noExplicitAny:
+}) as any;
