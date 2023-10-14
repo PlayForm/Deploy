@@ -8,7 +8,6 @@
 		"deno",
 		"starter"
 	],
-<<<<<<< HEAD
 	"homepage": "https://github.com/Playform/AstroDenoDeploy#readme",
 	"bugs": {
 		"url": "https://github.com/Playform/AstroDenoDeploy/issues"
@@ -16,15 +15,6 @@
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/Playform/AstroDenoDeploy.git"
-=======
-	"homepage": "https://github.com/Playform/AstroStarterTemplate#readme",
-	"bugs": {
-		"url": "https://github.com/Playform/AstroStarterTemplate/issues"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/Playform/AstroStarterTemplate.git"
->>>>>>> upstream/main
 	},
 	"license": "MIT",
 	"author": {
@@ -39,10 +29,7 @@
 	},
 	"dependencies": {
 		"@astrojs/check": "0.2.1",
-<<<<<<< HEAD
 		"@astrojs/deno": "5.0.1",
-=======
->>>>>>> upstream/main
 		"@astrojs/prefetch": "0.4.1",
 		"@astrojs/sitemap": "3.0.1",
 		"@tailwindcss/aspect-ratio": "0.4.2",
