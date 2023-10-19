@@ -23,12 +23,8 @@
 		"url": "https://nikolahristov.tech"
 	},
 	"scripts": {
-<<<<<<< HEAD
 		"prepublishOnly": "astro check && astro build",
 		"preview": "deno run --allow-net --allow-read --allow-env ./Target/server/entry.js",
-=======
-		"prepublishOnly": "astro check && astro build && knip",
->>>>>>> upstream/main
 		"start": "astro dev"
 	},
 	"dependencies": {
