@@ -24,10 +24,7 @@
 	},
 	"scripts": {
 		"prepublishOnly": "astro check && astro build",
-<<<<<<< HEAD
 		"preview": "deno run --allow-net --allow-read --allow-env ./Target/server/entry.js",
-=======
->>>>>>> upstream/main
 		"start": "astro dev"
 	},
 	"dependencies": {
