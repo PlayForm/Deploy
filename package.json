@@ -5,8 +5,13 @@
 	"description": "📄 Starter template for AstroJS on Deno Deploy.",
 	"keywords": [
 		"astro",
+<<<<<<< HEAD
 		"deno",
 		"starter"
+=======
+		"starter",
+		"skeleton"
+>>>>>>> upstream/main
 	],
 	"homepage": "https://github.com/Playform/AstroDenoDeploy#readme",
 	"bugs": {
@@ -24,12 +29,18 @@
 	},
 	"scripts": {
 		"prepublishOnly": "astro check ; astro build",
+<<<<<<< HEAD
 		"preview": "deno run --allow-net --allow-read --allow-env ./Target/server/entry.js",
+=======
+>>>>>>> upstream/main
 		"start": "astro dev"
 	},
 	"dependencies": {
 		"@astrojs/check": "0.3.3",
+<<<<<<< HEAD
 		"@astrojs/deno": "5.0.1",
+=======
+>>>>>>> upstream/main
 		"@astrojs/prefetch": "0.4.1",
 		"@astrojs/sitemap": "3.0.3",
 		"@tailwindcss/aspect-ratio": "0.4.2",
