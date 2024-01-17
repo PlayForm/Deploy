@@ -30,20 +30,13 @@
 	},
 	"dependencies": {
 		"@astrojs/check": "0.4.1",
-<<<<<<< HEAD
 		"@astrojs/deno": "5.0.1",
-=======
->>>>>>> upstream/main
 		"@astrojs/prefetch": "0.4.1",
 		"@astrojs/sitemap": "3.0.4",
 		"@tailwindcss/aspect-ratio": "0.4.2",
 		"@tailwindcss/forms": "0.5.7",
 		"@tailwindcss/typography": "0.5.10",
-<<<<<<< HEAD
-		"astro": "4.1.2",
-=======
 		"astro": "4.1.3",
->>>>>>> upstream/main
 		"astro-capo": "0.0.1",
 		"astro-compress": "2.2.8",
 		"astro-critters": "2.0.11",
@@ -58,11 +51,7 @@
 		"postcss-combine-duplicated-selectors": "10.0.3",
 		"postcss-combine-media-query": "1.0.1",
 		"postcss-import": "16.0.0",
-<<<<<<< HEAD
-		"postcss-reporter": "7.0.5",
-=======
 		"postcss-reporter": "7.1.0",
->>>>>>> upstream/main
 		"postcss-url": "10.1.3",
 		"tailwindcss": "3.4.1",
 		"typescript": "5.3.3",
