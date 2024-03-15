@@ -3,12 +3,7 @@
 	"version": "0.0.1",
 	"private": false,
 	"description": "📄 AstroJS Starter on Deno Deploy.",
-	"keywords": [
-		"astro",
-		"deno",
-		"starter",
-		"skeleton"
-	],
+	"keywords": ["astro", "deno", "starter", "skeleton"],
 	"homepage": "https://github.com/Playform/AstroDenoDeploy#readme",
 	"bugs": {
 		"url": "https://github.com/Playform/AstroDenoDeploy/issues"
@@ -20,7 +15,7 @@
 	"license": "SEE LICENSE IN LICENSE",
 	"author": {
 		"name": "Nikola R. Hristov",
-		"email": "nikola@nikolahristov.tech",
+		"email": "Nikola@Playform.Cloud",
 		"url": "https://nikolahristov.tech"
 	},
 	"scripts": {
