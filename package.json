@@ -1,0 +1,58 @@
+{
+	"name": "astro-deno-deploy",
+	"version": "0.0.1",
+	"private": false,
+	"description": "📄 AstroJS Starter on Deno Deploy.",
+	"keywords": ["astro", "deno", "starter", "skeleton"],
+	"homepage": "https://github.com/Playform/AstroDenoDeploy#readme",
+	"bugs": {
+		"url": "https://github.com/Playform/AstroDenoDeploy/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Playform/AstroDenoDeploy.git"
+	},
+	"license": "SEE LICENSE IN LICENSE",
+	"author": {
+		"name": "Playform",
+		"email": "hello@playform.cloud",
+		"url": "https://playform.cloud"
+	},
+	"scripts": {
+		"prepublishOnly": "astro build",
+		"preview": "deno run --allow-net --allow-read --allow-env ./Target/server/entry.js",
+		"start": "astro dev"
+	},
+	"dependencies": {
+		"@astrojs/deno": "5.0.1",
+		"@astrojs/prefetch": "0.4.1",
+		"@astrojs/sitemap": "3.1.2",
+		"@tailwindcss/aspect-ratio": "0.4.2",
+		"@tailwindcss/forms": "0.5.7",
+		"@tailwindcss/typography": "0.5.12",
+		"astro": "4.5.10",
+		"astro-capo": "0.0.1",
+		"compress-astro": "0.0.1",
+		"astro-critters": "2.1.6",
+		"astro-biome": "0.0.10",
+		"astrojs-service-worker": "2.0.0",
+		"autoprefixer": "10.4.19",
+		"cssnano": "6.1.2",
+		"cssnano-preset-advanced": "6.1.2",
+		"dotenv": "16.4.5",
+		"firebase": "10.9.0",
+		"postcss": "8.4.38",
+		"postcss-combine-duplicated-selectors": "10.0.3",
+		"postcss-combine-media-query": "1.0.1",
+		"postcss-import": "16.1.0",
+		"postcss-reporter": "7.1.0",
+		"postcss-url": "10.1.3",
+		"tailwindcss": "3.4.3",
+		"typescript": "5.4.3",
+		"typescript-esbuild": "0.4.9",
+		"zod": "3.22.4"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
+}

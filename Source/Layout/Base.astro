@@ -1,0 +1,61 @@
+---
+import "@Stylesheet/Base.css";
+
+// TODO Place your title and description here
+const { Title = "", Description = "" } = Astro.props;
+
+interface Props {
+	Title?: string;
+	Description?: string;
+}
+
+const { Head } = await import("astro-capo");
+const { ViewTransitions } = await import("astro:transitions");
+---
+
+<!doctype html>
+<html lang="en" class="no-js" dir="ltr">
+	<Head>
+		<script>
+			document.documentElement.classList.remove("no-js");
+			document.documentElement.classList.add("js");
+		</script>
+
+		<!-- Meta -->
+		<title>{Title}</title>
+		<meta charset="utf-8" />
+		<meta name="description" content={Description} />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+		<meta name="theme-color" content="#FF5D01" />
+		<meta name="format-detection" content="telephone=no" />
+		<meta name="twitter:dnt" content="on" />
+
+		<!-- Links -->
+		<link
+			rel="preconnect"
+			href="https://Fonts.GoogleAPIs.Com"
+			crossorigin
+		/>
+		<link rel="preconnect" href="https://Fonts.GStatic.Com" crossorigin />
+		<link
+			rel="manifest"
+			href="/site.webmanifest"
+			crossorigin="use-credentials"
+		/>
+
+		<style is:global>
+			@import "@Stylesheet/Global.css";
+		</style>
+
+		<!-- Favicon -->
+		<ViewTransitions />
+	</Head>
+	<body>
+		<div class="grow">
+			<slot />
+		</div>
+		<script>
+			import "@Script/Firebase";
+		</script>
+	</body>
+</html>
