@@ -1,5 +1,5 @@
 {
-	"name": "astro-deno-deploy",
+	"name": "deno-deploy-astro",
 	"version": "0.0.1",
 	"private": false,
 	"description": "📄 AstroJS Starter on Deno Deploy.",

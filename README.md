@@ -1,5 +1,5 @@
-# [astro-deno-deploy] 🦕
+# [deno-deploy-astro] 🦕
 
-AstroJS Starter on Deno Deploy.
+Deno Deploy Astro.
 
-[astro-deno-deploy]: https://npmjs.org/astro-deno-deploy
+[deno-deploy-astro]: https://npmjs.org/deno-deploy-astro
