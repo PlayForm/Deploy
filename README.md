@@ -1,5 +1,3 @@
-# [deno-deploy-astro] 🦕
+# 🦕 [DenoDeployAstro]
 
-Deno Deploy Astro.
-
-[deno-deploy-astro]: https://npmjs.org/deno-deploy-astro
+[DenoDeployAstro]: https://npmjs.org/deno-deploy-astro
