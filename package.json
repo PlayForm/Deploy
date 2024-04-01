@@ -9,7 +9,7 @@
 		"starter",
 		"skeleton"
 	],
-	"homepage": "https://github.com/Playform/AstroDenoDeploy#readme",
+	"homepage": "https://github.com/Playform/AstroDenoDeploy#ReadMe",
 	"bugs": {
 		"url": "https://github.com/Playform/AstroDenoDeploy/issues"
 	},
@@ -40,7 +40,7 @@
 		"astrojs-service-worker": "2.0.0",
 		"autoprefixer": "10.4.19",
 		"@playform/biome-astro": "0.0.3",
-		"@playform/compress-astro": "0.0.1",
+		"@playform/compress-astro": "0.0.2",
 		"@playform/critters-astro": "0.0.2",
 		"cssnano": "6.1.2",
 		"cssnano-preset-advanced": "6.1.2",
