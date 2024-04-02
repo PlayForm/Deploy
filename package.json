@@ -2,20 +2,20 @@
 	"name": "@playform/deploy",
 	"version": "0.0.1",
 	"private": false,
-	"description": "📄 AstroJS Starter on Deno Deploy.",
+	"description": "📄 Deploy.",
 	"keywords": [
 		"astro",
 		"deno",
 		"starter",
 		"skeleton"
 	],
-	"homepage": "https://github.com/Playform/AstroDenoDeploy#ReadMe",
+	"homepage": "https://github.com/Playform/Deploy#ReadMe",
 	"bugs": {
-		"url": "https://github.com/Playform/AstroDenoDeploy/issues"
+		"url": "https://github.com/Playform/Deploy/issues"
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/Playform/AstroDenoDeploy.git"
+		"url": "git+https://github.com/Playform/Deploy.git"
 	},
 	"license": "SEE LICENSE IN LICENSE",
 	"author": {
