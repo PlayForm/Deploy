@@ -1,3 +1,3 @@
-# 🦕 [DenoDeployAstro]
+# 🪝 [Deploy]
 
-[DenoDeployAstro]: https://npmjs.org/@playform/deploy
+[Deploy]: https://npmjs.org/@playform/deploy
