@@ -16,6 +16,9 @@ export default (await import("astro/config")).defineConfig({
 	],
 	output: "server",
 	adapter: (await import("@astrojs/deno")).default(),
+	experimental: {
+		directRenderScript: true,
+	},
 	vite: {
 		build: {
 			sourcemap: true,
