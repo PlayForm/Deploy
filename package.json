@@ -10,19 +10,19 @@
 		"skeleton",
 		"playform"
 	],
-	"homepage": "HTTPS://GitHub.Com/Playform/Deploy#readme",
+	"homepage": "HTTPS://GitHub.Com/PlayForm/Deploy#readme",
 	"bugs": {
-		"url": "HTTPS://GitHub.Com/Playform/Deploy/issues"
+		"url": "HTTPS://GitHub.Com/PlayForm/Deploy/issues"
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+HTTPS://github.com/Playform/Deploy.git"
+		"url": "git+HTTPS://github.com/PlayForm/Deploy.git"
 	},
 	"license": "SEE LICENSE IN LICENSE",
 	"author": {
 		"name": "⛲ Source ⁄ 🚪 Open —",
-		"email": "Source/Open@Playform.Cloud",
-		"url": "HTTPS://Playform.Cloud"
+		"email": "Source/Open@PlayForm.Cloud",
+		"url": "HTTPS://PlayForm.Cloud"
 	},
 	"scripts": {
 		"Start": "astro dev",
