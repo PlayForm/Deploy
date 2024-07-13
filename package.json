@@ -25,7 +25,7 @@
 		"url": "HTTPS://PlayForm.Cloud"
 	},
 	"scripts": {
-		"Start": "astro dev",
+		"Run": "astro dev",
 		"prepublishOnly": "astro build",
 		"preview": "deno run --allow-net --allow-read --allow-env ./Target/server/entry.js"
 	},
