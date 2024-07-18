@@ -19,6 +19,9 @@ export default (await import("astro/config")).defineConfig({
 	adapter: (await import("@astrojs/deno")).default(),
 	experimental: {
 		directRenderScript: true,
+		clientPrerender: true,
+		globalRoutePriority: true,
+		serverIslands: true,
 	},
 	vite: {
 		build: {
