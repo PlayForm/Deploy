@@ -179,6 +179,12 @@ const IncompatibleDescriptorOptions = {
   message: "Only one of `densities` or `widths` can be specified. In most cases, you'll probably want to use only `widths` if you require specific widths.",
   hint: "Those attributes are used to construct a `srcset` attribute, which cannot have both `x` and `w` descriptors."
 };
+const NoImageMetadata = {
+  name: "NoImageMetadata",
+  title: "Could not process image metadata.",
+  message: (imagePath) => `Could not process image metadata${imagePath ? ` for \`${imagePath}\`` : ""}.`,
+  hint: "This is often caused by a corrupted or malformed image. Re-exporting the image from your image editor may fix this issue."
+};
 const ResponseSentError = {
   name: "ResponseSentError",
   title: "Unable to set response.",
@@ -653,5 +659,5 @@ const sharp$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   default: sharp_default
 }, Symbol.toStringTag, { value: 'Module' }));
 
-export { AstroError as A, ImageMissingAlt as B, ClientAddressNotAvailable as C, DEFAULT_HASH_PROPS as D, EndpointDidNotReturnAResponse as E, FailedToFetchRemoteImageDimensions as F, GetStaticPathsRequired as G, isRemoteAllowed as H, InvalidComponentArgs as I, sharp$1 as J, LocalsNotAnObject as L, MissingMediaQueryDirective as M, NoMatchingImport as N, OnlyResponseCanBeReturned as O, PageNumberParamNotFound as P, ResponseSentError as R, StaticClientAddressNotAvailable as S, AstroGlobUsedOutside as a, AstroGlobNoMatch as b, NoMatchingRenderer as c, NoClientOnlyHint as d, NoClientEntrypoint as e, MiddlewareNoDataOrNextCalled as f, MiddlewareNotAResponse as g, InvalidGetStaticPathsReturn as h, i18nNoLocaleFoundInPath as i, InvalidGetStaticPathsEntry as j, GetStaticPathsExpectedParams as k, GetStaticPathsInvalidRouteParam as l, NoMatchingStaticPathFound as m, PrerenderDynamicEndpointPathCollide as n, ReservedSlotName as o, PrerenderClientAddressNotAvailable as p, RewriteWithBodyUsed as q, AstroResponseHeadersReassigned as r, InvalidImageService as s, ExpectedImageOptions as t, ExpectedImage as u, ExpectedNotESMImage as v, resolveSrc as w, isRemoteImage as x, isESMImportedImage as y, isLocalService as z };
-//# sourceMappingURL=assets-service_VGPAAcon.mjs.map
+export { AstroError as A, PrerenderClientAddressNotAvailable as B, ClientAddressNotAvailable as C, DEFAULT_HASH_PROPS as D, EndpointDidNotReturnAResponse as E, FailedToFetchRemoteImageDimensions as F, GetStaticPathsRequired as G, RewriteWithBodyUsed as H, InvalidComponentArgs as I, AstroResponseHeadersReassigned as J, sharp$1 as K, LocalsNotAnObject as L, MissingMediaQueryDirective as M, NoMatchingImport as N, OnlyResponseCanBeReturned as O, PageNumberParamNotFound as P, ResponseSentError as R, StaticClientAddressNotAvailable as S, AstroGlobUsedOutside as a, AstroGlobNoMatch as b, NoMatchingRenderer as c, NoClientOnlyHint as d, NoClientEntrypoint as e, NoImageMetadata as f, ExpectedImageOptions as g, ExpectedImage as h, ExpectedNotESMImage as i, isRemoteImage as j, isESMImportedImage as k, isLocalService as l, InvalidImageService as m, ImageMissingAlt as n, isRemoteAllowed as o, i18nNoLocaleFoundInPath as p, MiddlewareNoDataOrNextCalled as q, resolveSrc as r, MiddlewareNotAResponse as s, InvalidGetStaticPathsReturn as t, InvalidGetStaticPathsEntry as u, GetStaticPathsExpectedParams as v, GetStaticPathsInvalidRouteParam as w, NoMatchingStaticPathFound as x, PrerenderDynamicEndpointPathCollide as y, ReservedSlotName as z };
+//# sourceMappingURL=assets-service_BbOLejyx.mjs.map

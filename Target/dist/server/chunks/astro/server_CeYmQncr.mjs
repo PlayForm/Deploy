@@ -1,11 +1,13 @@
 import { bold } from 'kleur/colors';
-import { A as AstroError, E as EndpointDidNotReturnAResponse, I as InvalidComponentArgs, a as AstroGlobUsedOutside, b as AstroGlobNoMatch, M as MissingMediaQueryDirective, N as NoMatchingImport, O as OnlyResponseCanBeReturned, R as ResponseSentError, c as NoMatchingRenderer, d as NoClientOnlyHint, e as NoClientEntrypoint } from './assets-service_VGPAAcon.mjs';
+import { A as AstroError, E as EndpointDidNotReturnAResponse, I as InvalidComponentArgs, a as AstroGlobUsedOutside, b as AstroGlobNoMatch, M as MissingMediaQueryDirective, N as NoMatchingImport, O as OnlyResponseCanBeReturned, R as ResponseSentError, c as NoMatchingRenderer, d as NoClientOnlyHint, e as NoClientEntrypoint } from './assets-service_BbOLejyx.mjs';
 import { clsx } from 'clsx';
 import { escape } from 'html-escaper';
 import 'cssesc';
 
-const ASTRO_VERSION = "4.11.3";
+const ASTRO_VERSION = "4.12.2";
 const REROUTE_DIRECTIVE_HEADER = "X-Astro-Reroute";
+const REWRITE_DIRECTIVE_HEADER_KEY = "X-Astro-Rewrite";
+const REWRITE_DIRECTIVE_HEADER_VALUE = "yes";
 const ROUTE_TYPE_HEADER = "X-Astro-Route-Type";
 const DEFAULT_404_COMPONENT = "astro-default-404.astro";
 const REROUTABLE_STATUS_CODES = [404, 500];
@@ -717,6 +719,52 @@ function maybeRenderHead() {
   return createRenderInstruction({ type: "maybe-head" });
 }
 
+const renderTemplateResultSym = Symbol.for("astro.renderTemplateResult");
+class RenderTemplateResult {
+  [renderTemplateResultSym] = true;
+  htmlParts;
+  expressions;
+  error;
+  constructor(htmlParts, expressions) {
+    this.htmlParts = htmlParts;
+    this.error = void 0;
+    this.expressions = expressions.map((expression) => {
+      if (isPromise(expression)) {
+        return Promise.resolve(expression).catch((err) => {
+          if (!this.error) {
+            this.error = err;
+            throw err;
+          }
+        });
+      }
+      return expression;
+    });
+  }
+  async render(destination) {
+    const expRenders = this.expressions.map((exp) => {
+      return renderToBufferDestination((bufferDestination) => {
+        if (exp || exp === 0) {
+          return renderChild(bufferDestination, exp);
+        }
+      });
+    });
+    for (let i = 0; i < this.htmlParts.length; i++) {
+      const html = this.htmlParts[i];
+      const expRender = expRenders[i];
+      destination.write(markHTMLString(html));
+      if (expRender) {
+        await expRender.renderToFinalDestination(destination);
+      }
+    }
+  }
+}
+function isRenderTemplateResult(obj) {
+  return typeof obj === "object" && !!obj[renderTemplateResultSym];
+}
+function renderTemplate(htmlParts, ...expressions) {
+  return new RenderTemplateResult(htmlParts, expressions);
+}
+
 const slotString = Symbol.for("astro:slot-string");
 class SlotString extends HTMLString {
   instructions;
@@ -785,6 +833,11 @@ async function renderSlots(result, slots = {}) {
     );
   }
   return { slotInstructions, children };
+}
+function createSlotValueFromString(content) {
+  return function() {
+    return renderTemplate`${unescapeHTML(content)}`;
+  };
 }
 
 const Fragment = Symbol.for("astro:fragment");
@@ -971,52 +1024,6 @@ function createAstroComponentInstance(result, displayName, factory, props, slots
 }
 function isAstroComponentInstance(obj) {
   return typeof obj === "object" && !!obj[astroComponentInstanceSym];
-}
-
-const renderTemplateResultSym = Symbol.for("astro.renderTemplateResult");
-class RenderTemplateResult {
-  [renderTemplateResultSym] = true;
-  htmlParts;
-  expressions;
-  error;
-  constructor(htmlParts, expressions) {
-    this.htmlParts = htmlParts;
-    this.error = void 0;
-    this.expressions = expressions.map((expression) => {
-      if (isPromise(expression)) {
-        return Promise.resolve(expression).catch((err) => {
-          if (!this.error) {
-            this.error = err;
-            throw err;
-          }
-        });
-      }
-      return expression;
-    });
-  }
-  async render(destination) {
-    const expRenders = this.expressions.map((exp) => {
-      return renderToBufferDestination((bufferDestination) => {
-        if (exp || exp === 0) {
-          return renderChild(bufferDestination, exp);
-        }
-      });
-    });
-    for (let i = 0; i < this.htmlParts.length; i++) {
-      const html = this.htmlParts[i];
-      const expRender = expRenders[i];
-      destination.write(markHTMLString(html));
-      if (expRender) {
-        await expRender.renderToFinalDestination(destination);
-      }
-    }
-  }
-}
-function isRenderTemplateResult(obj) {
-  return typeof obj === "object" && !!obj[renderTemplateResultSym];
-}
-function renderTemplate(htmlParts, ...expressions) {
-  return new RenderTemplateResult(htmlParts, expressions);
 }
 
 const DOCTYPE_EXP = /<!doctype html/i;
@@ -1256,6 +1263,77 @@ function getHTMLElementName(constructor) {
   if (definedName) return definedName;
   const assignedName = constructor.name.replace(/^HTML|Element$/g, "").replace(/[A-Z]/g, "-$&").toLowerCase().replace(/^-/, "html-");
   return assignedName;
+}
+
+const internalProps = /* @__PURE__ */ new Set([
+  "server:component-path",
+  "server:component-export",
+  "server:component-directive",
+  "server:defer"
+]);
+function containsServerDirective(props) {
+  return "server:component-directive" in props;
+}
+function safeJsonStringify(obj) {
+  return JSON.stringify(obj).replace(/\u2028/g, "\\u2028").replace(/\u2029/g, "\\u2029").replace(/</g, "\\u003c").replace(/>/g, "\\u003e").replace(/\//g, "\\u002f");
+}
+function renderServerIsland(result, _displayName, props, slots) {
+  return {
+    async render(destination) {
+      const componentPath = props["server:component-path"];
+      const componentExport = props["server:component-export"];
+      const componentId = result.serverIslandNameMap.get(componentPath);
+      if (!componentId) {
+        throw new Error(`Could not find server component name`);
+      }
+      for (const key of Object.keys(props)) {
+        if (internalProps.has(key)) {
+          delete props[key];
+        }
+      }
+      destination.write("<!--server-island-start-->");
+      const renderedSlots = {};
+      for (const name in slots) {
+        if (name !== "fallback") {
+          const content = await renderSlotToString(result, slots[name]);
+          renderedSlots[name] = content.toString();
+        } else {
+          await renderChild(destination, slots.fallback(result));
+        }
+      }
+      const hostId = crypto.randomUUID();
+      destination.write(`<script async type="module" data-island-id="${hostId}">
+let componentId = ${safeJsonStringify(componentId)};
+let componentExport = ${safeJsonStringify(componentExport)};
+let script = document.querySelector('script[data-island-id="${hostId}"]');
+let data = {
+	componentExport,
+	props: ${safeJsonStringify(props)},
+	slots: ${safeJsonStringify(renderedSlots)},
+};
+
+let response = await fetch('/_server-islands/${componentId}', {
+	method: 'POST',
+	body: JSON.stringify(data),
+});
+
+if(response.status === 200 && response.headers.get('content-type') === 'text/html') {
+	let html = await response.text();
+
+	// Swap!
+	while(script.previousSibling?.nodeType !== 8 &&
+		script.previousSibling?.data !== 'server-island-start') {
+		script.previousSibling?.remove();
+	}
+	script.previousSibling?.remove();
+
+	let frag = document.createRange().createContextualFragment(html);
+	script.before(frag);
+}
+script.remove();
+</script>`);
+    }
+  };
 }
 
 const needsHeadRenderingSymbol = Symbol.for("astro.needsHeadRendering");
@@ -1598,6 +1676,9 @@ async function renderHTMLComponent(result, Component, _props, slots = {}) {
   };
 }
 function renderAstroComponent(result, displayName, Component, props, slots = {}) {
+  if (containsServerDirective(props)) {
+    return renderServerIsland(result, displayName, props, slots);
+  }
   const instance = createAstroComponentInstance(result, displayName, Component, props, slots);
   return {
     async render(destination) {
@@ -1623,8 +1704,11 @@ async function renderComponent(result, displayName, Component, props, slots = {}
     handleCancellation
   );
   function handleCancellation(e) {
-    if (result.cancelled) return { render() {
-    } };
+    if (result.cancelled)
+      return {
+        render() {
+        }
+      };
     throw e;
   }
 }
@@ -1920,5 +2004,5 @@ function spreadAttributes(values = {}, _name, { class: scopedClassName } = {}) {
   return markHTMLString(output);
 }
 
-export { ASTRO_VERSION as A, DEFAULT_404_COMPONENT as D, ROUTE_TYPE_HEADER as R, REROUTE_DIRECTIVE_HEADER as a, renderJSX as b, chunkToString as c, clientLocalsSymbol as d, clientAddressSymbol as e, renderPage as f, renderEndpoint as g, responseSentSymbol as h, isRenderInstruction as i, REROUTABLE_STATUS_CODES as j, createAstro as k, createComponent as l, renderTemplate as m, maybeRenderHead as n, addAttribute as o, renderAllHeadContent as p, renderScript as q, renderSlotToString as r, spreadAttributes as s, renderComponent as t, unescapeHTML as u, renderSlot as v };
-//# sourceMappingURL=server_Dzo4PXCr.mjs.map
+export { ASTRO_VERSION as A, DEFAULT_404_COMPONENT as D, ROUTE_TYPE_HEADER as R, createComponent as a, addAttribute as b, createAstro as c, renderSlotToString as d, renderAllHeadContent as e, renderScript as f, renderComponent as g, renderSlot as h, REROUTE_DIRECTIVE_HEADER as i, createSlotValueFromString as j, renderJSX as k, chunkToString as l, maybeRenderHead as m, isRenderInstruction as n, clientLocalsSymbol as o, clientAddressSymbol as p, renderPage as q, renderTemplate as r, spreadAttributes as s, REWRITE_DIRECTIVE_HEADER_KEY as t, unescapeHTML as u, REWRITE_DIRECTIVE_HEADER_VALUE as v, renderEndpoint as w, responseSentSymbol as x, REROUTABLE_STATUS_CODES as y };
+//# sourceMappingURL=server_CeYmQncr.mjs.map
