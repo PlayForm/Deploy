@@ -2,7 +2,7 @@ export default (await import("astro/config")).defineConfig({
 	srcDir: "./Source",
 	publicDir: "./Public",
 	outDir: "./Target",
-	site: "https://@playform/deploy.deno.dev",
+	site: "https://playform-deno-deploy.deno.dev",
 	compressHTML: true,
 	prefetch: true,
 	integrations: [
