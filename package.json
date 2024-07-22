@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
 	"name": "@playform/deploy",
 	"version": "0.0.1",
 	"private": false,
@@ -6,10 +7,19 @@
 	"keywords": [
 		"astro",
 		"deno",
+=======
+	"name": "@playform/starter",
+	"version": "0.0.1",
+	"private": false,
+	"description": "📄 Starter —",
+	"keywords": [
+		"astro",
+>>>>>>> Fork/Current
 		"starter",
 		"skeleton",
 		"playform"
 	],
+<<<<<<< HEAD
 	"homepage": "HTTPS://GitHub.Com/PlayForm/Deploy#readme",
 	"bugs": {
 		"url": "HTTPS://GitHub.Com/PlayForm/Deploy/issues"
@@ -17,6 +27,15 @@
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/PlayForm/Deploy.git"
+=======
+	"homepage": "HTTPS://GitHub.Com/PlayForm/Starter#readme",
+	"bugs": {
+		"url": "HTTPS://GitHub.Com/PlayForm/Starter/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/PlayForm/Starter.git"
+>>>>>>> Fork/Current
 	},
 	"license": "SEE LICENSE IN LICENSE",
 	"author": {
@@ -26,11 +45,17 @@
 	},
 	"scripts": {
 		"Run": "astro dev",
+<<<<<<< HEAD
 		"prepublishOnly": "astro build",
 		"preview": "deno run --allow-net --allow-read --allow-env ./Target/server/entry.js"
 	},
 	"dependencies": {
 		"@astrojs/deno": "5.0.1",
+=======
+		"prepublishOnly": "astro build"
+	},
+	"dependencies": {
+>>>>>>> Fork/Current
 		"@astrojs/sitemap": "3.1.6",
 		"@playform/build": "0.1.1",
 		"@playform/compress": "0.0.13",
@@ -53,6 +78,10 @@
 		"postcss-import": "16.1.0",
 		"postcss-reporter": "7.1.0",
 		"postcss-url": "10.1.3",
+<<<<<<< HEAD
+=======
+		"solid-js": "1.8.18",
+>>>>>>> Fork/Current
 		"tailwindcss": "*",
 		"typescript": "*",
 		"zod": "*"
