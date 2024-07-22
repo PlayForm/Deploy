@@ -1,8 +1,13 @@
 {
 	"name": "@playform/deploy",
 	"version": "0.0.1",
+<<<<<<< HEAD
 	"private": false,
 	"description": "📄 Deploy —",
+=======
+	"private": true,
+	"description": "📄 Starter —",
+>>>>>>> Fork/Current
 	"keywords": [
 		"astro",
 		"deno",
@@ -64,7 +69,7 @@
 		"zod": "*"
 	},
 	"publishConfig": {
-		"access": "public",
+		"access": "restricted",
 		"provenance": true
 	}
 }
