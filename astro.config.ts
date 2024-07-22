@@ -2,12 +2,7 @@ export default (await import("astro/config")).defineConfig({
 	srcDir: "./Source",
 	publicDir: "./Public",
 	outDir: "./Target",
-<<<<<<< HEAD
 	site: "HTTPS://playform-deno-deploy.deno.dev",
-=======
-	// TODO Place your site URL here
-	// site: "",
->>>>>>> Fork/Current
 	compressHTML: true,
 	prefetch: true,
 	integrations: [
@@ -20,11 +15,8 @@ export default (await import("astro/config")).defineConfig({
 		(await import("@playform/format")).default({ Logger: 1 }),
 		(await import("@playform/compress")).default({ Logger: 1 }),
 	],
-<<<<<<< HEAD
 	output: "server",
 	adapter: (await import("@astrojs/deno")).default(),
-=======
->>>>>>> Fork/Current
 	experimental: {
 		directRenderScript: true,
 		clientPrerender: true,
@@ -34,6 +26,9 @@ export default (await import("astro/config")).defineConfig({
 	vite: {
 		build: {
 			sourcemap: true,
+		},
+		resolve: {
+			preserveSymlinks: true,
 		},
 		css: {
 			devSourcemap: true,
