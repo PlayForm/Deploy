@@ -1,13 +1,8 @@
 {
 	"name": "@playform/deploy",
 	"version": "0.0.1",
-<<<<<<< HEAD
-	"private": false,
-	"description": "📄 Deploy —",
-=======
 	"private": true,
-	"description": "📄 Starter —",
->>>>>>> Fork/Current
+	"description": "📄 Deploy —",
 	"keywords": [
 		"astro",
 		"deno",
