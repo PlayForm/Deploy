@@ -4,4 +4,4 @@ export { m as manifest } from './chunks/_@astrojs-manifest_34AfKwUO.mjs';
 import 'kleur/colors';
 import './chunks/astro/server_CeYmQncr.mjs';
 import 'clsx';
-//# sourceMappingURL=manifest_BNrxWFgB.mjs.map
+//# sourceMappingURL=manifest_C5izbP7I.mjs.map
