@@ -1,4 +1,4 @@
-import { a as createComponent, s as spreadAttributes, d as renderSlotToString, e as renderAllHeadContent, u as unescapeHTML, c as createAstro, r as renderTemplate, b as addAttribute, f as renderScript, g as renderComponent, m as maybeRenderHead, h as renderSlot } from '../chunks/astro/server_CeYmQncr.mjs';
+import { a as createComponent, s as spreadAttributes, d as renderSlotToString, e as renderAllHeadContent, u as unescapeHTML, c as createAstro, r as renderTemplate, b as addAttribute, f as renderScript, g as renderComponent, m as maybeRenderHead, h as renderSlot } from '../chunks/astro/server_DGOL9qWc.mjs';
 import 'kleur/colors';
 /* empty css                                 */
 import { renderSync, parse, walkSync, ELEMENT_NODE } from 'ultrahtml';
@@ -140,8 +140,8 @@ const $$ViewTransitions = createComponent(($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro$1, $$props, $$slots);
   Astro2.self = $$ViewTransitions;
   const { fallback = "animate" } = Astro2.props;
-  return renderTemplate`<meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback"${addAttribute(fallback, "content")}>${renderScript($$result, "D:/Developer/node_modules/astro/components/ViewTransitions.astro?astro&type=script&index=0&lang.ts")}`;
-}, "D:/Developer/node_modules/astro/components/ViewTransitions.astro", void 0);
+  return renderTemplate`<meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback"${addAttribute(fallback, "content")}>${renderScript($$result, "D:/Developer/Application/PlayForm/NPM/Deploy/node_modules/astro/components/ViewTransitions.astro?astro&type=script&index=0&lang.ts")}`;
+}, "D:/Developer/Application/PlayForm/NPM/Deploy/node_modules/astro/components/ViewTransitions.astro", void 0);
 
 const $$Astro = createAstro("HTTPS://playform-deno-deploy.deno.dev");
 const $$Base = createComponent(($$result, $$props, $$slots) => {
