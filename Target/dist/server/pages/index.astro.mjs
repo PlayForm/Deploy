@@ -1,4 +1,4 @@
-import { a as createComponent, s as spreadAttributes, d as renderSlotToString, e as renderAllHeadContent, u as unescapeHTML, c as createAstro, r as renderTemplate, b as addAttribute, f as renderScript, g as renderComponent, m as maybeRenderHead, h as renderSlot } from '../chunks/astro/server_DGOL9qWc.mjs';
+import { a as createComponent, s as spreadAttributes, d as renderSlotToString, e as renderAllHeadContent, u as unescapeHTML, c as createAstro, r as renderTemplate, b as addAttribute, f as renderScript, g as renderComponent, m as maybeRenderHead, h as renderSlot } from '../chunks/astro/server_CurqLOxi.mjs';
 import 'kleur/colors';
 /* empty css                                 */
 import { renderSync, parse, walkSync, ELEMENT_NODE } from 'ultrahtml';
@@ -140,22 +140,22 @@ const $$ViewTransitions = createComponent(($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro$1, $$props, $$slots);
   Astro2.self = $$ViewTransitions;
   const { fallback = "animate" } = Astro2.props;
-  return renderTemplate`<meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback"${addAttribute(fallback, "content")}>${renderScript($$result, "D:/Developer/Application/PlayForm/NPM/Deploy/node_modules/astro/components/ViewTransitions.astro?astro&type=script&index=0&lang.ts")}`;
-}, "D:/Developer/Application/PlayForm/NPM/Deploy/node_modules/astro/components/ViewTransitions.astro", void 0);
+  return renderTemplate`<meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback"${addAttribute(fallback, "content")}>${renderScript($$result, "/run/media/nikola/Developer/Developer/node_modules/astro/components/ViewTransitions.astro?astro&type=script&index=0&lang.ts")}`;
+}, "/run/media/nikola/Developer/Developer/node_modules/astro/components/ViewTransitions.astro", void 0);
 
 const $$Astro = createAstro("HTTPS://playform-deno-deploy.deno.dev");
 const $$Base = createComponent(($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
   Astro2.self = $$Base;
   const { Title = "", Description = "" } = Astro2.props;
-  return renderTemplate`<html lang="en" class="no-js" dir="ltr"> ${renderComponent($$result, "Head", Head, {}, { "default": ($$result2) => renderTemplate`${renderScript($$result2, "D:/Developer/Application/PlayForm/NPM/Deploy/Source/Layout/Base.astro?astro&type=script&index=0&lang.ts")}<title>${Title}</title><meta charset="utf-8"><meta name="description"${addAttribute(Description, "content")}><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="theme-color" content="#FF5D01"><meta name="format-detection" content="telephone=no"><meta name="twitter:dnt" content="on"><link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="manifest" href="/site.webmanifest" crossorigin="use-credentials">${renderSlot($$result2, $$slots["styles"])}${renderScript($$result2, "D:/Developer/Application/PlayForm/NPM/Deploy/Source/Layout/Base.astro?astro&type=script&index=1&lang.ts")}${renderSlot($$result2, $$slots["scripts"])}${renderComponent($$result2, "ViewTransitions", $$ViewTransitions, {})}` })}${maybeRenderHead()}<body> <div class="grow"> ${renderSlot($$result, $$slots["default"])} </div> ${renderScript($$result, "D:/Developer/Application/PlayForm/NPM/Deploy/Source/Layout/Base.astro?astro&type=script&index=2&lang.ts")} </body> </html>`;
-}, "D:/Developer/Application/PlayForm/NPM/Deploy/Source/Layout/Base.astro", void 0);
+  return renderTemplate`<html lang="en" class="no-js" dir="ltr"> ${renderComponent($$result, "Head", Head, {}, { "default": ($$result2) => renderTemplate`${renderScript($$result2, "/run/media/nikola/Developer/Developer/Application/PlayForm/NPM/Deploy/Source/Layout/Base.astro?astro&type=script&index=0&lang.ts")}<title>${Title}</title><meta charset="utf-8"><meta name="description"${addAttribute(Description, "content")}><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="theme-color" content="#FF5D01"><meta name="format-detection" content="telephone=no"><meta name="twitter:dnt" content="on"><link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="manifest" href="/site.webmanifest" crossorigin="use-credentials">${renderSlot($$result2, $$slots["styles"])}${renderScript($$result2, "/run/media/nikola/Developer/Developer/Application/PlayForm/NPM/Deploy/Source/Layout/Base.astro?astro&type=script&index=1&lang.ts")}${renderSlot($$result2, $$slots["scripts"])}${renderComponent($$result2, "ViewTransitions", $$ViewTransitions, {})}` })}${maybeRenderHead()}<body> <div class="grow"> ${renderSlot($$result, $$slots["default"])} </div> ${renderScript($$result, "/run/media/nikola/Developer/Developer/Application/PlayForm/NPM/Deploy/Source/Layout/Base.astro?astro&type=script&index=2&lang.ts")} </body> </html>`;
+}, "/run/media/nikola/Developer/Developer/Application/PlayForm/NPM/Deploy/Source/Layout/Base.astro", void 0);
 
 const $$Index = createComponent(($$result, $$props, $$slots) => {
   return renderTemplate`${renderComponent($$result, "Base", $$Base, {})}`;
-}, "D:/Developer/Application/PlayForm/NPM/Deploy/Source/pages/index.astro", void 0);
+}, "/run/media/nikola/Developer/Developer/Application/PlayForm/NPM/Deploy/Source/pages/index.astro", void 0);
 
-const $$file = "D:/Developer/Application/PlayForm/NPM/Deploy/Source/pages/index.astro";
+const $$file = "/run/media/nikola/Developer/Developer/Application/PlayForm/NPM/Deploy/Source/pages/index.astro";
 const $$url = "";
 
 const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({

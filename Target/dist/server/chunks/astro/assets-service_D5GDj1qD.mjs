@@ -118,7 +118,7 @@ const ImageMissingAlt = {
   message: 'Image missing "alt" property. "alt" text is required to describe important images on the page.',
   hint: 'Use an empty string ("") for decorative images.'
 };
-const InvalidImageService$1 = {
+const InvalidImageService = {
   name: "InvalidImageService",
   title: "Error while loading image service.",
   message: "There was an error loading the configured image service. Please see the stack trace for more information."
@@ -252,15 +252,15 @@ const RewriteWithBodyUsed = {
   message: "Astro.rewrite() cannot be used if the request body has already been read. If you need to read the body, first clone the request."
 };
 
-function normalizeLF$1(code) {
+function normalizeLF(code) {
   return code.replace(/\r\n|\r(?!\n)|\n/g, "\n");
 }
 
-function codeFrame$1(src, loc) {
+function codeFrame(src, loc) {
   if (!loc || loc.line === void 0 || loc.column === void 0) {
     return "";
   }
-  const lines = normalizeLF$1(src).split("\n").map((ln) => ln.replace(/\t/g, "  "));
+  const lines = normalizeLF(src).split("\n").map((ln) => ln.replace(/\t/g, "  "));
   const visibleLines = [];
   for (let n = -2; n <= 2; n++) {
     if (lines[loc.line + n]) visibleLines.push(loc.line + n);
@@ -285,7 +285,7 @@ function codeFrame$1(src, loc) {
   return output;
 }
 
-let AstroError$1 = class AstroError extends Error {
+class AstroError extends Error {
   loc;
   title;
   hint;
@@ -315,12 +315,12 @@ let AstroError$1 = class AstroError extends Error {
     this.hint = hint;
   }
   setFrame(source, location) {
-    this.frame = codeFrame$1(source, location);
+    this.frame = codeFrame(source, location);
   }
   static is(err) {
     return err.type === "AstroError";
   }
-};
+}
 
 const VALID_SUPPORTED_FORMATS = [
   "jpeg",
@@ -345,16 +345,16 @@ async function resolveSrc(src) {
   return typeof src === "object" && "then" in src ? (await src).default ?? await src : src;
 }
 
-function matchPattern$1(url, remotePattern) {
-  return matchProtocol$1(url, remotePattern.protocol) && matchHostname$1(url, remotePattern.hostname, true) && matchPort$1(url, remotePattern.port) && matchPathname$1(url, remotePattern.pathname);
+function matchPattern(url, remotePattern) {
+  return matchProtocol(url, remotePattern.protocol) && matchHostname(url, remotePattern.hostname, true) && matchPort(url, remotePattern.port) && matchPathname(url, remotePattern.pathname);
 }
-function matchPort$1(url, port) {
+function matchPort(url, port) {
   return !port || port === url.port;
 }
-function matchProtocol$1(url, protocol) {
+function matchProtocol(url, protocol) {
   return !protocol || protocol === url.protocol.slice(0, -1);
 }
-function matchHostname$1(url, hostname, allowWildcard) {
+function matchHostname(url, hostname, allowWildcard) {
   if (!hostname) {
     return true;
   } else if (!allowWildcard || !hostname.startsWith("*")) {
@@ -369,7 +369,7 @@ function matchHostname$1(url, hostname, allowWildcard) {
   }
   return false;
 }
-function matchPathname$1(url, pathname, allowWildcard) {
+function matchPathname(url, pathname, allowWildcard) {
   if (!pathname) {
     return true;
   } else if (!pathname.endsWith("*")) {
@@ -384,13 +384,13 @@ function matchPathname$1(url, pathname, allowWildcard) {
   }
   return false;
 }
-function isRemoteAllowed$1(src, {
+function isRemoteAllowed(src, {
   domains = [],
   remotePatterns = []
 }) {
   if (!isRemotePath(src)) return false;
   const url = new URL(src);
-  return domains.some((domain) => matchHostname$1(url, domain)) || remotePatterns.some((remotePattern) => matchPattern$1(url, remotePattern));
+  return domains.some((domain) => matchHostname(url, domain)) || remotePatterns.some((remotePattern) => matchPattern(url, remotePattern));
 }
 
 function isLocalService(service) {
@@ -410,7 +410,7 @@ const baseService = {
   propertiesToHash: DEFAULT_HASH_PROPS,
   validateOptions(options) {
     if (!options.src || typeof options.src !== "string" && typeof options.src !== "object") {
-      throw new AstroError$1({
+      throw new AstroError({
         ...ExpectedImage,
         message: ExpectedImage.message(
           JSON.stringify(options.src),
@@ -421,7 +421,7 @@ const baseService = {
     }
     if (!isESMImportedImage(options.src)) {
       if (options.src.startsWith("/@fs/") || !isRemotePath(options.src) && !options.src.startsWith("/")) {
-        throw new AstroError$1({
+        throw new AstroError({
           ...LocalImageUsedWrongly,
           message: LocalImageUsedWrongly.message(options.src)
         });
@@ -435,14 +435,14 @@ const baseService = {
         missingDimension = "height";
       }
       if (missingDimension) {
-        throw new AstroError$1({
+        throw new AstroError({
           ...MissingImageDimension,
           message: MissingImageDimension.message(missingDimension, options.src)
         });
       }
     } else {
       if (!VALID_SUPPORTED_FORMATS.includes(options.src.format)) {
-        throw new AstroError$1({
+        throw new AstroError({
           ...UnsupportedImageFormat,
           message: UnsupportedImageFormat.message(
             options.src.format,
@@ -452,13 +452,13 @@ const baseService = {
         });
       }
       if (options.widths && options.densities) {
-        throw new AstroError$1(IncompatibleDescriptorOptions);
+        throw new AstroError(IncompatibleDescriptorOptions);
       }
       if (options.src.format === "svg") {
         options.format = "svg";
       }
       if (options.src.format === "svg" && options.format !== "svg" || options.src.format !== "svg" && options.format === "svg") {
-        throw new AstroError$1(UnsupportedImageConversion);
+        throw new AstroError(UnsupportedImageConversion);
       }
     }
     if (!options.format) {
@@ -543,7 +543,7 @@ const baseService = {
     const searchParams = new URLSearchParams();
     if (isESMImportedImage(options.src)) {
       searchParams.append("href", options.src.src);
-    } else if (isRemoteAllowed$1(options.src, imageConfig)) {
+    } else if (isRemoteAllowed(options.src, imageConfig)) {
       searchParams.append("href", options.src);
     } else {
       return options.src;
@@ -595,130 +595,6 @@ function getTargetDimensions(options) {
   };
 }
 
-const InvalidImageService = {
-  name: "InvalidImageService",
-  title: "Error while loading image service.",
-  message: "There was an error loading the configured image service. Please see the stack trace for more information."
-};
-
-function normalizeLF(code) {
-  return code.replace(/\r\n|\r(?!\n)|\n/g, "\n");
-}
-
-function codeFrame(src, loc) {
-  if (!loc || loc.line === void 0 || loc.column === void 0) {
-    return "";
-  }
-  const lines = normalizeLF(src).split("\n").map((ln) => ln.replace(/\t/g, "  "));
-  const visibleLines = [];
-  for (let n = -2; n <= 2; n++) {
-    if (lines[loc.line + n]) visibleLines.push(loc.line + n);
-  }
-  let gutterWidth = 0;
-  for (const lineNo of visibleLines) {
-    let w = `> ${lineNo}`;
-    if (w.length > gutterWidth) gutterWidth = w.length;
-  }
-  let output = "";
-  for (const lineNo of visibleLines) {
-    const isFocusedLine = lineNo === loc.line - 1;
-    output += isFocusedLine ? "> " : "  ";
-    output += `${lineNo + 1} | ${lines[lineNo]}
-`;
-    if (isFocusedLine)
-      output += `${Array.from({ length: gutterWidth }).join(" ")}  | ${Array.from({
-        length: loc.column
-      }).join(" ")}^
-`;
-  }
-  return output;
-}
-
-class AstroError extends Error {
-  loc;
-  title;
-  hint;
-  frame;
-  type = "AstroError";
-  constructor(props, options) {
-    const { name, title, message, stack, location, hint, frame } = props;
-    super(message, options);
-    this.title = title;
-    this.name = name;
-    if (message) this.message = message;
-    this.stack = stack ? stack : this.stack;
-    this.loc = location;
-    this.hint = hint;
-    this.frame = frame;
-  }
-  setLocation(location) {
-    this.loc = location;
-  }
-  setName(name) {
-    this.name = name;
-  }
-  setMessage(message) {
-    this.message = message;
-  }
-  setHint(hint) {
-    this.hint = hint;
-  }
-  setFrame(source, location) {
-    this.frame = codeFrame(source, location);
-  }
-  static is(err) {
-    return err.type === "AstroError";
-  }
-}
-
-function matchPattern(url, remotePattern) {
-  return matchProtocol(url, remotePattern.protocol) && matchHostname(url, remotePattern.hostname, true) && matchPort(url, remotePattern.port) && matchPathname(url, remotePattern.pathname);
-}
-function matchPort(url, port) {
-  return !port || port === url.port;
-}
-function matchProtocol(url, protocol) {
-  return !protocol || protocol === url.protocol.slice(0, -1);
-}
-function matchHostname(url, hostname, allowWildcard) {
-  if (!hostname) {
-    return true;
-  } else if (!allowWildcard || !hostname.startsWith("*")) {
-    return hostname === url.hostname;
-  } else if (hostname.startsWith("**.")) {
-    const slicedHostname = hostname.slice(2);
-    return slicedHostname !== url.hostname && url.hostname.endsWith(slicedHostname);
-  } else if (hostname.startsWith("*.")) {
-    const slicedHostname = hostname.slice(1);
-    const additionalSubdomains = url.hostname.replace(slicedHostname, "").split(".").filter(Boolean);
-    return additionalSubdomains.length === 1;
-  }
-  return false;
-}
-function matchPathname(url, pathname, allowWildcard) {
-  if (!pathname) {
-    return true;
-  } else if (!pathname.endsWith("*")) {
-    return pathname === url.pathname;
-  } else if (pathname.endsWith("/**")) {
-    const slicedPathname = pathname.slice(0, -2);
-    return slicedPathname !== url.pathname && url.pathname.startsWith(slicedPathname);
-  } else if (pathname.endsWith("/*")) {
-    const slicedPathname = pathname.slice(0, -1);
-    const additionalPathChunks = url.pathname.replace(slicedPathname, "").split("/").filter(Boolean);
-    return additionalPathChunks.length === 1;
-  }
-  return false;
-}
-function isRemoteAllowed(src, {
-  domains = [],
-  remotePatterns = []
-}) {
-  if (!isRemotePath(src)) return false;
-  const url = new URL(src);
-  return domains.some((domain) => matchHostname(url, domain)) || remotePatterns.some((remotePattern) => matchPattern(url, remotePattern));
-}
-
 let sharp;
 const qualityTable = {
   low: 25,
@@ -730,8 +606,8 @@ async function loadSharp() {
   let sharpImport;
   try {
     sharpImport = (await import('sharp')).default;
-  } catch (e) {
-    throw new AstroError$1(MissingSharp);
+  } catch {
+    throw new AstroError(MissingSharp);
   }
   sharpImport.cache(false);
   return sharpImport;
@@ -783,5 +659,5 @@ const sharp$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   default: sharp_default
 }, Symbol.toStringTag, { value: 'Module' }));
 
-export { AstroError$1 as A, PrerenderDynamicEndpointPathCollide as B, ReservedSlotName as C, DEFAULT_HASH_PROPS as D, EndpointDidNotReturnAResponse as E, FailedToFetchRemoteImageDimensions as F, GetStaticPathsRequired as G, PrerenderClientAddressNotAvailable as H, InvalidComponentArgs as I, ClientAddressNotAvailable as J, RewriteWithBodyUsed as K, LocalsNotAnObject as L, MissingMediaQueryDirective as M, NoMatchingImport as N, OnlyResponseCanBeReturned as O, PageNumberParamNotFound as P, AstroResponseHeadersReassigned as Q, ResponseSentError as R, StaticClientAddressNotAvailable as S, sharp$1 as T, AstroGlobUsedOutside as a, AstroGlobNoMatch as b, NoMatchingRenderer as c, NoClientOnlyHint as d, NoClientEntrypoint as e, NoImageMetadata as f, ExpectedImageOptions as g, ExpectedImage as h, ExpectedNotESMImage as i, isRemoteImage as j, isESMImportedImage as k, isLocalService as l, InvalidImageService$1 as m, ImageMissingAlt as n, AstroError as o, InvalidImageService as p, isRemoteAllowed as q, resolveSrc as r, i18nNoLocaleFoundInPath as s, MiddlewareNoDataOrNextCalled as t, MiddlewareNotAResponse as u, InvalidGetStaticPathsReturn as v, InvalidGetStaticPathsEntry as w, GetStaticPathsExpectedParams as x, GetStaticPathsInvalidRouteParam as y, NoMatchingStaticPathFound as z };
-//# sourceMappingURL=assets-service_D3XLtgpD.mjs.map
+export { AstroError as A, PrerenderClientAddressNotAvailable as B, ClientAddressNotAvailable as C, DEFAULT_HASH_PROPS as D, EndpointDidNotReturnAResponse as E, FailedToFetchRemoteImageDimensions as F, GetStaticPathsRequired as G, RewriteWithBodyUsed as H, InvalidComponentArgs as I, AstroResponseHeadersReassigned as J, sharp$1 as K, LocalsNotAnObject as L, MissingMediaQueryDirective as M, NoMatchingImport as N, OnlyResponseCanBeReturned as O, PageNumberParamNotFound as P, ResponseSentError as R, StaticClientAddressNotAvailable as S, AstroGlobUsedOutside as a, AstroGlobNoMatch as b, NoMatchingRenderer as c, NoClientOnlyHint as d, NoClientEntrypoint as e, NoImageMetadata as f, ExpectedImageOptions as g, ExpectedImage as h, ExpectedNotESMImage as i, isRemoteImage as j, isESMImportedImage as k, isLocalService as l, InvalidImageService as m, ImageMissingAlt as n, isRemoteAllowed as o, i18nNoLocaleFoundInPath as p, MiddlewareNoDataOrNextCalled as q, resolveSrc as r, MiddlewareNotAResponse as s, InvalidGetStaticPathsReturn as t, InvalidGetStaticPathsEntry as u, GetStaticPathsExpectedParams as v, GetStaticPathsInvalidRouteParam as w, NoMatchingStaticPathFound as x, PrerenderDynamicEndpointPathCollide as y, ReservedSlotName as z };
+//# sourceMappingURL=assets-service_D5GDj1qD.mjs.map

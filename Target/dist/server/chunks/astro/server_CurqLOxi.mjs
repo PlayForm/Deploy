@@ -1,10 +1,11 @@
 import { bold } from 'kleur/colors';
-import { A as AstroError, E as EndpointDidNotReturnAResponse, I as InvalidComponentArgs, a as AstroGlobUsedOutside, b as AstroGlobNoMatch, M as MissingMediaQueryDirective, N as NoMatchingImport, O as OnlyResponseCanBeReturned, R as ResponseSentError, c as NoMatchingRenderer, d as NoClientOnlyHint, e as NoClientEntrypoint } from './assets-service_D3XLtgpD.mjs';
+import { A as AstroError, E as EndpointDidNotReturnAResponse, I as InvalidComponentArgs, a as AstroGlobUsedOutside, b as AstroGlobNoMatch, M as MissingMediaQueryDirective, N as NoMatchingImport, O as OnlyResponseCanBeReturned, R as ResponseSentError, c as NoMatchingRenderer, d as NoClientOnlyHint, e as NoClientEntrypoint } from './assets-service_D5GDj1qD.mjs';
 import { clsx } from 'clsx';
 import { escape } from 'html-escaper';
+import { decodeBase64, encodeHexUpperCase, encodeBase64, decodeHex } from '@oslojs/encoding';
 import 'cssesc';
 
-const ASTRO_VERSION = "4.12.2";
+const ASTRO_VERSION = "4.14.2";
 const REROUTE_DIRECTIVE_HEADER = "X-Astro-Reroute";
 const REWRITE_DIRECTIVE_HEADER_KEY = "X-Astro-Rewrite";
 const REWRITE_DIRECTIVE_HEADER_VALUE = "yes";
@@ -842,8 +843,8 @@ function createSlotValueFromString(content) {
 
 const Fragment = Symbol.for("astro:fragment");
 const Renderer = Symbol.for("astro:renderer");
-const encoder = new TextEncoder();
-const decoder = new TextDecoder();
+const encoder$1 = new TextEncoder();
+const decoder$1 = new TextDecoder();
 function stringifyChunk(result, chunk) {
   if (isRenderInstruction(chunk)) {
     const instruction = chunk;
@@ -902,7 +903,7 @@ function stringifyChunk(result, chunk) {
 }
 function chunkToString(result, chunk) {
   if (ArrayBuffer.isView(chunk)) {
-    return decoder.decode(chunk);
+    return decoder$1.decode(chunk);
   } else {
     return stringifyChunk(result, chunk);
   }
@@ -912,7 +913,7 @@ function chunkToByteArray(result, chunk) {
     return chunk;
   } else {
     const stringified = stringifyChunk(result, chunk);
-    return encoder.encode(stringified.toString());
+    return encoder$1.encode(stringified.toString());
   }
 }
 function isRenderInstance(obj) {
@@ -1078,7 +1079,7 @@ async function renderToReadableStream(result, componentFactory, props, children,
             renderedFirstPageChunk = true;
             if (!result.partial && !DOCTYPE_EXP.test(String(chunk))) {
               const doctype = result.compressHTML ? "<!DOCTYPE html>" : "<!DOCTYPE html>\n";
-              controller.enqueue(encoder.encode(doctype));
+              controller.enqueue(encoder$1.encode(doctype));
             }
           }
           if (chunk instanceof Response) {
@@ -1214,7 +1215,7 @@ async function renderToAsyncIterable(result, componentFactory, props, children, 
         renderedFirstPageChunk = true;
         if (!result.partial && !DOCTYPE_EXP.test(String(chunk))) {
           const doctype = result.compressHTML ? "<!DOCTYPE html>" : "<!DOCTYPE html>\n";
-          buffer.push(encoder.encode(doctype));
+          buffer.push(encoder$1.encode(doctype));
         }
       }
       if (chunk instanceof Response) {
@@ -1265,6 +1266,42 @@ function getHTMLElementName(constructor) {
   return assignedName;
 }
 
+const ALGORITHM = "AES-GCM";
+async function decodeKey(encoded) {
+  const bytes = decodeBase64(encoded);
+  return crypto.subtle.importKey("raw", bytes, ALGORITHM, true, ["encrypt", "decrypt"]);
+}
+const encoder = new TextEncoder();
+const decoder = new TextDecoder();
+const IV_LENGTH = 24;
+async function encryptString(key, raw) {
+  const iv = crypto.getRandomValues(new Uint8Array(IV_LENGTH / 2));
+  const data = encoder.encode(raw);
+  const buffer = await crypto.subtle.encrypt(
+    {
+      name: ALGORITHM,
+      iv
+    },
+    key,
+    data
+  );
+  return encodeHexUpperCase(iv) + encodeBase64(new Uint8Array(buffer));
+}
+async function decryptString(key, encoded) {
+  const iv = decodeHex(encoded.slice(0, IV_LENGTH));
+  const dataArray = decodeBase64(encoded.slice(IV_LENGTH));
+  const decryptedBuffer = await crypto.subtle.decrypt(
+    {
+      name: ALGORITHM,
+      iv
+    },
+    key,
+    dataArray
+  );
+  const decryptedString = decoder.decode(decryptedBuffer);
+  return decryptedString;
+}
+
 const internalProps = /* @__PURE__ */ new Set([
   "server:component-path",
   "server:component-export",
@@ -1286,9 +1323,9 @@ function renderServerIsland(result, _displayName, props, slots) {
       if (!componentId) {
         throw new Error(`Could not find server component name`);
       }
-      for (const key of Object.keys(props)) {
-        if (internalProps.has(key)) {
-          delete props[key];
+      for (const key2 of Object.keys(props)) {
+        if (internalProps.has(key2)) {
+          delete props[key2];
         }
       }
       destination.write("<!--server-island-start-->");
@@ -1301,18 +1338,22 @@ function renderServerIsland(result, _displayName, props, slots) {
           await renderChild(destination, slots.fallback(result));
         }
       }
+      const key = await result.key;
+      const propsEncrypted = await encryptString(key, JSON.stringify(props));
       const hostId = crypto.randomUUID();
+      const slash = result.base.endsWith("/") ? "" : "/";
+      const serverIslandUrl = `${result.base}${slash}_server-islands/${componentId}${result.trailingSlash === "always" ? "/" : ""}`;
       destination.write(`<script async type="module" data-island-id="${hostId}">
 let componentId = ${safeJsonStringify(componentId)};
 let componentExport = ${safeJsonStringify(componentExport)};
 let script = document.querySelector('script[data-island-id="${hostId}"]');
 let data = {
 	componentExport,
-	props: ${safeJsonStringify(props)},
+	encryptedProps: ${safeJsonStringify(propsEncrypted)},
 	slots: ${safeJsonStringify(renderedSlots)},
 };
 
-let response = await fetch('/_server-islands/${componentId}', {
+let response = await fetch('${serverIslandUrl}', {
 	method: 'POST',
 	body: JSON.stringify(data),
 });
@@ -1321,9 +1362,10 @@ if(response.status === 200 && response.headers.get('content-type') === 'text/htm
 	let html = await response.text();
 
 	// Swap!
-	while(script.previousSibling?.nodeType !== 8 &&
-		script.previousSibling?.data !== 'server-island-start') {
-		script.previousSibling?.remove();
+	while(script.previousSibling &&
+		script.previousSibling.nodeType !== 8 &&
+		script.previousSibling.data !== 'server-island-start') {
+		script.previousSibling.remove();
 	}
 	script.previousSibling?.remove();
 
@@ -1453,9 +1495,7 @@ Did you forget to import the component or is it possible there is a typo?`
     }
     if (!renderer) {
       const extname = metadata.componentUrl?.split(".").pop();
-      renderer = renderers.filter(
-        ({ name }) => name === `@astrojs/${extname}` || name === extname
-      )[0];
+      renderer = renderers.find(({ name }) => name === `@astrojs/${extname}` || name === extname);
     }
   }
   let componentServerRenderEndTime;
@@ -1934,7 +1974,7 @@ async function renderPage(result, componentFactory, props, children, streaming, 
       true,
       route
     );
-    const bytes = encoder.encode(str);
+    const bytes = encoder$1.encode(str);
     return new Response(bytes, {
       headers: new Headers([
         ["Content-Type", "text/html; charset=utf-8"],
@@ -1965,7 +2005,7 @@ async function renderPage(result, componentFactory, props, children, streaming, 
   const init = result.response;
   const headers = new Headers(init.headers);
   if (!streaming && typeof body === "string") {
-    body = encoder.encode(body);
+    body = encoder$1.encode(body);
     headers.set("Content-Length", body.byteLength.toString());
   }
   if (route?.component.endsWith(".md")) {
@@ -2004,5 +2044,5 @@ function spreadAttributes(values = {}, _name, { class: scopedClassName } = {}) {
   return markHTMLString(output);
 }
 
-export { ASTRO_VERSION as A, DEFAULT_404_COMPONENT as D, ROUTE_TYPE_HEADER as R, createComponent as a, addAttribute as b, createAstro as c, renderSlotToString as d, renderAllHeadContent as e, renderScript as f, renderComponent as g, renderSlot as h, REROUTE_DIRECTIVE_HEADER as i, createSlotValueFromString as j, renderJSX as k, chunkToString as l, maybeRenderHead as m, isRenderInstruction as n, clientLocalsSymbol as o, clientAddressSymbol as p, renderPage as q, renderTemplate as r, spreadAttributes as s, REWRITE_DIRECTIVE_HEADER_KEY as t, unescapeHTML as u, REWRITE_DIRECTIVE_HEADER_VALUE as v, renderEndpoint as w, responseSentSymbol as x, REROUTABLE_STATUS_CODES as y };
-//# sourceMappingURL=server_DGOL9qWc.mjs.map
+export { ASTRO_VERSION as A, REROUTABLE_STATUS_CODES as B, DEFAULT_404_COMPONENT as D, ROUTE_TYPE_HEADER as R, createComponent as a, addAttribute as b, createAstro as c, renderSlotToString as d, renderAllHeadContent as e, renderScript as f, renderComponent as g, renderSlot as h, decodeKey as i, REROUTE_DIRECTIVE_HEADER as j, decryptString as k, createSlotValueFromString as l, maybeRenderHead as m, renderJSX as n, chunkToString as o, isRenderInstruction as p, clientLocalsSymbol as q, renderTemplate as r, spreadAttributes as s, clientAddressSymbol as t, unescapeHTML as u, responseSentSymbol as v, renderPage as w, REWRITE_DIRECTIVE_HEADER_KEY as x, REWRITE_DIRECTIVE_HEADER_VALUE as y, renderEndpoint as z };
+//# sourceMappingURL=server_CurqLOxi.mjs.map
