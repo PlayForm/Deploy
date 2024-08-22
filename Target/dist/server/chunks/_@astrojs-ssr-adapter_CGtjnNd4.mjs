@@ -1,9 +1,9 @@
 import { appendForwardSlash, joinPaths, trimSlashes, fileExtension, slash, prependForwardSlash, removeTrailingForwardSlash } from '@astrojs/internal-helpers/path';
-import { R as ROUTE_TYPE_HEADER, j as REROUTE_DIRECTIVE_HEADER, k as decryptString, l as createSlotValueFromString, r as renderTemplate, g as renderComponent, D as DEFAULT_404_COMPONENT, d as renderSlotToString, n as renderJSX, o as chunkToString, p as isRenderInstruction, q as clientLocalsSymbol, t as clientAddressSymbol, A as ASTRO_VERSION, v as responseSentSymbol$1, w as renderPage, x as REWRITE_DIRECTIVE_HEADER_KEY, y as REWRITE_DIRECTIVE_HEADER_VALUE, z as renderEndpoint, B as REROUTABLE_STATUS_CODES } from './astro/server_CurqLOxi.mjs';
+import { R as ROUTE_TYPE_HEADER, j as REROUTE_DIRECTIVE_HEADER, k as decryptString, l as createSlotValueFromString, r as renderTemplate, g as renderComponent, D as DEFAULT_404_COMPONENT, d as renderSlotToString, n as renderJSX, o as chunkToString, p as isRenderInstruction, q as clientLocalsSymbol, t as clientAddressSymbol, A as ASTRO_VERSION, v as responseSentSymbol$1, w as renderPage, x as REWRITE_DIRECTIVE_HEADER_KEY, y as REWRITE_DIRECTIVE_HEADER_VALUE, z as renderEndpoint, B as REROUTABLE_STATUS_CODES } from './astro/server_CUP-g7Rg.mjs';
 import { A as AstroError, p as i18nNoLocaleFoundInPath, R as ResponseSentError, q as MiddlewareNoDataOrNextCalled, s as MiddlewareNotAResponse, G as GetStaticPathsRequired, t as InvalidGetStaticPathsReturn, u as InvalidGetStaticPathsEntry, v as GetStaticPathsExpectedParams, w as GetStaticPathsInvalidRouteParam, P as PageNumberParamNotFound, x as NoMatchingStaticPathFound, y as PrerenderDynamicEndpointPathCollide, z as ReservedSlotName, L as LocalsNotAnObject, B as PrerenderClientAddressNotAvailable, C as ClientAddressNotAvailable, S as StaticClientAddressNotAvailable, H as RewriteWithBodyUsed, J as AstroResponseHeadersReassigned } from './astro/assets-service_D5GDj1qD.mjs';
 import { serialize, parse } from 'cookie';
 import { bold, red, yellow, dim, blue } from 'kleur/colors';
-import { g as getActionQueryString, d as deserializeActionResult, e as ensure404Route, a as default404Instance, D as DEFAULT_404_ROUTE } from './astro-designed-error-pages_DuB-bjcV.mjs';
+import { g as getActionQueryString, d as deserializeActionResult, e as ensure404Route, a as default404Instance, D as DEFAULT_404_ROUTE } from './astro-designed-error-pages_DnHgKM4C.mjs';
 import 'clsx';
 import { Server, serveFile, fromFileUrl } from '@astrojs/deno/__deno_imports.js';
 
@@ -1462,6 +1462,7 @@ class RenderContext {
   async render(componentInstance, slots = {}) {
     const { cookies, middleware, pipeline } = this;
     const { logger, serverLike, streaming } = pipeline;
+    const isPrerendered = !serverLike || this.routeData.prerender;
     const props = Object.keys(this.props).length > 0 ? this.props : await getProps({
       mod: componentInstance,
       routeData: this.routeData,
@@ -1470,7 +1471,7 @@ class RenderContext {
       logger,
       serverLike
     });
-    const apiContext = this.createAPIContext(props);
+    const apiContext = this.createAPIContext(props, isPrerendered);
     this.counter++;
     if (this.counter === 4) {
       return new Response("Loop Detected", {
@@ -1541,12 +1542,17 @@ class RenderContext {
     attachCookiesToResponse(response, cookies);
     return response;
   }
-  createAPIContext(props) {
+  createAPIContext(props, isPrerendered) {
     const context = this.createActionAPIContext();
     return Object.assign(context, {
       props,
       getActionResult: createGetActionResult(context.locals),
-      callAction: createCallAction(context)
+      callAction: createCallAction(context),
+      // Used internally by Actions middleware.
+      // TODO: discuss exposing this information from APIContext.
+      // middleware runs on prerendered routes in the dev server,
+      // so this is useful information to have.
+      _isPrerendered: isPrerendered
     });
   }
   async #executeRewrite(reroutePayload) {
@@ -2515,4 +2521,4 @@ const serverEntrypointModule = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.de
 }, Symbol.toStringTag, { value: 'Module' }));
 
 export { start as a, createExports as c, serverEntrypointModule as s };
-//# sourceMappingURL=_@astrojs-ssr-adapter_YvpYN5AE.mjs.map
+//# sourceMappingURL=_@astrojs-ssr-adapter_CGtjnNd4.mjs.map

@@ -7409,7 +7409,7 @@ var require_cssesc = __commonJS({
   }
 });
 
-// Target/dist/server/chunks/astro/server_CurqLOxi.mjs
+// Target/dist/server/chunks/astro/server_CUP-g7Rg.mjs
 async function renderEndpoint(mod, context, ssr, logger) {
   const { request, url } = context;
   const method = request.method.toUpperCase();
@@ -9181,8 +9181,8 @@ function spreadAttributes(values = {}, _name, { class: scopedClassName } = {}) {
   return markHTMLString(output);
 }
 var import_cssesc, ASTRO_VERSION, REROUTE_DIRECTIVE_HEADER, REWRITE_DIRECTIVE_HEADER_KEY, REWRITE_DIRECTIVE_HEADER_VALUE, ROUTE_TYPE_HEADER, DEFAULT_404_COMPONENT, REROUTABLE_STATUS_CODES, clientAddressSymbol, clientLocalsSymbol, responseSentSymbol, escapeHTML, HTMLBytes, HTMLString, markHTMLString, AstroJSX, RenderInstructionSymbol, PROP_TYPE, transitionDirectivesToCopyOnIsland, dictionary, binary, headAndContentSym, astro_island_prebuilt_dev_default, ISLAND_STYLES, voidElementNames, htmlBooleanAttributes, htmlEnumAttributes, svgEnumAttributes, AMPERSAND_REGEX, DOUBLE_QUOTE_REGEX, STATIC_DIRECTIVES, toIdent, toAttributeString, kebab, toStyleString, noop, BufferedRenderer, isNode, isDeno, VALID_PROTOCOLS, uniqueElements, renderTemplateResultSym, RenderTemplateResult, slotString, SlotString, Fragment, Renderer, encoder$1, decoder$1, astroComponentInstanceSym, AstroComponentInstance, DOCTYPE_EXP, ALGORITHM, encoder, decoder, IV_LENGTH, internalProps, needsHeadRenderingSymbol, rendererAliases, clientOnlyValues, ASTRO_SLOT_EXP, ASTRO_STATIC_SLOT_EXP, ClientOnlyPlaceholder, hasTriedRenderComponentSymbol;
-var init_server_CurqLOxi = __esm({
-  "Target/dist/server/chunks/astro/server_CurqLOxi.mjs"() {
+var init_server_CUP_g7Rg = __esm({
+  "Target/dist/server/chunks/astro/server_CUP-g7Rg.mjs"() {
     "use strict";
     init_colors();
     init_assets_service_D5GDj1qD();
@@ -9190,7 +9190,7 @@ var init_server_CurqLOxi = __esm({
     init_esm();
     init_dist();
     import_cssesc = __toESM(require_cssesc(), 1);
-    ASTRO_VERSION = "4.14.2";
+    ASTRO_VERSION = "4.14.4";
     REROUTE_DIRECTIVE_HEADER = "X-Astro-Reroute";
     REWRITE_DIRECTIVE_HEADER_KEY = "X-Astro-Rewrite";
     REWRITE_DIRECTIVE_HEADER_VALUE = "yes";
@@ -10404,7 +10404,7 @@ var init_image_astro = __esm({
     "use strict";
     init_assets_service_D5GDj1qD();
     init_path();
-    init_server_CurqLOxi();
+    init_server_CUP_g7Rg();
     init_clsx();
     init_mrmime();
     init_renderers();
@@ -10937,7 +10937,7 @@ var init_image_astro = __esm({
         additionalAttributes.srcset = image.srcSet.attribute;
       }
       return renderTemplate`${maybeRenderHead()}<img${addAttribute(image.src, "src")}${spreadAttributes(additionalAttributes)}${spreadAttributes(image.attributes)}>`;
-    }, "/run/media/nikola/Developer/Developer/node_modules/astro/components/Image.astro", void 0);
+    }, "D:/Developer/node_modules/astro/components/Image.astro", void 0);
     $$Astro = createAstro("HTTPS://playform-deno-deploy.deno.dev");
     $$Picture = createComponent(async ($$result, $$props, $$slots) => {
       const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
@@ -10996,7 +10996,7 @@ var init_image_astro = __esm({
         const srcsetAttribute = props.densities || !props.densities && !props.widths ? `${image.src}${image.srcSet.values.length > 0 ? ", " + image.srcSet.attribute : ""}` : image.srcSet.attribute;
         return renderTemplate`<source${addAttribute(srcsetAttribute, "srcset")}${addAttribute(lookup(image.options.format ?? image.src) ?? `image/${image.options.format}`, "type")}${spreadAttributes(sourceAdditionalAttributes)}>`;
       })} <img${addAttribute(fallbackImage.src, "src")}${spreadAttributes(imgAdditionalAttributes)}${spreadAttributes(fallbackImage.attributes)}> </picture>`;
-    }, "/run/media/nikola/Developer/Developer/node_modules/astro/components/Picture.astro", void 0);
+    }, "D:/Developer/node_modules/astro/components/Picture.astro", void 0);
     imageConfig = { "service": { "entrypoint": "astro/assets/services/sharp", "config": {} }, "domains": [], "remotePatterns": [] };
     getImage = async (options) => await getImage$1(options, imageConfig);
     fnv1a52 = (str) => {
@@ -11287,7 +11287,7 @@ var ElementWeights, ElementDetectors, META_HTTP_EQUIV_KEYWORDS, Head, $$Astro$12
 var init_index_astro = __esm({
   "Target/dist/server/pages/index.astro.mjs"() {
     "use strict";
-    init_server_CurqLOxi();
+    init_server_CUP_g7Rg();
     init_colors();
     init_dist2();
     init_clsx();
@@ -11341,19 +11341,19 @@ var init_index_astro = __esm({
       const Astro2 = $$result.createAstro($$Astro$12, $$props, $$slots);
       Astro2.self = $$ViewTransitions;
       const { fallback = "animate" } = Astro2.props;
-      return renderTemplate`<meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback"${addAttribute(fallback, "content")}>${renderScript($$result, "/run/media/nikola/Developer/Developer/node_modules/astro/components/ViewTransitions.astro?astro&type=script&index=0&lang.ts")}`;
-    }, "/run/media/nikola/Developer/Developer/node_modules/astro/components/ViewTransitions.astro", void 0);
+      return renderTemplate`<meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback"${addAttribute(fallback, "content")}>${renderScript($$result, "D:/Developer/node_modules/astro/components/ViewTransitions.astro?astro&type=script&index=0&lang.ts")}`;
+    }, "D:/Developer/node_modules/astro/components/ViewTransitions.astro", void 0);
     $$Astro2 = createAstro("HTTPS://playform-deno-deploy.deno.dev");
     $$Base = createComponent(($$result, $$props, $$slots) => {
       const Astro2 = $$result.createAstro($$Astro2, $$props, $$slots);
       Astro2.self = $$Base;
       const { Title = "", Description = "" } = Astro2.props;
-      return renderTemplate`<html lang="en" class="no-js" dir="ltr"> ${renderComponent($$result, "Head", Head, {}, { "default": ($$result2) => renderTemplate`${renderScript($$result2, "/run/media/nikola/Developer/Developer/Application/PlayForm/NPM/Deploy/Source/Layout/Base.astro?astro&type=script&index=0&lang.ts")}<title>${Title}</title><meta charset="utf-8"><meta name="description"${addAttribute(Description, "content")}><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="theme-color" content="#FF5D01"><meta name="format-detection" content="telephone=no"><meta name="twitter:dnt" content="on"><link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="manifest" href="/site.webmanifest" crossorigin="use-credentials">${renderSlot($$result2, $$slots["styles"])}${renderScript($$result2, "/run/media/nikola/Developer/Developer/Application/PlayForm/NPM/Deploy/Source/Layout/Base.astro?astro&type=script&index=1&lang.ts")}${renderSlot($$result2, $$slots["scripts"])}${renderComponent($$result2, "ViewTransitions", $$ViewTransitions, {})}` })}${maybeRenderHead()}<body> <div class="grow"> ${renderSlot($$result, $$slots["default"])} </div> ${renderScript($$result, "/run/media/nikola/Developer/Developer/Application/PlayForm/NPM/Deploy/Source/Layout/Base.astro?astro&type=script&index=2&lang.ts")} </body> </html>`;
-    }, "/run/media/nikola/Developer/Developer/Application/PlayForm/NPM/Deploy/Source/Layout/Base.astro", void 0);
+      return renderTemplate`<html lang="en" class="no-js" dir="ltr"> ${renderComponent($$result, "Head", Head, {}, { "default": ($$result2) => renderTemplate`${renderScript($$result2, "D:/Developer/Application/PlayForm/NPM/Deploy/Source/Layout/Base.astro?astro&type=script&index=0&lang.ts")}<title>${Title}</title><meta charset="utf-8"><meta name="description"${addAttribute(Description, "content")}><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="theme-color" content="#FF5D01"><meta name="format-detection" content="telephone=no"><meta name="twitter:dnt" content="on"><link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="manifest" href="/site.webmanifest" crossorigin="use-credentials">${renderSlot($$result2, $$slots["styles"])}${renderScript($$result2, "D:/Developer/Application/PlayForm/NPM/Deploy/Source/Layout/Base.astro?astro&type=script&index=1&lang.ts")}${renderSlot($$result2, $$slots["scripts"])}${renderComponent($$result2, "ViewTransitions", $$ViewTransitions, {})}` })}${maybeRenderHead()}<body> <div class="grow"> ${renderSlot($$result, $$slots["default"])} </div> ${renderScript($$result, "D:/Developer/Application/PlayForm/NPM/Deploy/Source/Layout/Base.astro?astro&type=script&index=2&lang.ts")} </body> </html>`;
+    }, "D:/Developer/Application/PlayForm/NPM/Deploy/Source/Layout/Base.astro", void 0);
     $$Index = createComponent(($$result, $$props, $$slots) => {
       return renderTemplate`${renderComponent($$result, "Base", $$Base, {})}`;
-    }, "/run/media/nikola/Developer/Developer/Application/PlayForm/NPM/Deploy/Source/pages/index.astro", void 0);
-    $$file = "/run/media/nikola/Developer/Developer/Application/PlayForm/NPM/Deploy/Source/pages/index.astro";
+    }, "D:/Developer/Application/PlayForm/NPM/Deploy/Source/pages/index.astro", void 0);
+    $$file = "D:/Developer/Application/PlayForm/NPM/Deploy/Source/pages/index.astro";
     $$url = "";
     _page2 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
       __proto__: null,
@@ -11368,9 +11368,9 @@ var init_index_astro = __esm({
 // Target/dist/server/entry.mjs
 init_renderers();
 
-// Target/dist/server/chunks/_@astrojs-ssr-adapter_YvpYN5AE.mjs
+// Target/dist/server/chunks/_@astrojs-ssr-adapter_CGtjnNd4.mjs
 init_path();
-init_server_CurqLOxi();
+init_server_CUP_g7Rg();
 init_assets_service_D5GDj1qD();
 var import_cookie = __toESM(require_cookie(), 1);
 init_colors();
@@ -11483,9 +11483,9 @@ function unflatten(parsed, revivers) {
   return hydrate(0);
 }
 
-// Target/dist/server/chunks/astro-designed-error-pages_DuB-bjcV.mjs
+// Target/dist/server/chunks/astro-designed-error-pages_DnHgKM4C.mjs
 init_esm();
-init_server_CurqLOxi();
+init_server_CUP_g7Rg();
 var ACTION_QUERY_PARAMS = {
   actionName: "_astroAction",
   actionPayload: "_astroActionPayload",
@@ -11579,7 +11579,7 @@ function getActionQueryString(name) {
 }
 function deserializeActionResult(res) {
   if (res.type === "error") {
-    if (Object.assign(__vite_import_meta_env__, { _: process.env._ })?.PROD) {
+    if (Object.assign(__vite_import_meta_env__, {})?.PROD) {
       return { error: ActionError.fromJson(JSON.parse(res.body)), data: void 0 };
     } else {
       const error2 = ActionError.fromJson(JSON.parse(res.body));
@@ -11744,7 +11744,7 @@ var default404Instance = {
   default: default404Page
 };
 
-// Target/dist/server/chunks/_@astrojs-ssr-adapter_YvpYN5AE.mjs
+// Target/dist/server/chunks/_@astrojs-ssr-adapter_CGtjnNd4.mjs
 init_clsx();
 
 // ../../../../node_modules/@astrojs/deno/dist/__deno_imports.js
@@ -11752,7 +11752,7 @@ import { Server } from "https://deno.land/std@0.177.0/http/server.ts";
 import { serveFile } from "https://deno.land/std@0.177.0/http/file_server.ts";
 import { fromFileUrl } from "https://deno.land/std@0.177.0/path/mod.ts";
 
-// Target/dist/server/chunks/_@astrojs-ssr-adapter_YvpYN5AE.mjs
+// Target/dist/server/chunks/_@astrojs-ssr-adapter_CGtjnNd4.mjs
 function shouldAppendForwardSlash(trailingSlash, buildFormat) {
   switch (trailingSlash) {
     case "always":
@@ -13196,6 +13196,7 @@ var RenderContext = class _RenderContext {
   async render(componentInstance, slots = {}) {
     const { cookies, middleware, pipeline } = this;
     const { logger, serverLike, streaming } = pipeline;
+    const isPrerendered = !serverLike || this.routeData.prerender;
     const props = Object.keys(this.props).length > 0 ? this.props : await getProps({
       mod: componentInstance,
       routeData: this.routeData,
@@ -13204,7 +13205,7 @@ var RenderContext = class _RenderContext {
       logger,
       serverLike
     });
-    const apiContext = this.createAPIContext(props);
+    const apiContext = this.createAPIContext(props, isPrerendered);
     this.counter++;
     if (this.counter === 4) {
       return new Response("Loop Detected", {
@@ -13275,12 +13276,17 @@ var RenderContext = class _RenderContext {
     attachCookiesToResponse(response, cookies);
     return response;
   }
-  createAPIContext(props) {
+  createAPIContext(props, isPrerendered) {
     const context = this.createActionAPIContext();
     return Object.assign(context, {
       props,
       getActionResult: createGetActionResult(context.locals),
-      callAction: createCallAction(context)
+      callAction: createCallAction(context),
+      // Used internally by Actions middleware.
+      // TODO: discuss exposing this information from APIContext.
+      // middleware runs on prerendered routes in the dev server,
+      // so this is useful information to have.
+      _isPrerendered: isPrerendered
     });
   }
   async #executeRewrite(reroutePayload) {
@@ -14249,11 +14255,11 @@ var serverEntrypointModule = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Objec
   start
 }, Symbol.toStringTag, { value: "Module" }));
 
-// Target/dist/server/manifest_iM9Tn59f.mjs
+// Target/dist/server/manifest_DTj3etIp.mjs
 init_path();
 var import_cookie2 = __toESM(require_cookie(), 1);
 init_colors();
-init_server_CurqLOxi();
+init_server_CUP_g7Rg();
 init_clsx();
 
 // ../../../../node_modules/path-to-regexp/dist.es2015/index.js
@@ -14490,7 +14496,7 @@ function flags(options) {
   return options && options.sensitive ? "" : "i";
 }
 
-// Target/dist/server/manifest_iM9Tn59f.mjs
+// Target/dist/server/manifest_DTj3etIp.mjs
 function sanitizeParams(params) {
   return Object.fromEntries(
     Object.entries(params).map(([key, value]) => {
@@ -14574,7 +14580,7 @@ function deserializeManifest(serializedManifest) {
     key
   };
 }
-var manifest = deserializeManifest({ "hrefRoot": "file:///run/media/nikola/Developer/Developer/Application/PlayForm/NPM/Deploy/", "adapterName": "@astrojs/deno", "routes": [{ "file": "", "links": [], "scripts": [{ "type": "external", "value": "/_astro/page.RuxDLo8Z.js" }], "styles": [], "routeData": { "type": "endpoint", "isIndex": false, "route": "/_image", "pattern": "^\\/_image$", "segments": [[{ "content": "_image", "dynamic": false, "spread": false }]], "params": [], "component": "../../../../node_modules/astro/dist/assets/endpoint/generic.js", "pathname": "/_image", "prerender": false, "fallbackRoutes": [], "_meta": { "trailingSlash": "ignore" } } }, { "file": "", "links": [], "scripts": [{ "type": "external", "value": "/_astro/page.RuxDLo8Z.js" }], "styles": [{ "type": "external", "src": "/_astro/index.Pa49pp0M.css" }], "routeData": { "route": "/", "isIndex": true, "type": "page", "pattern": "^\\/$", "segments": [], "params": [], "component": "Source/pages/index.astro", "pathname": "/", "prerender": false, "fallbackRoutes": [], "_meta": { "trailingSlash": "ignore" } } }], "site": "HTTPS://playform-deno-deploy.deno.dev", "base": "/", "trailingSlash": "ignore", "compressHTML": true, "componentMetadata": [], "renderers": [], "clientDirectives": [["idle", '(()=>{var i=t=>{let e=async()=>{await(await t())()};"requestIdleCallback"in window?window.requestIdleCallback(e):setTimeout(e,200)};(self.Astro||(self.Astro={})).idle=i;window.dispatchEvent(new Event("astro:idle"));})();'], ["load", '(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();'], ["media", '(()=>{var s=(i,t)=>{let a=async()=>{await(await i())()};if(t.value){let e=matchMedia(t.value);e.matches?a():e.addEventListener("change",a,{once:!0})}};(self.Astro||(self.Astro={})).media=s;window.dispatchEvent(new Event("astro:media"));})();'], ["only", '(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event("astro:only"));})();'], ["visible", '(()=>{var l=(s,i,o)=>{let r=async()=>{await(await s())()},t=typeof i.value=="object"?i.value:void 0,c={rootMargin:t==null?void 0:t.rootMargin},n=new IntersectionObserver(e=>{for(let a of e)if(a.isIntersecting){n.disconnect(),r();break}},c);for(let e of o.children)n.observe(e)};(self.Astro||(self.Astro={})).visible=l;window.dispatchEvent(new Event("astro:visible"));})();']], "entryModules": { "\0@astro-page:../../../../node_modules/astro/dist/assets/endpoint/generic@_@js": "pages/_image.astro.mjs", "\0@astro-page:Source/pages/index@_@astro": "pages/index.astro.mjs", "\0@astrojs-ssr-virtual-entry": "entry.mjs", "\0noop-middleware": "_noop-middleware.mjs", "\0@astro-renderers": "renderers.mjs", "\0@astrojs-ssr-adapter": "_@astrojs-ssr-adapter.mjs", "\0@astrojs-manifest": "manifest_iM9Tn59f.mjs", "/run/media/nikola/Developer/Developer/Application/PlayForm/NPM/Deploy/Source/Layout/Base.astro?astro&type=script&index=0&lang.ts": "_astro/Base.astro_astro_type_script_index_0_lang.CCQPt6x2.js", "/run/media/nikola/Developer/Developer/node_modules/@swup/scroll-plugin/dist/index.modern.js": "_astro/index.modern.ljjH5-f0.js", "astro:scripts/page.js": "_astro/page.RuxDLo8Z.js", "/run/media/nikola/Developer/Developer/node_modules/@swup/overlay-theme/dist/index.modern.js": "_astro/index.modern.DpLP8u1C.js", "/run/media/nikola/Developer/Developer/node_modules/@swup/preload-plugin/dist/index.modern.js": "_astro/index.modern.CUPCPLSa.js", "/run/media/nikola/Developer/Developer/node_modules/astro/components/ViewTransitions.astro?astro&type=script&index=0&lang.ts": "_astro/ViewTransitions.astro_astro_type_script_index_0_lang.DSSDe5pU.js", "/run/media/nikola/Developer/Developer/node_modules/@swup/head-plugin/dist/index.modern.js": "_astro/index.modern.FjGODCox.js", "/run/media/nikola/Developer/Developer/node_modules/@swup/body-class-plugin/dist/index.modern.js": "_astro/index.modern.aa8fLSdp.js", "/run/media/nikola/Developer/Developer/Application/PlayForm/NPM/Deploy/Source/Layout/Base.astro?astro&type=script&index=2&lang.ts": "_astro/Base.astro_astro_type_script_index_2_lang.D4DYKVOQ.js", "/run/media/nikola/Developer/Developer/Application/PlayForm/NPM/Deploy/Source/Layout/Base.astro?astro&type=script&index=1&lang.ts": "_astro/Base.astro_astro_type_script_index_1_lang.DvSLRLVP.js", "/run/media/nikola/Developer/Developer/node_modules/swup/dist/Swup.modern.js": "_astro/Swup.modern.BemQoQWS.js", "/run/media/nikola/Developer/Developer/node_modules/firebase/app/dist/esm/index.esm.js": "_astro/index.esm.WPJ9Gp6O.js", "astro:scripts/before-hydration.js": "" }, "inlinedScripts": [["/run/media/nikola/Developer/Developer/Application/PlayForm/NPM/Deploy/Source/Layout/Base.astro?astro&type=script&index=2&lang.ts", 'document.documentElement.classList.remove("no-js");document.documentElement.classList.add("js");\n//# sourceMappingURL=Base.astro_astro_type_script_index_2_lang.D4DYKVOQ.js.map']], "assets": ["/_astro/index.Pa49pp0M.css", "/chunks/astro_CFMrCj9_.mjs.map", "/chunks/astro/assets-service_D5GDj1qD.mjs.map", "/chunks/astro/server_CurqLOxi.mjs.map", "/manifest_iM9Tn59f.mjs.map", "/chunks/_@astrojs-ssr-adapter_YvpYN5AE.mjs.map", "/chunks/astro-designed-error-pages_DuB-bjcV.mjs.map", "/pages/_image.astro.mjs.map", "/pages/index.astro.mjs.map", "/entry.mjs.map", "/_noop-middleware.mjs.map", "/renderers.mjs.map", "/_@astrojs-ssr-adapter.mjs.map", "/robots.txt", "/site.webmanifest", "/_astro/Base.astro_astro_type_script_index_0_lang.CCQPt6x2.js", "/_astro/Base.astro_astro_type_script_index_0_lang.CCQPt6x2.js.map", "/_astro/Base.astro_astro_type_script_index_1_lang.DvSLRLVP.js", "/_astro/Base.astro_astro_type_script_index_1_lang.DvSLRLVP.js.map", "/_astro/Base.astro_astro_type_script_index_2_lang.D4DYKVOQ.js.map", "/_astro/Swup.modern.BemQoQWS.js", "/_astro/Swup.modern.BemQoQWS.js.map", "/_astro/ViewTransitions.astro_astro_type_script_index_0_lang.DSSDe5pU.js", "/_astro/ViewTransitions.astro_astro_type_script_index_0_lang.DSSDe5pU.js.map", "/_astro/index.D6rU_tt3.js", "/_astro/index.D6rU_tt3.js.map", "/_astro/index.esm.WPJ9Gp6O.js", "/_astro/index.esm.WPJ9Gp6O.js.map", "/_astro/index.modern.CUPCPLSa.js", "/_astro/index.modern.CUPCPLSa.js.map", "/_astro/index.modern.CkIAsQri.js", "/_astro/index.modern.CkIAsQri.js.map", "/_astro/index.modern.DpLP8u1C.js", "/_astro/index.modern.DpLP8u1C.js.map", "/_astro/index.modern.FjGODCox.js", "/_astro/index.modern.FjGODCox.js.map", "/_astro/index.modern.aa8fLSdp.js", "/_astro/index.modern.aa8fLSdp.js.map", "/_astro/index.modern.ljjH5-f0.js", "/_astro/index.modern.ljjH5-f0.js.map", "/_astro/page.RuxDLo8Z.js", "/_astro/page.RuxDLo8Z.js.map", "/_astro/preload-helper.BiBI96sQ.js", "/_astro/preload-helper.BiBI96sQ.js.map", "/_astro/page.RuxDLo8Z.js"], "buildFormat": "directory", "checkOrigin": false, "serverIslandNameMap": [], "key": "MD7uNcMP4jGYXLweHkP7opuLViP/dd7s81QtSWv0Lmc=", "experimentalEnvGetSecretEnabled": false });
+var manifest = deserializeManifest({ "hrefRoot": "file:///D:/Developer/Application/PlayForm/NPM/Deploy/", "adapterName": "@astrojs/deno", "routes": [{ "file": "", "links": [], "scripts": [{ "type": "external", "value": "/_astro/page.RuxDLo8Z.js" }], "styles": [], "routeData": { "type": "endpoint", "isIndex": false, "route": "/_image", "pattern": "^\\/_image$", "segments": [[{ "content": "_image", "dynamic": false, "spread": false }]], "params": [], "component": "../../../../node_modules/astro/dist/assets/endpoint/generic.js", "pathname": "/_image", "prerender": false, "fallbackRoutes": [], "_meta": { "trailingSlash": "ignore" } } }, { "file": "", "links": [], "scripts": [{ "type": "external", "value": "/_astro/page.RuxDLo8Z.js" }], "styles": [{ "type": "external", "src": "/_astro/index.Pa49pp0M.css" }], "routeData": { "route": "/", "isIndex": true, "type": "page", "pattern": "^\\/$", "segments": [], "params": [], "component": "Source/pages/index.astro", "pathname": "/", "prerender": false, "fallbackRoutes": [], "_meta": { "trailingSlash": "ignore" } } }], "site": "HTTPS://playform-deno-deploy.deno.dev", "base": "/", "trailingSlash": "ignore", "compressHTML": true, "componentMetadata": [], "renderers": [], "clientDirectives": [["idle", '(()=>{var i=t=>{let e=async()=>{await(await t())()};"requestIdleCallback"in window?window.requestIdleCallback(e):setTimeout(e,200)};(self.Astro||(self.Astro={})).idle=i;window.dispatchEvent(new Event("astro:idle"));})();'], ["load", '(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();'], ["media", '(()=>{var s=(i,t)=>{let a=async()=>{await(await i())()};if(t.value){let e=matchMedia(t.value);e.matches?a():e.addEventListener("change",a,{once:!0})}};(self.Astro||(self.Astro={})).media=s;window.dispatchEvent(new Event("astro:media"));})();'], ["only", '(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event("astro:only"));})();'], ["visible", '(()=>{var l=(s,i,o)=>{let r=async()=>{await(await s())()},t=typeof i.value=="object"?i.value:void 0,c={rootMargin:t==null?void 0:t.rootMargin},n=new IntersectionObserver(e=>{for(let a of e)if(a.isIntersecting){n.disconnect(),r();break}},c);for(let e of o.children)n.observe(e)};(self.Astro||(self.Astro={})).visible=l;window.dispatchEvent(new Event("astro:visible"));})();']], "entryModules": { "\0@astro-page:../../../../node_modules/astro/dist/assets/endpoint/generic@_@js": "pages/_image.astro.mjs", "\0@astro-page:Source/pages/index@_@astro": "pages/index.astro.mjs", "\0@astrojs-ssr-virtual-entry": "entry.mjs", "\0noop-middleware": "_noop-middleware.mjs", "\0@astro-renderers": "renderers.mjs", "\0@astrojs-ssr-adapter": "_@astrojs-ssr-adapter.mjs", "\0@astrojs-manifest": "manifest_DTj3etIp.mjs", "astro:scripts/page.js": "_astro/page.RuxDLo8Z.js", "D:/Developer/node_modules/@swup/overlay-theme/dist/index.modern.js": "_astro/index.modern.DpLP8u1C.js", "D:/Developer/node_modules/@swup/preload-plugin/dist/index.modern.js": "_astro/index.modern.Dzx6rguv.js", "D:/Developer/node_modules/@swup/body-class-plugin/dist/index.modern.js": "_astro/index.modern.aa8fLSdp.js", "D:/Developer/Application/PlayForm/NPM/Deploy/Source/Layout/Base.astro?astro&type=script&index=0&lang.ts": "_astro/Base.astro_astro_type_script_index_0_lang.CCQPt6x2.js", "D:/Developer/Application/PlayForm/NPM/Deploy/Source/Layout/Base.astro?astro&type=script&index=1&lang.ts": "_astro/Base.astro_astro_type_script_index_1_lang.CP2le5wW.js", "D:/Developer/node_modules/@swup/scroll-plugin/dist/index.modern.js": "_astro/index.modern.CiCz6VZW.js", "D:/Developer/node_modules/firebase/app/dist/esm/index.esm.js": "_astro/index.esm.WPJ9Gp6O.js", "D:/Developer/node_modules/swup/dist/Swup.modern.js": "_astro/Swup.modern.UA9jlYbO.js", "D:/Developer/Application/PlayForm/NPM/Deploy/Source/Layout/Base.astro?astro&type=script&index=2&lang.ts": "_astro/Base.astro_astro_type_script_index_2_lang.D4DYKVOQ.js", "D:/Developer/node_modules/astro/components/ViewTransitions.astro?astro&type=script&index=0&lang.ts": "_astro/ViewTransitions.astro_astro_type_script_index_0_lang.DSSDe5pU.js", "D:/Developer/node_modules/@swup/head-plugin/dist/index.modern.js": "_astro/index.modern.FjGODCox.js", "astro:scripts/before-hydration.js": "" }, "inlinedScripts": [["D:/Developer/Application/PlayForm/NPM/Deploy/Source/Layout/Base.astro?astro&type=script&index=2&lang.ts", 'document.documentElement.classList.remove("no-js");document.documentElement.classList.add("js");\n//# sourceMappingURL=Base.astro_astro_type_script_index_2_lang.D4DYKVOQ.js.map']], "assets": ["/_astro/index.Pa49pp0M.css", "/chunks/astro_P21CiyL-.mjs.map", "/chunks/astro/assets-service_D5GDj1qD.mjs.map", "/chunks/astro/server_CUP-g7Rg.mjs.map", "/manifest_DTj3etIp.mjs.map", "/chunks/_@astrojs-ssr-adapter_CGtjnNd4.mjs.map", "/chunks/astro-designed-error-pages_DnHgKM4C.mjs.map", "/pages/_image.astro.mjs.map", "/pages/index.astro.mjs.map", "/entry.mjs.map", "/_noop-middleware.mjs.map", "/renderers.mjs.map", "/_@astrojs-ssr-adapter.mjs.map", "/robots.txt", "/site.webmanifest", "/_astro/Base.astro_astro_type_script_index_0_lang.CCQPt6x2.js", "/_astro/Base.astro_astro_type_script_index_0_lang.CCQPt6x2.js.map", "/_astro/Base.astro_astro_type_script_index_1_lang.CP2le5wW.js", "/_astro/Base.astro_astro_type_script_index_1_lang.CP2le5wW.js.map", "/_astro/Base.astro_astro_type_script_index_2_lang.D4DYKVOQ.js.map", "/_astro/index.D6rU_tt3.js", "/_astro/index.D6rU_tt3.js.map", "/_astro/index.esm.WPJ9Gp6O.js", "/_astro/index.esm.WPJ9Gp6O.js.map", "/_astro/index.modern.aa8fLSdp.js", "/_astro/index.modern.aa8fLSdp.js.map", "/_astro/index.modern.CiCz6VZW.js", "/_astro/index.modern.CiCz6VZW.js.map", "/_astro/index.modern.CkIAsQri.js", "/_astro/index.modern.CkIAsQri.js.map", "/_astro/index.modern.DpLP8u1C.js", "/_astro/index.modern.DpLP8u1C.js.map", "/_astro/index.modern.Dzx6rguv.js", "/_astro/index.modern.Dzx6rguv.js.map", "/_astro/index.modern.FjGODCox.js", "/_astro/index.modern.FjGODCox.js.map", "/_astro/page.RuxDLo8Z.js", "/_astro/page.RuxDLo8Z.js.map", "/_astro/preload-helper.BiBI96sQ.js", "/_astro/preload-helper.BiBI96sQ.js.map", "/_astro/Swup.modern.UA9jlYbO.js", "/_astro/Swup.modern.UA9jlYbO.js.map", "/_astro/ViewTransitions.astro_astro_type_script_index_0_lang.DSSDe5pU.js", "/_astro/ViewTransitions.astro_astro_type_script_index_0_lang.DSSDe5pU.js.map", "/_astro/page.RuxDLo8Z.js"], "buildFormat": "directory", "checkOrigin": false, "serverIslandNameMap": [], "key": "dpi4sXKsS2Oe1pycLXXEBbc0bPqlX/17ahePlNrJy6o=", "experimentalEnvGetSecretEnabled": false });
 
 // Target/dist/server/_noop-middleware.mjs
 var onRequest = (_2, next) => next();

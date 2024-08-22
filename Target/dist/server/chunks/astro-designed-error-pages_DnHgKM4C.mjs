@@ -1,6 +1,6 @@
 import { parse } from 'devalue';
 import { escape } from 'html-escaper';
-import { D as DEFAULT_404_COMPONENT } from './astro/server_CurqLOxi.mjs';
+import { D as DEFAULT_404_COMPONENT } from './astro/server_CUP-g7Rg.mjs';
 
 const ACTION_QUERY_PARAMS = {
   actionName: "_astroAction",
@@ -96,7 +96,7 @@ function getActionQueryString(name) {
 }
 function deserializeActionResult(res) {
   if (res.type === "error") {
-    if (Object.assign(__vite_import_meta_env__, { _: process.env._ })?.PROD) {
+    if (Object.assign(__vite_import_meta_env__, {})?.PROD) {
       return { error: ActionError.fromJson(JSON.parse(res.body)), data: void 0 };
     } else {
       const error = ActionError.fromJson(JSON.parse(res.body));
@@ -264,4 +264,4 @@ const default404Instance = {
 };
 
 export { DEFAULT_404_ROUTE as D, default404Instance as a, deserializeActionResult as d, ensure404Route as e, getActionQueryString as g };
-//# sourceMappingURL=astro-designed-error-pages_DuB-bjcV.mjs.map
+//# sourceMappingURL=astro-designed-error-pages_DnHgKM4C.mjs.map

@@ -5,7 +5,7 @@ import { escape } from 'html-escaper';
 import { decodeBase64, encodeHexUpperCase, encodeBase64, decodeHex } from '@oslojs/encoding';
 import 'cssesc';
 
-const ASTRO_VERSION = "4.14.2";
+const ASTRO_VERSION = "4.14.4";
 const REROUTE_DIRECTIVE_HEADER = "X-Astro-Reroute";
 const REWRITE_DIRECTIVE_HEADER_KEY = "X-Astro-Rewrite";
 const REWRITE_DIRECTIVE_HEADER_VALUE = "yes";
@@ -2045,4 +2045,4 @@ function spreadAttributes(values = {}, _name, { class: scopedClassName } = {}) {
 }
 
 export { ASTRO_VERSION as A, REROUTABLE_STATUS_CODES as B, DEFAULT_404_COMPONENT as D, ROUTE_TYPE_HEADER as R, createComponent as a, addAttribute as b, createAstro as c, renderSlotToString as d, renderAllHeadContent as e, renderScript as f, renderComponent as g, renderSlot as h, decodeKey as i, REROUTE_DIRECTIVE_HEADER as j, decryptString as k, createSlotValueFromString as l, maybeRenderHead as m, renderJSX as n, chunkToString as o, isRenderInstruction as p, clientLocalsSymbol as q, renderTemplate as r, spreadAttributes as s, clientAddressSymbol as t, unescapeHTML as u, responseSentSymbol as v, renderPage as w, REWRITE_DIRECTIVE_HEADER_KEY as x, REWRITE_DIRECTIVE_HEADER_VALUE as y, renderEndpoint as z };
-//# sourceMappingURL=server_CurqLOxi.mjs.map
+//# sourceMappingURL=server_CUP-g7Rg.mjs.map
