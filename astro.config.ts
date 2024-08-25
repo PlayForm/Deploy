@@ -15,8 +15,8 @@ export default (await import("astro/config")).defineConfig({
 		(await import("@playform/format")).default({ Logger: 1 }),
 		(await import("@playform/compress")).default({ Logger: 1 }),
 	],
-	output: "server",
-	adapter: (await import("@astrojs/deno")).default(),
+	// output: "server",
+	// adapter: (await import("@astrojs/deno")).default(),
 	experimental: {
 		directRenderScript: true,
 		clientPrerender: true,
