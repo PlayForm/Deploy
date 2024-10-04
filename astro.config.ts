@@ -1,3 +1,5 @@
+import type { defineConfig } from "astro/config";
+
 export default (await import("astro/config")).defineConfig({
 	srcDir: "./Source",
 	publicDir: "./Public",
@@ -36,5 +38,3 @@ export default (await import("astro/config")).defineConfig({
 		},
 	},
 }) as typeof defineConfig;
-
-import type { defineConfig } from "astro/config";
