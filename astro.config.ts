@@ -7,6 +7,9 @@ export default (await import("astro/config")).defineConfig({
 	site: "HTTPS://playform-deno-deploy.deno.dev",
 	compressHTML: true,
 	prefetch: true,
+	build: {
+		concurrency: 9999
+	},
 	integrations: [
 		// @ts-ignore
 		import.meta.env.MODE === "production"
