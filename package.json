@@ -10,9 +10,9 @@
 		"skeleton",
 		"playform"
 	],
-	"homepage": "HTTPS://GitHub.Com/PlayForm/Deploy#readme",
+	"homepage": "https://GitHub.Com/PlayForm/Deploy#readme",
 	"bugs": {
-		"url": "HTTPS://GitHub.Com/PlayForm/Deploy/issues"
+		"url": "https://GitHub.Com/PlayForm/Deploy/issues"
 	},
 	"repository": {
 		"type": "git",
@@ -22,7 +22,7 @@
 	"author": {
 		"name": "Source ✍🏻 Open 👐🏻",
 		"email": "Source/Open@PlayForm.Cloud",
-		"url": "HTTPS://PlayForm.Cloud"
+		"url": "https://PlayForm.Cloud"
 	},
 	"scripts": {
 		"Run": "astro dev --host",

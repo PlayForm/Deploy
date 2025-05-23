@@ -6,7 +6,7 @@ export default defineConfig({
 	srcDir: "./Source",
 	publicDir: "./Public",
 	outDir: "./Target",
-	site: "HTTPS://playform-deno-deploy.deno.dev",
+	site: "https://playform-deno-deploy.deno.dev",
 	compressHTML: true,
 	prefetch: {
 		defaultStrategy: "hover",

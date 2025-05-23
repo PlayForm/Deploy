@@ -1,3 +1,3 @@
 # [Deploy] 🪝
 
-[Deploy]: HTTPS://NPMJS.Org/@playform/deploy
+[Deploy]: https://NPMJS.Org/@playform/deploy
