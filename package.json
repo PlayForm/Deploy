@@ -31,7 +31,7 @@
 	},
 	"dependencies": {
 		"@astrojs/deno": "5.0.1",
-		"@astrojs/sitemap": "3.7.0",
+		"@astrojs/sitemap": "3.7.1",
 		"@playform/build": "0.3.0",
 		"@playform/compress": "0.2.1",
 		"@playform/format": "0.0.8",
