@@ -43,7 +43,7 @@
 		"astro-capo": "0.0.1",
 		"astrojs-service-worker": "2.0.0",
 		"autoprefixer": "10.5.0",
-		"cssnano": "7.1.7",
+		"cssnano": "7.1.8",
 		"cssnano-preset-advanced": "7.0.16",
 		"dotenv": "17.4.2",
 		"firebase": "12.12.1",
