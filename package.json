@@ -32,7 +32,7 @@
 	"dependencies": {
 		"@astrojs/deno": "5.0.1",
 		"@astrojs/sitemap": "3.7.3",
-		"@playform/build": "0.3.2",
+		"@playform/build": "0.3.3",
 		"@playform/compress": "0.2.3",
 		"@playform/format": "0.0.8",
 		"@playform/inline": "0.1.4",
